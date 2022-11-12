@@ -7,9 +7,30 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BreadCrumb: typeof import('./src/components/layout/header/BreadCrumb.vue')['default']
+    Collapse: typeof import('./src/components/layout/header/Collapse.vue')['default']
+    DashBoard: typeof import('./src/components/layout/dashboard/DashBoard.vue')['default']
+    ElAside: typeof import('element-plus/es')['ElAside']
+    ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
+    ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElFooter: typeof import('element-plus/es')['ElFooter']
+    ElHeader: typeof import('element-plus/es')['ElHeader']
+    ElMain: typeof import('element-plus/es')['ElMain']
+    ElMenu: typeof import('element-plus/es')['ElMenu']
+    ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
+    ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
+    Header: typeof import('./src/components/layout/header/Header.vue')['default']
+    Layout: typeof import('./src/components/layout/index.vue')['default']
+    MenuBar: typeof import('./src/components/layout/menu/MenuBar.vue')['default']
+    MenuItem: typeof import('./src/components/layout/menu/MenuItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Tabs: typeof import('./src/components/layout/tabs/Tabs.vue')['default']
+    UserInfo: typeof import('./src/components/layout/header/UserInfo.vue')['default']
   }
 }

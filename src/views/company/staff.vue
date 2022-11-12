@@ -3,8 +3,10 @@
 </script>
 
 <template>
-  <router-view />
+  <div>
+    This is staff
+  </div>
 </template>
 
-<style>
+<style scoped>
 </style>

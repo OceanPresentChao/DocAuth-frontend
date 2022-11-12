@@ -3,8 +3,10 @@
 </script>
 
 <template>
-  <router-view />
+  <div>
+    404 not found
+  </div>
 </template>
 
-<style>
+<style scoped>
 </style>

@@ -3,8 +3,10 @@
 </script>
 
 <template>
-  <router-view />
+  <div>
+    This is DashBoard
+  </div>
 </template>
 
-<style>
+<style scoped>
 </style>
