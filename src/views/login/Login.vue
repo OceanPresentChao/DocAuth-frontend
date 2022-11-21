@@ -16,7 +16,6 @@ async function onLogin() {
 
 <template>
   <div>
-    <h1>登录</h1>
     <el-form
       ref="ruleFormRef" :model="ruleForm" size="large"
       @keyup.enter="onLogin(ruleFormRef)"
@@ -36,23 +35,27 @@ async function onLogin() {
       </el-form-item>
 
       <el-form-item>
-        <div>
-          <el-checkbox>
-            记住密码
-          </el-checkbox>
-          <el-button text @click="authStore.setCurrentPage('forget')">
-            忘记密码?
-          </el-button>
-          <el-button text @click="authStore.setCurrentPage('register')">
-            注册
-          </el-button>
+        <div flex justify-evenly m-auto>
+          <div>
+            <el-checkbox>
+              记住密码
+            </el-checkbox>
+            <el-button text @click="authStore.setCurrentPage('forget')">
+              忘记密码?
+            </el-button>
+          </div>
+          <div>
+            <el-button text @click="authStore.setCurrentPage('register')">
+              注册
+            </el-button>
+            <el-button
+              size="default" type="primary"
+              @click="onLogin()"
+            >
+              登录
+            </el-button>
+          </div>
         </div>
-        <el-button
-          size="default" type="primary"
-          @click="onLogin()"
-        >
-          登录
-        </el-button>
       </el-form-item>
     </el-form>
   </div>

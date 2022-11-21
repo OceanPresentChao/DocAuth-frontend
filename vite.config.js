@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
+import { presetAttributify, presetUno } from 'unocss'
 import svgLoader from 'vite-svg-loader'
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -32,9 +33,22 @@ export default defineConfig({
       deep: true,
       resolvers: [ElementPlusResolver()],
     }),
-    Unocss({ /* options */ }),
+    Unocss({
+      presets: [
+        presetAttributify({ /* preset options */}),
+        presetUno(),
+        // ...custom presets
+      ],
+    }),
   ],
   server: {
     open: true,
+    proxy: {
+      'api/': {
+        target: 'http://localhost:8000/api/v1/',
+        rewrite: path => path.replace(/^api\//, ''),
+        changeOrigin: true,
+      },
+    },
   },
 })
