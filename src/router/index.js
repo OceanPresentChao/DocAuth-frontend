@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/components/layout/index.vue'
 import DashBoard from '@/components/layout/dashboard/DashBoard.vue'
+import Account from '@/views/login/Account.vue'
 export const menuRoutes = [
   {
     path: '/',
@@ -21,6 +22,11 @@ export const menuRoutes = [
 ]
 
 const constantRoutes = [
+  {
+    path: '/login',
+    name: 'login',
+    component: Account,
+  },
   {
     path: '/:pathMatch(.*)*',
     name: '404',
