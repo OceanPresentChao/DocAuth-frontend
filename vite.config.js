@@ -5,6 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
+import svgLoader from 'vite-svg-loader'
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -14,6 +15,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    svgLoader(),
     AutoImport({
       imports: [
         'vue', 'vue-router', '@vueuse/head', 'pinia',
@@ -23,7 +25,7 @@ export default defineConfig({
       },
     }),
     Components({
-      dirs: ['src/components'],
+      dirs: ['src/components', 'src/views'],
       // valid file extensions for components.
       extensions: ['vue'],
       // search for subdirectories
