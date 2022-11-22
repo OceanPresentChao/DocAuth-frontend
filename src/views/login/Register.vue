@@ -1,26 +1,55 @@
 <script setup>
-import { ElMessage } from 'element-plus'
+import * as validator from './rule'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
+import { requestRegister } from '@/api'
 const authStore = useAuthStore()
+const ruleFormRef = ref()
+
 const ruleForm = reactive({
   username: '',
   password: '',
   repassword: '',
   phone: '',
 })
-const ruleFormRef = ref()
+const rules = reactive({
+  username: [{ validator: validator.validateUsername, trigger: 'blur' }],
+  password: [{ validator: validator.validatePassword, trigger: 'blur' }],
+  repassword: [{ validator: validateRePassword, trigger: 'blur' }],
+  phone: [{ validator: validator.validatePhone, trigger: 'blur' }],
+})
 
-async function onRegister() {
+function validateRePassword(rule, value, callback) {
+  if (value === '')
+    callback(new Error('请重复密码'))
 
+  else if (value !== ruleForm.password)
+    callback(new Error('两次输入的密码不一致'))
+
+  else
+    callback()
+}
+
+function submitForm(formEl) {
+  if (!formEl)
+    return
+  formEl.validate(async (valid) => {
+    if (valid) {
+
+    }
+    await requestRegister(ruleForm)
+    return valid
+  })
 }
 </script>
 
 <template>
   <div>
     <el-form
-      ref="ruleFormRef" :model="ruleForm" size="large"
-      @keyup.enter="onRegister(ruleFormRef)"
+      ref="ruleFormRef"
+      status-icon
+      :rules="rules" :model="ruleForm" size="large"
+      @keyup.enter="submitForm(ruleFormRef)"
     >
       <el-form-item prop="username">
         <el-input
@@ -31,14 +60,16 @@ async function onRegister() {
 
       <el-form-item prop="password">
         <el-input
-          v-model="ruleForm.password" clearable :input-style="{ 'user-select': 'none' }"
+          v-model="ruleForm.password"
+          type="password" clearable :input-style="{ 'user-select': 'none' }"
           show-password placeholder="密码" :prefix-icon="useRenderIcon('carbon:locked')"
         />
       </el-form-item>
 
       <el-form-item prop="repassword">
         <el-input
-          v-model="ruleForm.repassword" clearable :input-style="{ 'user-select': 'none' }"
+          v-model="ruleForm.repassword"
+          type="password" clearable :input-style="{ 'user-select': 'none' }"
           show-password placeholder="重复密码" :prefix-icon="useRenderIcon('carbon:locked')"
         />
       </el-form-item>
@@ -57,7 +88,7 @@ async function onRegister() {
           </el-button>
           <el-button
             size="default" type="primary"
-            @click="onRegister()"
+            @click="submitForm(ruleFormRef)"
           >
             注册
           </el-button>

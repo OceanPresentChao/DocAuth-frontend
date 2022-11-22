@@ -1,26 +1,56 @@
 <script setup>
-import { ElMessage } from 'element-plus'
+import * as validator from './rule'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
 const authStore = useAuthStore()
+const ruleFormRef = ref()
 const ruleForm = reactive({
   username: '',
   phone: '',
   password: '',
   repassword: '',
 })
-const ruleFormRef = ref()
 
-async function onLogin() {
+const rules = reactive({
+  username: [{ validator: validator.validateUsername, trigger: 'blur' }],
+  password: [{ validator: validator.validatePassword, trigger: 'blur' }],
+  repassword: [{ validator: validateRePassword, trigger: 'blur' }],
+  phone: [{ validator: validator.validatePhone, trigger: 'blur' }],
+})
 
+function validateRePassword(rule, value, callback) {
+  if (value === '')
+    callback(new Error('请重复密码'))
+
+  else if (value !== ruleForm.password)
+    callback(new Error('两次输入的密码不一致'))
+
+  else
+    callback()
+}
+
+function submitForm(formEl) {
+  if (!formEl)
+    return
+  formEl.validate((valid) => {
+    if (valid) {
+      ElMessage({
+        type: 'success',
+        message: '修改密码成功',
+      })
+    }
+    return valid
+  })
 }
 </script>
 
 <template>
   <div>
     <el-form
-      ref="ruleFormRef" :model="ruleForm" size="large"
-      @keyup.enter="onLogin(ruleFormRef)"
+      ref="ruleFormRef"
+      status-icon
+      :rules="rules" :model="ruleForm" size="large"
+      @keyup.enter="submitForm(ruleFormRef)"
     >
       <el-form-item prop="username">
         <el-input
@@ -62,7 +92,7 @@ async function onLogin() {
           </div>
           <el-button
             size="default" type="primary"
-            @click="onLogin()"
+            @click="submitForm(ruleFormRef)"
           >
             提交
           </el-button>

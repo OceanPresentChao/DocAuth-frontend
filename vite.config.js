@@ -21,6 +21,7 @@ export default defineConfig({
       imports: [
         'vue', 'vue-router', '@vueuse/head', 'pinia',
       ],
+      resolvers: [ElementPlusResolver()],
       eslintrc: {
         enabled: true,
       },
@@ -31,7 +32,9 @@ export default defineConfig({
       extensions: ['vue'],
       // search for subdirectories
       deep: true,
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver({
+        importStyle: 'css',
+      })],
     }),
     Unocss({
       presets: [
@@ -44,10 +47,10 @@ export default defineConfig({
   server: {
     open: true,
     proxy: {
-      'api/': {
-        target: 'http://localhost:8000/api/v1/',
-        rewrite: path => path.replace(/^api\//, ''),
+      '/django': {
+        target: 'http://localhost:8000/api/v1',
         changeOrigin: true,
+        rewrite: path => path.replace(/^\/django/, ''),
       },
     },
   },

@@ -1,24 +1,44 @@
 <script setup>
-import { ElMessage } from 'element-plus'
+import * as validator from './rule'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
+
 const authStore = useAuthStore()
+
+const ruleFormRef = ref()
+
 const ruleForm = reactive({
   username: '',
   password: '',
 })
-const ruleFormRef = ref()
 
-async function onLogin() {
+const rules = reactive({
+  username: [{ validator: validator.validateUsername, trigger: 'blur' }],
+  password: [{ trigger: 'blur' }],
+})
 
+function submitForm(formEl) {
+  if (!formEl)
+    return
+  formEl.validate((valid) => {
+    if (valid) {
+      ElMessage({
+        type: 'success',
+        message: '登录成功',
+      })
+    }
+    return valid
+  })
 }
 </script>
 
 <template>
   <div>
     <el-form
-      ref="ruleFormRef" :model="ruleForm" size="large"
-      @keyup.enter="onLogin(ruleFormRef)"
+      ref="ruleFormRef"
+      status-icon
+      :rules="rules" :model="ruleForm" size="large"
+      @keyup.enter="submitForm(ruleFormRef)"
     >
       <el-form-item prop="username">
         <el-input
@@ -50,7 +70,7 @@ async function onLogin() {
             </el-button>
             <el-button
               size="default" type="primary"
-              @click="onLogin()"
+              @click="submitForm(ruleFormRef)"
             >
               登录
             </el-button>
