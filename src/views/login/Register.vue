@@ -6,7 +6,7 @@ import { requestRegister } from '@/api'
 const authStore = useAuthStore()
 const ruleFormRef = ref()
 
-const ruleForm = reactive({
+const ruleForm = ref({
   username: '',
   password: '',
   repassword: '',
@@ -23,7 +23,7 @@ function validateRePassword(rule, value, callback) {
   if (value === '')
     callback(new Error('请重复密码'))
 
-  else if (value !== ruleForm.password)
+  else if (value !== ruleForm.value.password)
     callback(new Error('两次输入的密码不一致'))
 
   else
@@ -35,9 +35,23 @@ function submitForm(formEl) {
     return
   formEl.validate(async (valid) => {
     if (valid) {
-
+      try {
+        const data = await requestRegister(ruleForm.value)
+        ElMessage({
+          type: 'success',
+          message: '注册成功',
+        })
+        authStore.setCurrentPage('login')
+        ruleForm.value = {
+          username: '',
+          password: '',
+          repassword: '',
+          phone: '',
+        }
+      }
+      catch (error) {
+      }
     }
-    await requestRegister(ruleForm)
     return valid
   })
 }

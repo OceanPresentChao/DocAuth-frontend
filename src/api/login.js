@@ -7,3 +7,19 @@ export function requestRegister(data) {
     data,
   })
 }
+
+export function requestLogin(data) {
+  return request({
+    url: '/django/user/login/',
+    method: 'post',
+    data,
+  })
+}
+
+export function requestModifyUser(data) {
+  return request({
+    url: '/django/user/',
+    method: 'put',
+    data,
+  })
+}

@@ -2,9 +2,10 @@
 import * as validator from './rule'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
+import { requestModifyUser } from '@/api/login'
 const authStore = useAuthStore()
 const ruleFormRef = ref()
-const ruleForm = reactive({
+const ruleForm = ref({
   username: '',
   phone: '',
   password: '',
@@ -22,7 +23,7 @@ function validateRePassword(rule, value, callback) {
   if (value === '')
     callback(new Error('请重复密码'))
 
-  else if (value !== ruleForm.password)
+  else if (value !== ruleForm.value.password)
     callback(new Error('两次输入的密码不一致'))
 
   else
@@ -32,12 +33,25 @@ function validateRePassword(rule, value, callback) {
 function submitForm(formEl) {
   if (!formEl)
     return
-  formEl.validate((valid) => {
+  formEl.validate(async (valid) => {
     if (valid) {
-      ElMessage({
-        type: 'success',
-        message: '修改密码成功',
-      })
+      try {
+        const data = await requestModifyUser(ruleForm.value)
+        ElMessage({
+          type: 'success',
+          message: '修改密码成功',
+        })
+        authStore.setCurrentPage('login')
+        ruleForm.value = {
+          username: '',
+          password: '',
+          repassword: '',
+          phone: '',
+        }
+      }
+      catch (error) {
+
+      }
     }
     return valid
   })

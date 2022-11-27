@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import { defineStore } from 'pinia'
 import { useTabsStore } from './tabs'
 const emptyInfo = {
@@ -20,13 +19,13 @@ export const useAuthStore = defineStore({
   },
   actions: {
     getToken() {
-      return Cookies.get(this.TokenKey)
+      return localStorage.getItem(this.TokenKey)
     },
     setToken(token) {
-      Cookies.set(this.TokenKey, token)
+      localStorage.setItem(this.TokenKey, token)
     },
     removeToken() {
-      Cookies.remove(this.TokenKey)
+      localStorage.removeItem(this.TokenKey)
     },
     setCurrentPage(page) {
       this.currentPage = page

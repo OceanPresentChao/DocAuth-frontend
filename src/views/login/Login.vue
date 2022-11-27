@@ -1,9 +1,12 @@
 <script setup>
+import { useRouter } from 'vue-router'
 import * as validator from './rule'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
+import { requestLogin } from '@/api/login'
 
 const authStore = useAuthStore()
+const router = useRouter()
 
 const ruleFormRef = ref()
 
@@ -20,12 +23,20 @@ const rules = reactive({
 function submitForm(formEl) {
   if (!formEl)
     return
-  formEl.validate((valid) => {
+  formEl.validate(async (valid) => {
     if (valid) {
-      ElMessage({
-        type: 'success',
-        message: '登录成功',
-      })
+      try {
+        const data = await requestLogin(ruleForm)
+        ElMessage({
+          type: 'success',
+          message: '登录成功',
+        })
+        // console.log(data)
+        authStore.setToken(data.data.access)
+        router.replace({ path: '/' })
+      }
+      catch (error) {
+      }
     }
     return valid
   })
