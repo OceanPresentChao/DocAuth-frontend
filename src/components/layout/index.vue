@@ -8,7 +8,7 @@
       <MenuBar />
     </el-aside>
     <el-container>
-      <el-header>
+      <el-header style="height:fit-content;">
         <!-- Header content -->
         <Header />
         <Tabs />

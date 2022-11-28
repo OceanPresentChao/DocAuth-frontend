@@ -23,3 +23,12 @@ export function requestModifyUser(data) {
     data,
   })
 }
+
+export function requestUserDetail(data) {
+  return request({
+    url: '/django/user/',
+    method: 'get',
+    params: data,
+  })
+}
+

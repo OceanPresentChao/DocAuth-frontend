@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/components/layout/index.vue'
-import DashBoard from '@/components/layout/dashboard/DashBoard.vue'
+import DashBoard from '@/views/dashboard/DashBoard.vue'
 import Account from '@/views/login/Account.vue'
 import { useAuthStore } from '@/store/auth'
 export const menuRoutes = [
@@ -24,6 +24,11 @@ export const menuRoutes = [
 
 const constantRoutes = [
   {
+    path: '/user',
+    name: 'user',
+    component: import('@/views/user/UserDetail.vue'),
+  },
+  {
     path: '/login',
     name: 'login',
     component: Account,
@@ -40,17 +45,29 @@ export const router = createRouter({
   history: createWebHashHistory(),
 })
 
-router.beforeEach((to, _) => {
+const whiteList = ['/login']
+
+router.beforeEach((to, from) => {
   const authStore = useAuthStore()
-  if (to.path === '/login') {
-    if (authStore.getToken())
-      return { path: '/' }
-  }
-  else {
-    // if (!authStore.getToken())
-    //   return { path: '/login' }
-    // else
-    //   return true
-    return true
-  }
+  return true
+  // NProgress.start()
+  // if (authStore.getToken()) { // 判断是否有token
+  //   if (to.path === '/login')
+  //     next({ path: '/' })
+
+  //   else
+  //     return true
+  // }
+  // else {
+  //   if (whiteList.includes(to.path)) { // 在免登录白名单，直接进入
+  //     next()
+  //   }
+  //   else {
+  //     next('/login') // 否则全部重定向到登录页
+  //   }
+  // }
+})
+
+router.afterEach(() => {
+  // NProgress.done()
 })
