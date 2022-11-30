@@ -1,58 +1,40 @@
-<script setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { storeToRefs } from 'pinia'
+<script lang="ts" setup>
+import type{ RouteRecordRaw } from 'vue-router'
+import type{ MenuOption } from './types'
 import { useMenuStore } from '@/store/menu'
-// 控制菜单展开和关闭
 const menuStore = useMenuStore()
-const { menuList, isCollapse } = storeToRefs(menuStore)
+const { isCollapse, menuList } = storeToRefs(menuStore)
+const menuData = computed(() => getMenuData(menuList.value))
 
-const route = useRoute()
-const activeIndex = computed(() => {
-  const { path } = route
-  return path
-})
-// 菜单数据
+function getMenuData(menuRoute: RouteRecordRaw[]): MenuOption[] {
+  const res: MenuOption[] = []
+  for (const menu of menuRoute) {
+    if (menu.meta && menu.meta.hidden)
+      continue
 
-function handleOpen(index, indexPath) {
+    const item: MenuOption = {
+      index: menu.path ? menu.path : menu.redirect,
+      title: menu.meta?.title as string || '',
+      icon: menu.meta?.icon as string || '',
+      children: [],
+    }
+    if (menu.children)
+      item.children = getMenuData(menu.children)
+    res.push(item)
+  }
+  return res
 }
-function handleClose(index, indexPath) {
-}
-// 菜单数据
 </script>
 
 <template>
-  <div>
-    <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu
-        :default-active="activeIndex"
-        class="menu"
-        :collapse="isCollapse"
-        background-color="#304156"
-        text-color="#303133"
-        unique-opened router
-        @open="handleOpen"
-        @close="handleClose"
-      >
-        <el-menu-item index="/dashboard">
-          Logo
-        </el-menu-item>
-        <MenuItem :menu-list="menuList" />
-      </el-menu>
-    </el-scrollbar>
-  </div>
+  <el-menu v-bind="$attrs" style="height:100%;" :collapse="isCollapse" router>
+    <MenuItem
+      v-for="(item) in menuData"
+      :key="item.index"
+      :item="item"
+    />
+  </el-menu>
 </template>
 
-<style  scoped>
-.menu:not(.el-menu--collapse) {
-    width: 15vw;
-}
-
-.menu {
-    min-height: 100vh;
-}
-
-.el-menu {
-    border-right: none;
-}
+<style scoped lang="scss">
 </style>

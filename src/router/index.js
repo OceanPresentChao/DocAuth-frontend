@@ -1,22 +1,54 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Layout from '@/components/layout/index.vue'
 import DashBoard from '@/views/dashboard/DashBoard.vue'
 import Account from '@/views/login/Account.vue'
 import { useAuthStore } from '@/store/auth'
+// 菜单路由在这里配置
 export const menuRoutes = [
   {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
+    name: 'dashboard',
+    path: '/dashboard',
+    component: DashBoard,
     meta: {
       title: '首页',
       icon: 'carbon:home',
       roles: ['sys:manage'],
     },
+  },
+  {
+    name: 'project',
+    path: '/project',
+    component: () => import('@/views/project/ProjectList.vue'),
+    meta: {
+      title: '个人项目',
+      icon: 'carbon:home',
+    },
+  },
+  {
+    name: 'manage',
+    component: () => import('@/views/manage/index.vue'),
+    redirect: '/manage/user',
+    meta: {
+      title: '系统管理',
+      icon: 'carbon:security-services',
+    },
     children: [
       {
-        path: '/dashboard',
-        component: DashBoard,
+        name: 'userManage',
+        path: '/manage/user',
+        component: () => import('@/views/manage/UserManage.vue'),
+        meta: {
+          title: '用户管理',
+          icon: 'carbon:user-access',
+        },
+      },
+      {
+        name: 'permissionManage',
+        path: '/manage/Permission',
+        component: () => import('@/views/manage/PermissionManage.vue'),
+        meta: {
+          title: '权限管理',
+          icon: 'carbon:security-services',
+        },
       },
     ],
   },
@@ -24,9 +56,8 @@ export const menuRoutes = [
 
 const constantRoutes = [
   {
-    path: '/user',
-    name: 'user',
-    component: import('@/views/user/UserDetail.vue'),
+    path: '/',
+    redirect: '/dashboard',
   },
   {
     path: '/login',

@@ -3,11 +3,19 @@ import { useTabsStore } from '@/store/tabs'
 const route = useRoute()
 const router = useRouter()
 const tabsStore = useTabsStore()
+const { tabsList } = storeToRefs(tabsStore)
 const activeTab = ref('')
-const tabsList = computed(() => {
-  return tabsStore.getTabsList
+
+onMounted(() => {
+  beforeUnload()
+  watch(route, (nv, ov) => {
+    if (nv.meta.title) {
+      activeTab.value = nv.path
+      addTab(nv)
+    }
+  }, { immediate: true })
 })
-const addTab = () => {
+function addTab(route) {
   const { path, meta } = route
   const tab = {
     title: meta.title,
@@ -15,14 +23,12 @@ const addTab = () => {
   }
   tabsStore.addTab(tab)
 }
-const setActive = () => {
-  activeTab.value = route.path
-}
-const tabClick = (tab) => {
+function tabClick(tab) {
   const { props } = tab
-  router.push({ path: props.name })
+  router.push({ path: props.name, title: props.label })
 }
-const removeTab = (targetName) => {
+
+function removeTab(targetName) {
   if (targetName === '/dashboard')
     return
   const tabs = tabsList.value
@@ -36,12 +42,13 @@ const removeTab = (targetName) => {
       }
     })
   }
+  tabsStore.removeTab(targetName)
   activeTab.value = activeName
-  tabsStore.$state.tabsList = tabs.filter(tab => tab.path !== targetName)
   router.push({ path: activeName })
 }
+
 // 解决刷新数据丢失问题
-const beforeUnload = () => {
+function beforeUnload() {
   window.addEventListener('beforeunload', () => {
     sessionStorage.setItem('tabViews', JSON.stringify(tabsList.value))
   })
@@ -49,18 +56,9 @@ const beforeUnload = () => {
   if (tabSession) {
     const oldViews = JSON.parse(tabSession)
     if (oldViews.length > 0)
-      tabsStore.$state.tabsList = oldViews
+      tabsStore.tabsList = oldViews
   }
 }
-onMounted(() => {
-  beforeUnload()
-  setActive()
-  addTab()
-})
-watch(() => route.path, () => {
-  setActive()
-  addTab()
-})
 </script>
 
 <template>
