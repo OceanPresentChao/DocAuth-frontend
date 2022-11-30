@@ -3,6 +3,8 @@ import Layout from '@/components/layout/index.vue'
 import DashBoard from '@/components/layout/dashboard/DashBoard.vue'
 import Account from '@/views/login/Account.vue'
 import { useAuthStore } from '@/store/auth'
+import nowNewProject from '@/components/layout/project/nowNewProject.vue'
+
 export const menuRoutes = [
   {
     path: '/',
@@ -18,8 +20,29 @@ export const menuRoutes = [
         path: '/dashboard',
         component: DashBoard,
       },
+
     ],
   },
+  {
+    path:'/project',
+    component:Layout,
+    meta: {
+      title: '项目',
+      icon: 'carbon:home',
+      roles: ['sys:manage'],
+    },
+    children:
+        [
+        {
+        path:'/project/create',
+        component:nowNewProject,
+        meta:{
+          title:'创建项目',
+          roles: ['sys:manage'],
+        }
+        },
+        ]
+  }
 ]
 
 const constantRoutes = [
@@ -47,10 +70,7 @@ router.beforeEach((to, _) => {
       return { path: '/' }
   }
   else {
-    // if (!authStore.getToken())
-    //   return { path: '/login' }
-    // else
-    //   return true
+
     return true
   }
 })

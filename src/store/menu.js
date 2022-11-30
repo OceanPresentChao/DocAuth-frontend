@@ -59,7 +59,6 @@ export function filterAsyncRoutes(routes, router) {
     // 判断是否有下级
     if (tmp.children)
       tmp.children = filterAsyncRoutes(tmp.children, router)
-
     // console.log(tmp)
     router.addRoute(tmp)
     res.push(tmp)

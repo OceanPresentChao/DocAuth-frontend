@@ -13,6 +13,7 @@
         <Header />
         <Tabs />
       </el-header>
+
       <el-main>
         <!-- Main content -->
         <router-view v-slot="{ Component }">
@@ -20,7 +21,9 @@
             <component :is="Component" />
           </transition>
         </router-view>
+
       </el-main>
+
     </el-container>
   </el-container>
 </template>
