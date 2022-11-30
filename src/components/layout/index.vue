@@ -23,6 +23,7 @@ const { isCollapse } = storeToRefs(menuStore)
         <Tabs />
       </el-header>
 
+
       <el-main>
         <!-- Main content -->
         <router-view v-slot="{ Component }">
