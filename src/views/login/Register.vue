@@ -2,7 +2,7 @@
 import * as validator from './rule'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
-import { requestRegister } from '@/api'
+import { requestRegister } from '@/api/user'
 const authStore = useAuthStore()
 const ruleFormRef = ref()
 

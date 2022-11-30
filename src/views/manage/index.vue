@@ -4,10 +4,10 @@
 
 <template>
   <div>
-    This is DashBoard
-
+    <RouterView />
   </div>
 </template>
 
 <style scoped>
+
 </style>

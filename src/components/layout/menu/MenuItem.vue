@@ -1,34 +1,46 @@
-<script setup lang='ts'>
-const props = defineProps(['menuList'])
+<script lang="ts" setup>
+import type { PropType } from 'vue'
+import { defineProps } from 'vue'
+import type { MenuOption } from './types'
+
+defineProps({
+  item: {
+    type: Object as PropType<MenuOption>,
+    required: true,
+  },
+})
 </script>
 
 <template>
-  <template v-for="menu in menuList" :key="menu.path">
-    <template v-if="!menu.meta.hidden">
-      <el-sub-menu
-        v-if="!menu.redirect && menu.children && menu.children.length > 0" :key="menu.path"
-        :index="menu.path"
-      >
-        <template #title>
-          <Icon v-if="menu.meta.icon" class="icons" :icon="menu.meta.icon" />
-          <span>{{ menu.meta.title }}</span>
-        </template>
-        <menu-item :menu-list="menu.children" />
-      </el-sub-menu>
-      <el-menu-item v-else style="color: #f4f4f5" :index="menu.redirect ? menu.redirect : menu.path">
-        <Icon v-if="menu.meta.icon" class="icons" :icon="menu.meta.icon" />
-        <template #title>
-          {{ menu.meta.title }}
-        </template>
-      </el-menu-item>
+  <!-- 没有子节点，使用 el-menu-item 渲染 -->
+  <el-menu-item
+    v-if="!item.children || !item.children.length"
+    :index="item.index"
+  >
+    <el-icon v-if="item.icon">
+      <Icon :icon="item.icon" />
+    </el-icon>
+    <span>{{ item.title }}</span>
+  </el-menu-item>
+
+  <!-- 有子节点，使用 el-sub-menu 渲染 -->
+  <el-sub-menu
+    v-else
+    :index="item.index"
+  >
+    <template #title>
+      <el-icon v-if="item.icon">
+        <Icon :icon="item.icon" />
+      </el-icon>
+      <span>{{ item.title }}</span>
     </template>
-  </template>
+    <!-- 循环渲染 -->
+    <MenuItem
+      v-for="sub in item.children" :key="sub.index"
+      :item="sub"
+    />
+  </el-sub-menu>
 </template>
 
-<style scoped>
-.icons {
-  width: 24px;
-  height: 18px;
-  margin-right: 5px;
-}
+<style scoped lang="scss">
 </style>

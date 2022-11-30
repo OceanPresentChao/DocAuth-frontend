@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 import * as validator from './rule'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
-import { requestLogin } from '@/api/login'
+import { requestLogin } from '@/api/user'
 
 const authStore = useAuthStore()
 const router = useRouter()

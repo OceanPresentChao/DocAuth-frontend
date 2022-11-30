@@ -1,8 +1,9 @@
 <script setup>
+import Layout from '@/components/layout/index.vue'
 </script>
 
 <template>
-  <router-view />
+  <Layout />
 </template>
 
 <style>

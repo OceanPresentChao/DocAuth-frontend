@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia'
 import { useTabsStore } from './tabs'
 const emptyInfo = {
+  id: 1,
   name: 'OceanPresent',
+  username: 'OceanPresent',
+  phone: '12345678910',
   avatar: 'http://q1.qlogo.cn/g?b=qq&nk=1255342403&s=640',
 }
 
@@ -35,6 +38,10 @@ export const useAuthStore = defineStore({
       this.userInfo = emptyInfo
       this.removeToken()
       tabsStore.clearTabs()
+      location.reload()
+    },
+    setUserInfo(info) {
+      this.userInfo = Object.assign(this.userInfo, info)
     },
   },
 })
