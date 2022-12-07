@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="text-align: left">
-      <el-input style="width: 200px;margin-right: 10px ;" suffix-icon="el-icon-search" placeholder="请输入名字" v-model="username"></el-input>
+      <el-input style="width: 200px;margin-right: 10px ;" suffix-icon="el-icon-search" placeholder="请输入名字" v-model="userName"></el-input>
       <el-input style="width: 200px;margin-right: 10px" suffix-icon="el-icon-phone" placeholder="请输入电话号" v-model="phone"></el-input>
       <el-select v-model="membership" placeholder="请选择会员等级">
         <el-option label="普通会员" value="普通会员"></el-option>
@@ -33,17 +33,15 @@
       <el-table-column prop="gender" align="center" label="性别" width="50"></el-table-column>
       <el-table-column prop="email" label="邮箱" width="120"></el-table-column>
       <el-table-column prop="regdate" align="center" label="注册日期" width="200"></el-table-column>
-      <el-table-column prop="membership" align="center" label="会员等级" width="80"></el-table-column>
-      <el-table-column prop="account" align="center" label="账户余额" width="70"></el-table-column>
-      <el-table-column align="center" label="编辑用户信息" width="90">
-<!--        <template slot-scope="scope">-->
-          <el-button size="mini" type="primary" @click="handleEditPersonalInformation(scope.row)">编辑</el-button>
-<!--        </template>-->
+      <el-table-column align="center" label="编辑用户信息" width="150">
+        <template #default="{row,$index}">
+          <el-button  type="primary" round @click="handleEditPersonalInformation(row)">编辑</el-button>
+        </template>
       </el-table-column>
 
       <el-table-column align="center" label="操作" >
 <!--        <template slot-scope="scope">-->
-          <el-button size="mini" type="primary" @click="handleEdit(scope.row)">充值</el-button>
+          <el-button  type="success" round @click="handleEdit(scope.row)">权限管理</el-button>
 <!--          <el-popconfirm-->
 <!--                  style="margin-left: 5px"-->
 <!--                  confirm-button-text='确定'-->
@@ -53,7 +51,7 @@
 <!--                  title="确认删除此记录？"-->
 <!--                  @confirm="del(scope.row.userid)"-->
 <!--          >-->
-            <el-button size="mini" type="danger" slot="reference" >删除</el-button>
+            <el-button  type="danger" round slot="reference" >删除</el-button>
 <!--          </el-popconfirm>-->
 <!--        </template>-->
       </el-table-column>
@@ -61,6 +59,34 @@
 
     </el-table>
 
+    <el-dialog title="用户信息"  v-model="infodialogFormVisible" width="40%">
+      <el-form label-width="80px">
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input v-model="form.username" autocomplete="off"></el-input>
+        </el-form-item>
+<!--        <el-form-item label="角色">-->
+<!--          <el-select clearable v-model="form.role" placeholder="请选择角色" style="width: 100%">-->
+<!--            <el-option v-for="(item,i) in roles" :value="item"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+        <el-form-item label="用户ID" :label-width="formLabelWidth" >
+          <el-input v-model="form.userid" autocomplete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="电话号" :label-width="formLabelWidth">
+          <el-input v-model="form.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth" :disabled="true">
+          <el-input v-model="form.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-input v-model="form.gender" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="infodialogFormVisible = false">取 消</el-button>
+        <el-button type="success" @click="save">确 定</el-button>
+      </div>
+    </el-dialog>
 
 
     <!--    下面为页面转换按钮-->
@@ -85,66 +111,76 @@
     name: "UserManage",
     data() {
       return {
-        username:'',
+        userName:'',
         tableData: [
           {
-            "userid": 10,
-            "username": "dasdsa",
-            "phone": '6465464654',
-            "email": 'sdsadsa@qq.com',
-            "regdate" :'2022-11-24 21:14:31.000000'
+            userid: 10,
+            username: "dasdsa",
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate :'2022-11-24 21:14:31.000000',
+            password:'sasdsasadas',
+            gender:'男',
+
           },
           {
-            "userid": 10,
-            "username": "dasdsa",
-            "phone": '6465464654',
-            "email": 'sdsadsa@qq.com',
-            "regdate" :'2022-11-24 21:14:31.000000'
+            userid: 10,
+            username: "dasdsa",
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate :'2022-11-24 21:14:31.000000',
+            password:'sasdsasadas',
+            gender:'男',
           },
           {
-            "userid": 10,
-            "username": "dasdsa",
-            "phone": '6465464654',
-            "email": 'sdsadsa@qq.com',
-            "regdate" :'2022-11-24 21:14:31.000000'
+            userid: 10,
+            username: "dasdsa",
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate :'2022-11-24 21:14:31.000000',
+            password:'sasdsasadas',
+            gender:'男',
           },
           {
-            "userid": 10,
-            "username": "dasdsa",
-            "phone": '6465464654',
-            "email": 'sdsadsa@qq.com',
-            "regdate" :'2022-11-24 21:14:31.000000'
+            userid: 10,
+            username: "dasdsa",
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate :'2022-11-24 21:14:31.000000',
+            password:'sasdsasadas',
+            gender:'男',
           },
           {
-            "userid": 10,
-            "username": "dasdsa",
-            "phone": '6465464654',
-            "email": 'sdsadsa@qq.com',
-            "regdate" :'2022-11-24 21:14:31.000000'
+            userid: 10,
+            username: "dasdsa",
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate :'2022-11-24 21:14:31.000000',
+            password:'sasdsasadas',
+            gender:'男',
           },
         ],
         total: 0,
         pageNum: 1,
         pageSize: 5,
-
-        userName: "",
         nickname: "",
         phone: "",
         email: "",
-        address: "",
+        form: {},
+        formLabelWidth:'80px',
+        infodialogFormVisible: false,
+        membership:'',
+
 
         realName: "",
-        salary: "",
         position: "",
 
 
         authorityKey:'',
         menuData:[],
-        form: {},
         multipleSelection:[],
         dialogFormVisible: false,
         menuDialogVis:false,
-        formLabelWidth:"120",
         props:{
           label:'name'
         },
@@ -199,11 +235,19 @@
       },
 
       reset(){
-        this.position ="",
-                this.salary = "",
-                this.realName ="",
-                this.load()
+        this.userName =""
+        this.phone = ""
+        // this. ="",
+        // this.load()
       },
+      handleEditPersonalInformation(row){
+        this.form = row
+        console.log(row)
+        this.infodialogFormVisible = true;
+
+      },
+
+
       handleAdd(){
         this.dialogFormVisible = true
         this.form = {}
@@ -213,37 +257,32 @@
         this.form = row
         this.dialogFormVisible = true
       },
-      deleteEmployee(id){
-        this.request.delete("/employee/"+ id).then(res =>{
-          if(res){
-            this.$message.success("删除成功")
-            this.dialogFormVisible = false
-            this.load()
-          }
-          else{
-            this.$message.error("删除失败")
-          }
-
-        })
-      },
       load(){
-        this.request.get("/employee/page" , {
-          params:{
-            pageNum: this.pageNum ,
-            pageSize: this.pageSize,
-
-            position: this.position,
-            salary: this.salary,
-            // realName: this.realName,
+        //请求分页查询
+        this.request.get("/api/v1/user/page",{
+          params: {
+            pageNum : this.pageNum,
+            pageSize : this.pageSize,
+            userName : this.userName,
+            phone: this.phone,
+            membership: this.membership,
           }
-        }).then(res=>{
-          // console.log(res)
-          this.tableData = res.records
-          this.total = res.total
+        }).then(res => {
+          console.log(res)
+          this.tableData=res.records
+          this.total=res.total
         })
-
+        // //浪费流量，需要后续优化
+        // this.request.get("/employee").then(res =>{
+        //
+        //   // let arr1 = this.unique(res.data.rows)
+        //   let flag =  this.unique(res.data.map(v => v.authorityKey))
+        //   this.roles = flag
+        //   console.log("这里是roles")
+        //   console.log(this.roles)
+        //
+        // })
       },
-
       save(){
         this.request.post("/employee" , this.form).then(res =>{
           //console.log(res)
@@ -259,7 +298,19 @@
         })
 
       },
+      deleteEmployee(id){
+        this.request.delete("/employee/"+ id).then(res =>{
+          if(res){
+            this.$message.success("删除成功")
+            this.dialogFormVisible = false
+            this.load()
+          }
+          else{
+            this.$message.error("删除失败")
+          }
 
+        })
+      },
       handleSizeChange(pageSize){
         //console.log(pageSize)
         this.pageSize = pageSize
