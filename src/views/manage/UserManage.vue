@@ -91,31 +91,36 @@
             "userid": 10,
             "username": "dasdsa",
             "phone": '6465464654',
-            "email": 'sdsadsa@qq.com'
+            "email": 'sdsadsa@qq.com',
+            "regdate" :'2022-11-24 21:14:31.000000'
           },
           {
             "userid": 10,
             "username": "dasdsa",
             "phone": '6465464654',
-            "email": 'sdsadsa@qq.com'
+            "email": 'sdsadsa@qq.com',
+            "regdate" :'2022-11-24 21:14:31.000000'
           },
           {
             "userid": 10,
             "username": "dasdsa",
             "phone": '6465464654',
-            "email": 'sdsadsa@qq.com'
+            "email": 'sdsadsa@qq.com',
+            "regdate" :'2022-11-24 21:14:31.000000'
           },
           {
             "userid": 10,
             "username": "dasdsa",
             "phone": '6465464654',
-            "email": 'sdsadsa@qq.com'
+            "email": 'sdsadsa@qq.com',
+            "regdate" :'2022-11-24 21:14:31.000000'
           },
           {
             "userid": 10,
             "username": "dasdsa",
             "phone": '6465464654',
-            "email": 'sdsadsa@qq.com'
+            "email": 'sdsadsa@qq.com',
+            "regdate" :'2022-11-24 21:14:31.000000'
           },
         ],
         total: 0,
@@ -146,8 +151,9 @@
         expends:[],
         checks:[],
         roleId:0,
-        roleFlag:''
+        roleFlag:'',
 
+        headerBg: 'headerBg',
 
       }
     },
@@ -327,7 +333,9 @@
 </script>
 
 <style>
-
+  .headerBg{
+    background: #55e0e5!important;
+  }
 </style>
 
 
