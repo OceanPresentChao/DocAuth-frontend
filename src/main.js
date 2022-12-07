@@ -7,6 +7,10 @@ import '@/style/transition.css'
 import '@/style/theme.css'
 import '@/style/index.css'
 import 'uno.css'
+// import * as ElIcons from "@element-plus/icons-vue";
+// for (const iconName in ElIcons) {
+//     vue.component(iconName, ElIcons[iconName]);
+// }
 
 const app = createApp(App)
 app.component('Icon', Icon)
