@@ -1,4 +1,4 @@
-<script setup>
+<script>
 // const authStore = useAuthStore()
 // const { userInfo } = storeToRefs(authStore)
 </script>

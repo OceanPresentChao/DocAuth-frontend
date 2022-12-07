@@ -4,6 +4,8 @@ import Account from '@/views/login/Account.vue'
 import { useAuthStore } from '@/store/auth'
 import nowNewProject from '@/components/layout/project/nowNewProject.vue'
 
+
+
 // 菜单路由在这里配置
 export const menuRoutes = [
   {
@@ -57,7 +59,7 @@ export const menuRoutes = [
   },
   {
     path:'/project',
-    component:Layout,
+    // component:()=>import('@/components/layout/project/nowNewProject.vue'),
     meta: {
       title: '项目',
       icon: 'carbon:home',
@@ -67,7 +69,7 @@ export const menuRoutes = [
         [
         {
         path:'/project/create',
-        component:nowNewProject,
+          component:()=>import('@/components/layout/project/nowNewProject.vue'),
         meta:{
           title:'创建项目',
           roles: ['sys:manage'],
