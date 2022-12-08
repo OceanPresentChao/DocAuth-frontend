@@ -1,17 +1,17 @@
 <template>
   <div>
     <div style="text-align: left">
-      <el-input style="width: 200px;margin-right: 10px ;" suffix-icon="el-icon-search" placeholder="请输入名字" v-model="userName"></el-input>
-      <el-input style="width: 200px;margin-right: 10px" suffix-icon="el-icon-phone" placeholder="请输入电话号" v-model="phone"></el-input>
+      <el-input style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" v-model="userName"></el-input>
+      <el-input style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" v-model="phone"></el-input>
       <el-select clearable v-model="role" placeholder="请选择想要查询的角色"  style= “width:100%”>
           <el-option v-for="(item) in roles" :value="item"></el-option>
       </el-select>
-      <el-button type="primary" @click="load" style="margin-left: 20px">搜索</el-button>
-      <el-button type="warning" @click="reset">重置</el-button>
-    </div>
+      <el-button type="primary" @click="load" style="margin-left: 20px" ><el-icon><Search /></el-icon>搜索</el-button>
+      <el-button type="warning" @click="reset"><el-icon><Minus /></el-icon>重置</el-button>
 
+    </div>
     <div style="text-align: left ;margin-top: 10px;margin-bottom: 10px">
-      <el-button type="primary" @click="handleAdd">注册新用户<i class="el-icon-circle-plus-outline" style="margin-left: 5px"></i></el-button>
+      <el-button type="primary" @click="handleAdd" ><el-icon style="margin-right: 10px"><Star /></el-icon>注册新用户<i class="el-icon-circle-plus-outline" style="margin-left: 5px"></i></el-button>
       <el-popconfirm
               style="margin-left: 5px"
               confirm-button-text='yes'
@@ -21,12 +21,12 @@
               title="Are you sure to delete this?"
               @confirm="delBatch">
        <template #reference>
-         <el-button type="danger" slot="reference">批量删除<i class="el-icon-delete" style="margin-left: 5px "></i></el-button>
+         <el-button type="danger" slot="reference"><el-icon style="margin-right: 10px"><CloseBold /></el-icon>批量删除<i class="el-icon-delete" style="margin-left: 5px "></i></el-button>
        </template>
       </el-popconfirm>
-      <el-button type="primary" @click="exp" style="margin-left: 5px">导出 <i class="el-icon-top"></i></el-button>
+      <el-button type="primary" @click="exp" style="margin-left: 15px">导出 <i class="el-icon-top"></i></el-button>
       <el-upload action="http://localhost:8081/user/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
-        <el-button type="primary" style="margin-left: 5px">导入 <i class="el-icon-bottom"></i></el-button>
+        <el-button type="primary" style="margin-left: 15px">导入 <i class="el-icon-bottom"></i></el-button>
       </el-upload>
     </div>
 
@@ -41,13 +41,13 @@
       <el-table-column prop="regdate" align="center" label="注册日期" width="200"></el-table-column>
       <el-table-column align="center" label="编辑用户信息" width="150">
         <template #default="{row,$index}">
-          <el-button  type="primary" round @click="handleEditPersonalInformation(row)">编辑</el-button>
+          <el-button  type="primary" round @click="handleEditPersonalInformation(row)"><el-icon style="color: #55e0e5 ;margin-right: 10px"><Edit /></el-icon>编辑</el-button>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="操作" >
         <template #default="{row,$index}">
-          <el-button  type="success" round @click="handleEdit(row)">权限管理</el-button>
+          <el-button  type="success" round @click="handleEdit(row)"><el-icon style="margin-right: 10px"><Menu /></el-icon>权限管理</el-button>
           <el-popconfirm
                   style="margin-left: 5px"
                   confirm-button-text='yes'
@@ -58,7 +58,7 @@
                   @confirm="deleteUser(row.userid)"
           >
             <template #reference>
-              <el-button  type="danger" round slot="reference" >删除</el-button>
+              <el-button  type="danger" round slot="reference" ><el-icon style="margin-right: 10px"><DeleteFilled /></el-icon>删除</el-button>
             </template>
           </el-popconfirm>
         </template>
@@ -73,8 +73,8 @@
           <el-input v-model="form.username" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色">
-          <el-select clearable v-model="form.role" placeholder="请选择角色" style="width: 100%">
-            <el-option v-for="(item,i) in roles" :value="item"></el-option>
+          <el-select  multiple clearable v-model="form.role" placeholder="请选择角色" style="width: 100% ;color: #42b983" effect="dark">
+            <el-option v-for=" item in roles" :value="item" ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="用户ID" :label-width="formLabelWidth" >
@@ -87,7 +87,7 @@
           <el-input v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="性别" :label-width="formLabelWidth">
-          <el-select clearable v-model="form.gender" placeholder="请选择性别" style="width: 100%">
+          <el-select clearable v-model="form.gender" placeholder="请选择性别" style="width: 100% ">
             <el-option v-for="(item) in genders" :value="item"></el-option>
           </el-select>
         </el-form-item>
@@ -146,7 +146,19 @@
 </template>
 
 <script>
+  import { Search, Loading, Edit, Share, Apple ,InfoFilled,Menu} from "@element-plus/icons-vue";
+
   export default {
+
+    components: {
+      Search,
+      Loading,
+      Edit,
+      Share,
+      Apple,
+      InfoFilled,
+      Menu
+    },
     name: "UserManage",
     data() {
       return {
@@ -211,8 +223,10 @@
         infodialogFormVisible: false,
         loginDialogFormVisible: false,
         genders:['男','女','未知'],
-        roles:['1','2','3'],
-        role:'',
+        roles:['项目经理','老板','普通员工','总经理'],
+        role:[],
+
+
 
 
         membership:'',
@@ -239,7 +253,6 @@
 
       }
     },
-
     created() {
 
       // this.load()
@@ -254,7 +267,7 @@
         console.log(role.authorityKey+"这里是该角色的权限键值")
         this.roleFlag =role.authorityKey
 
-        this.request.get("/menu" , {
+        this.$request.get("/menu" , {
           params:{
             name:"",
           }
@@ -263,11 +276,11 @@
           this.expends = this.menuData.map(v=>v.id)
 
         })
-        this.request.get("/employee/rolemenu/" + this.roleId).then(res=>{
+        this.$request.get("/employee/rolemenu/" + this.roleId).then(res=>{
           this.checks = res.data
           this.menuDialogVis = true
 
-          this.request.get("/menu/ids").then(r =>{
+          this.$request.get("/menu/ids").then(r =>{
             const ids = r.data
             ids.forEach(id => {
               if (!this.checks.includes(id)) {
@@ -292,7 +305,7 @@
         // this.load()
       },
       saveLoginInfor(){
-        this.request.post("/api/v1/user/",this.loginForm).then(res =>{
+        this.$request.post("/api/v1/user/",this.loginForm).then(res =>{
           if(res.code === 219 ){
             this.$message.success("注册成功")
             this.dialogFormVisible = false
@@ -319,7 +332,7 @@
       },
       load(){
         //请求分页查询
-        this.request.get("/api/v1/user/list",{
+        this.$request.get("/api/v1/user/list",{
           params: {
             pageNum : this.pageNum,
             pageSize : this.pageSize,
@@ -362,7 +375,7 @@
         let ids = this.multipleSelection.map(v => v.id) //将对象数组变成纯ID的数组
         console.log(this.multipleSelection)
         console.log(ids)
-        this.request.delete("/api/v1/user/ids" ,{
+        this.$request.delete("/api/v1/user/ids" ,{
           params: {
             ids : ids,
           }
@@ -381,7 +394,7 @@
 
       },
       deleteUser(id){
-        this.request.delete("/api/v1/user/"+ id).then(res =>{
+        this.$request.delete("/api/v1/user/"+ id).then(res =>{
           if(res){
             this.$message.success("删除成功")
             this.dialogFormVisible = false
@@ -394,17 +407,18 @@
         })
       },
       update(){
-        this.request.post("/api/v1/user/"+this.form.userid , this.form).then(res =>{
-          if(res.code === 223){
-            this.$message.success("保存成功")
-            this.dialogFormVisible = false
-            this.load()
-          }
-          else{
-            this.$message.error("保存失败")
-          }
-
-        })
+        console.log(this.form)
+        // this.$request.post("/api/v1/user/"+this.form.userid , this.form).then(res =>{
+        //   if(res.code === 223){
+        //     this.$message.success("保存成功")
+        //     this.dialogFormVisible = false
+        //     this.load()
+        //   }
+        //   else{
+        //     this.$message.error("保存失败")
+        //   }
+        //
+        // })
 
       },
 
