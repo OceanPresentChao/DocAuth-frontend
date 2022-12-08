@@ -3,7 +3,7 @@
     <div style="text-align: left">
       <el-input style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" v-model="userName"></el-input>
       <el-input style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" v-model="phone"></el-input>
-      <el-select clearable v-model="role" placeholder="请选择想要查询的角色"  style= “width:100%”>
+      <el-select clearable v-model="roleSelction" placeholder="请选择想要查询的角色"  style= “width:100%”>
           <el-option v-for="(item) in roles" :value="item"></el-option>
       </el-select>
       <el-button type="primary" @click="load" style="margin-left: 20px" ><el-icon><Search /></el-icon>搜索</el-button>
@@ -36,10 +36,15 @@
       <el-table-column prop="userid" align="center" label="用户ID" width="120"></el-table-column>
       <el-table-column prop="username" align="center" label="用户名" width="100"></el-table-column>
       <el-table-column prop="phone" align="center" label="电话号" width="120"></el-table-column>
-      <el-table-column prop="gender" align="center" label="性别" width="50"></el-table-column>
-      <el-table-column prop="email" label="邮箱" width="120"></el-table-column>
+      <el-table-column prop="gender" align="center" label="性别" width="100"></el-table-column>
+      <el-table-column prop="email" align="center" label="邮箱" width="200"></el-table-column>
       <el-table-column prop="regdate" align="center" label="注册日期" width="200"></el-table-column>
-      <el-table-column align="center" label="编辑用户信息" width="150">
+      <el-table-column label="启用" align="center" width="100">
+        <template #default="{row,$index}">
+          <el-switch v-model="row.enable" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(row)"></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="编辑用户信息" width="200">
         <template #default="{row,$index}">
           <el-button  type="primary" round @click="handleEditPersonalInformation(row)"><el-icon style="color: #55e0e5 ;margin-right: 10px"><Edit /></el-icon>编辑</el-button>
         </template>
@@ -47,7 +52,7 @@
 
       <el-table-column align="center" label="操作" >
         <template #default="{row,$index}">
-          <el-button  type="success" round @click="handleEdit(row)"><el-icon style="margin-right: 10px"><Menu /></el-icon>权限管理</el-button>
+          <el-button  type="success" round @click="handleManageAuthority(row)"><el-icon style="margin-right: 10px"><Menu /></el-icon>权限管理</el-button>
           <el-popconfirm
                   style="margin-left: 5px"
                   confirm-button-text='yes'
@@ -128,6 +133,40 @@
       </div>
     </el-dialog>
 
+
+    <el-dialog title="用户权限管理"  v-model="authDialogFormVisible" width="40%">
+      <el-form-item label="角色">
+        <el-select  multiple clearable v-model="role" placeholder="请选择角色" style="width: 100% ;color: #42b983" effect="dark">
+          <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #42b983"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-table :data="functions" style="width: 100%;margin-bottom: 50px" border stripe :header-cell-class-name="headerBg">
+        <el-table-column prop="name" label="Name" width="180" />
+        <el-table-column prop="key" label="Key" width="180" />
+        <el-table-column prop="status" label="Status" />
+        <el-table-column align="center" label="操作" >
+          <el-popconfirm
+                  style="margin-left: 5px"
+                  confirm-button-text='yes'
+                  cancel-button-text='No'
+                  :icon="InfoFilled"
+                  icon-color="#626AEF"
+                  title="Are you sure to delete this?"
+                  @confirm="deleteUser(row.userid)"
+          >
+            <template #reference>
+              <el-button  type="danger" round slot="reference" ><el-icon style="margin-right: 10px ;size: A4"><DeleteFilled /></el-icon>收回权限</el-button>
+            </template>
+          </el-popconfirm>
+        </el-table-column>
+
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="success" @click="saveAuthorityInfor">确 定</el-button>
+        <el-button @click="authDialogFormVisible= false">退出</el-button>
+      </div>
+    </el-dialog>
+
     <!--    下面为页面转换按钮-->
     <div style="padding: 10px 0">
       <el-pagination
@@ -163,6 +202,8 @@
     data() {
       return {
         userName:'',
+        headerBg: 'headerBg',
+        roleSelction:'wseber',
         tableData: [
           {
             userid: 10,
@@ -172,6 +213,8 @@
             regdate :'2022-11-24 21:14:31.000000',
             password:'sasdsasadas',
             gender:'男',
+            role:['wseber'],
+            enable:true,
 
           },
           {
@@ -182,6 +225,8 @@
             regdate :'2022-11-24 21:14:31.000000',
             password:'sasdsasadas',
             gender:'男',
+            role:['wseber'],
+            enable:true,
           },
           {
             userid: 10,
@@ -191,6 +236,7 @@
             regdate :'2022-11-24 21:14:31.000000',
             password:'sasdsasadas',
             gender:'男',
+            enable:true,
           },
           {
             userid: 10,
@@ -200,6 +246,7 @@
             regdate :'2022-11-24 21:14:31.000000',
             password:'sasdsasadas',
             gender:'男',
+            enable:true,
           },
           {
             userid: 10,
@@ -209,6 +256,7 @@
             regdate :'2022-11-24 21:14:31.000000',
             password:'sasdsasadas',
             gender:'男',
+            enable:true,
           },
         ],
         total: 0,
@@ -222,20 +270,33 @@
         formLabelWidth:'80px',
         infodialogFormVisible: false,
         loginDialogFormVisible: false,
+        authDialogFormVisible: false,
         genders:['男','女','未知'],
-        roles:['项目经理','老板','普通员工','总经理'],
+        roles:['项目经理','老板','普通员工','总经理','wseber'],
         role:[],
+        functions:[
+        {
+          name: '权限1',
+          key: "aunthority",
+          status: '已启用',
+        },
+        {
+          name: '权限1',
+          key: "aunthority",
+          status: '已启用',
+        },
+          {
+            name: '权限1',
+            key: "aunthority",
+            status: '已启用',
+          },],
 
 
 
 
         membership:'',
-
-
         realName: "",
         position: "",
-
-
         authorityKey:'',
         menuData:[],
         multipleSelection:[],
@@ -249,7 +310,7 @@
         roleId:0,
         roleFlag:'',
 
-        headerBg: 'headerBg',
+
 
       }
     },
@@ -329,6 +390,32 @@
       },
       handleEdit(){
 
+      },
+      handleManageAuthority(row){
+        const id = row.userid;
+        this.role = row.role
+        // this.$request.get('/api/v1/permission/status/',{
+          //   Params:{
+          //       id : id
+          //   }
+          // }).then(res=>{
+          //   this.functions = res
+          // })
+        this.authDialogFormVisible = true
+      },
+      saveAuthorityInfor(){
+        // this.$request.post("/api/v1/user/",this.functions).then(res =>{
+        //   if(res.code === 219 ){
+        //     this.$message.success("保存成功")
+        //     this.dialogFormVisible = false
+        //     this.load()
+        //   }
+        //   else{
+        //     this.$message.error("保存失败")
+        //   }
+        //
+        // })
+        this.authDialogFormVisible = false
       },
       load(){
         //请求分页查询
@@ -421,10 +508,7 @@
         // })
 
       },
-
-
-
-
+      changeEnable(row){},
       exp(){
         window.open("http://localhost:9099/employee/export")
       },
