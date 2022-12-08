@@ -97,10 +97,36 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="infodialogFormVisible = false">取 消</el-button>
-        <el-button type="success" @click="save">确 定</el-button>
+        <el-button type="success" @click="update">确 定</el-button>
       </div>
     </el-dialog>
 
+
+    <el-dialog title="注册新用户"  v-model="loginDialogFormVisible" width="40%">
+      <el-form label-width="80px">
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth" :disabled="true">
+          <el-input v-model="loginForm.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-select clearable v-model="loginForm.gender" placeholder="请选择性别" style="width: 100%">
+            <el-option v-for="(item) in genders" :value="item"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="电话号" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.email" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="loginDialogFormVisible= false">取 消</el-button>
+        <el-button type="success" @click="saveLoginInfor">确 定</el-button>
+      </div>
+    </el-dialog>
 
     <!--    下面为页面转换按钮-->
     <div style="padding: 10px 0">
@@ -120,7 +146,6 @@
 </template>
 
 <script>
-  import * as ElementPlusIconsVue from '@element-plus/icons-vue'
   export default {
     name: "UserManage",
     data() {
@@ -181,8 +206,10 @@
         phone: "",
         email: "",
         form: {},
+        loginForm:{},
         formLabelWidth:'80px',
         infodialogFormVisible: false,
+        loginDialogFormVisible: false,
         genders:['男','女','未知'],
         roles:['1','2','3'],
         role:'',
@@ -198,7 +225,7 @@
         authorityKey:'',
         menuData:[],
         multipleSelection:[],
-        dialogFormVisible: false,
+
         menuDialogVis:false,
         props:{
           label:'name'
@@ -256,8 +283,26 @@
       reset(){
         this.userName =""
         this.phone = ""
+        // let f  = new FormData()
+        // f.append("current",1);
+        // f.append("size", 2);
+        // f.append("tableName", 3);
+        // console.log(f)
         // this. ="",
         // this.load()
+      },
+      saveLoginInfor(){
+        this.request.post("/api/v1/user/",this.loginForm).then(res =>{
+          if(res.code === 219 ){
+            this.$message.success("注册成功")
+            this.dialogFormVisible = false
+            this.load()
+          }
+          else{
+            this.$message.error("注册失败")
+          }
+
+        })
       },
       handleEditPersonalInformation(row){
         this.form = row
@@ -266,13 +311,11 @@
 
       },
       handleAdd(){
-        this.dialogFormVisible = true
+        this.loginDialogFormVisible= true
         this.form = {}
       },
-      handleEdit(row){
+      handleEdit(){
 
-        this.form = row
-        this.dialogFormVisible = true
       },
       load(){
         //请求分页查询
@@ -282,7 +325,7 @@
             pageSize : this.pageSize,
             userName : this.userName,
             phone: this.phone,
-            membership: this.membership,
+            role: this.role,
           }
         }).then(res => {
           console.log(res)
@@ -300,7 +343,6 @@
         //
         // })
       },
-
       handleSizeChange(pageSize){
         console.log(pageSize)
         this.pageSize = pageSize
@@ -351,11 +393,9 @@
 
         })
       },
-
       update(){
-        this.request.post("/employee" , this.form).then(res =>{
-          //console.log(res)
-          if(res){
+        this.request.post("/api/v1/user/"+this.form.userid , this.form).then(res =>{
+          if(res.code === 223){
             this.$message.success("保存成功")
             this.dialogFormVisible = false
             this.load()
@@ -367,6 +407,10 @@
         })
 
       },
+
+
+
+
       exp(){
         window.open("http://localhost:9099/employee/export")
       },
