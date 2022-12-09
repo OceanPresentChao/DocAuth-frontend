@@ -73,7 +73,7 @@
 
 <script>
     import TreeChart from "@/components/layout/treeNode/treeChart.vue";
-
+    import { ElMessage } from 'element-plus'
     export default {
         name: 'nowNewProject',
         components: {
@@ -130,7 +130,28 @@
                         password:'sasdsasadas',
                         gender:'男',
                         enable:true,
-                    },],
+                    },
+                    {
+                        userid: 4,
+                        username: "xvHao",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },
+                    {
+                        userid: 5,
+                        username: "qingXiao",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },
+                ],
 
                 idnum:5,
                 tag:0,
@@ -258,8 +279,33 @@
                 this.contextstyle.display='none'
             },
             confirmOneTaskApplication(){
-                console.log(this.form)
-                this.dialogFormVisible = false
+                console.log(this.form["editPerson"])
+                let judgeValidity = {}
+                let duplicateApplication = []
+                let hash={}
+                judgeValidity["editPerson"] = this.form["editPerson"]
+                judgeValidity["investigatePerson"] = this.form["investigatePerson"]
+                judgeValidity["ratifyPerson"] = this.form["ratifyPerson"]
+                judgeValidity["con_signPerson1"] = this.form["con_signPerson1"]
+                judgeValidity["con_signPerson2"] = this.form["con_signPerson2"]
+
+                for (let key in judgeValidity){
+                    if(hash[judgeValidity[key]])
+                    {
+                        console.log(judgeValidity[key])
+                        duplicateApplication.push(key)
+                    }
+                    hash[judgeValidity[key]] = true
+                }
+                if (duplicateApplication !== undefined && duplicateApplication.length >0){
+                    console.log('发生冲突的小朋友',duplicateApplication)
+                    for (let item of duplicateApplication)
+                        ElMessage.error( item + '发生冲突' +'请重新分配')
+                    this.dialogFormVisible = true
+                }
+                else{
+                    this.dialogFormVisible = false
+                }
             }
 
 
