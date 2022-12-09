@@ -30,31 +30,26 @@
                 />
                 </el-form-item>
                 <el-form-item label="编" :label-width="formLabelWidth">
-                    <el-select v-model="form.editPerson" placeholder="请选择人员">
-                        <el-option label="Zone No.1" value="shanghai" />
-                        <el-option label="Zone No.2" value="beijing" />
+                    <el-select value-key="userid" v-model="form.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="审" :label-width="formLabelWidth">
-                    <el-select v-model="form.investigatePerson" placeholder="请选择人员">
-                        <el-option label="Zone No.1" value="shanghai" />
-                        <el-option label="Zone No.2" value="beijing" />
+                    <el-select v-model="form.investigatePerson" placeholder="请选择人员" effect="dark">
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="批" :label-width="formLabelWidth">
-                    <el-select v-model="form.ratifyPerson" placeholder="请选择人员">
-                        <el-option label="Zone No.1" value="shanghai" />
-                        <el-option label="Zone No.2" value="beijing" />
+                    <el-select v-model="form.ratifyPerson" placeholder="请选择人员" effect="dark">
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="会签" :label-width="formLabelWidth" >
-                    <el-select v-model="form.con_sign1" placeholder="请选择人员1" style="margin-right: 50px ;">
-                        <el-option label="Zone No.1" value="shanghai" />
-                        <el-option label="Zone No.2" value="beijing" />
+                    <el-select v-model="form.con_signPerson1" placeholder="请选择人员1" style="margin-right: 50px ;" effect="dark">
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
-                    <el-select v-model="form.consign2" placeholder="请选择人员2">
-                        <el-option label="Zone No.1" value="shanghai" />
-                        <el-option label="Zone No.2" value="beijing" />
+                    <el-select v-model="form.con_signPerson2" placeholder="请选择人员2" effect="dark">
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="任务内容概述" :label-width="formLabelWidth">
@@ -64,9 +59,9 @@
             </el-form>
             <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">
-          Confirm
+        <el-button type="danger" @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmOneTaskApplication">
+          确认
         </el-button>
       </span>
             </template>
@@ -92,14 +87,51 @@
                 deadLine:'',
                 form:{
                     name: '',
-                    region: '',
-                    date1: '',
-                    date2: '',
-                    delivery: false,
+                    startTime: '',
+                    deadLine: '',
+                    editPerson: '',
+                    investigatePerson: '',
+                    ratifyPerson: '',
+                    con_signPerson1: '',
+                    con_signPerson2:'',
                     type: [],
                     resource: '',
                     desc: '',
                 },
+                users:[
+                 {
+                    userid: 1,
+                    username: "wser",
+                    phone: '6465464654',
+                    email: 'sdsadsa@qq.com',
+                    regdate :'2022-11-24 21:14:31.000000',
+                    password:'sasdsasadas',
+                    gender:'男',
+                    role:['wseber'],
+                    enable:true,
+                },
+                    {
+                        userid: 2,
+                        username: "jucy",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        role:['wseber'],
+                        enable:true,
+                    },
+                    {
+                        userid: 3,
+                        username: "oceanPresent",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },],
+
                 idnum:5,
                 tag:0,
                 now:'',
@@ -224,10 +256,20 @@
             applyEmployees(){
                 this.dialogFormVisible = true
                 this.contextstyle.display='none'
+            },
+            confirmOneTaskApplication(){
+                console.log(this.form)
+                this.dialogFormVisible = false
             }
+
+
+
             }
     }
 </script>
+
+
+
 
 <style>
     #app {
@@ -259,5 +301,11 @@
     #tagli:hover{
         background: #ccc;
         color: #fff;
+    }
+</style>
+
+<style scoped>
+    .dialog-footer button:first-child {
+        margin-right: 10px;
     }
 </style>
