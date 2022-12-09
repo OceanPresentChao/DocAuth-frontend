@@ -92,7 +92,7 @@
           <el-input v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="性别" :label-width="formLabelWidth">
-          <el-select clearable v-model="form.gender" placeholder="请选择性别" style="width: 100% ">
+          <el-select clearable v-model="form.gender" placeholder="请选择性别" style="width: 100% " popper-class="selectFrom">
             <el-option v-for="(item) in genders" :value="item"></el-option>
           </el-select>
         </el-form-item>
@@ -135,29 +135,36 @@
 
 
     <el-dialog title="用户权限管理"  v-model="authDialogFormVisible" width="40%">
-      <el-form-item label="角色">
-        <el-select  multiple clearable v-model="role" placeholder="请选择角色" style="width: 100% ;color: #42b983" effect="dark">
-          <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #42b983"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-table :data="functions" style="width: 100%;margin-bottom: 50px" border stripe :header-cell-class-name="headerBg">
-        <el-table-column prop="name" label="Name" width="180" />
-        <el-table-column prop="key" label="Key" width="180" />
-        <el-table-column prop="status" label="Status" />
-        <el-table-column align="center" label="操作" >
-          <el-popconfirm
-                  style="margin-left: 5px"
-                  confirm-button-text='yes'
-                  cancel-button-text='No'
-                  :icon="InfoFilled"
-                  icon-color="#626AEF"
-                  title="Are you sure to delete this?"
-                  @confirm="deleteUser(row.userid)"
-          >
-            <template #reference>
-              <el-button  type="danger" round slot="reference" ><el-icon style="margin-right: 10px ;size: A4"><DeleteFilled /></el-icon>收回权限</el-button>
+      <el-form style="text-align: left">
+        <el-form-item label="管理角色"  >
+          <el-select class = "el-scrollbar" multiple clearable v-model="role"   :popper-append-to-body='false'  placeholder="请选择角色" style="width:100% " effect="dark">
+            <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #55e0e5"></el-option>
+          </el-select>
+        </el-form-item>
+<!--        <el-form-item label="管理功能" >-->
+<!--          <el-select value-key = "id"   clearable v-model="selectedFunctions"   :popper-append-to-body='false' @change="changeValue" placeholder="请选择想额外赋予该用户的功能权限" style="width:100% " effect="dark">-->
+<!--            <el-option v-for="item in allFunctions" :lable="item.name" :key="item.id" :value="item" style="width: 100% ;color: #55e0e5"></el-option>-->
+<!--            <el-option v-for="item in allFunctions" :label="item.name" :key="item.id" :value="item" style="width: 100% ;color: #55e0e5"></el-option>-->
+<!--          </el-select>-->
+<!--                  <el-button type="primary" @click="addThisUserAuth" size="large">增加权限</el-button>-->
+<!--        </el-form-item>-->
+        <el-form-item label="管理功能" >
+          <el-select value-key="id" multiple clearable  v-model="thisUserFunctions"  :popper-append-to-body='false'  @change="changeValue" placeholder="请选择想额外赋予该用户的功能权限" style="width:100% "  effect="dark">
+            <el-option v-for="item in allFunctions" :label="item.name" :key="item.id" :value="item" style="width: 100% ;color: #55e0e5"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+
+      <el-table :data="thisUserFunctions" style="width: 100%;margin-bottom: 50px" border stripe :header-cell-class-name="headerBg">
+        <el-table-column prop="id" align="center" label="AuthorityId" />
+        <el-table-column prop="name" align="center" label="Name" width="180" />
+        <el-table-column prop="key" align="center" label="Key" width="180" />
+        <el-table-column prop="status" align="center" label="Status" />
+        <el-table-column align="center" label="仅禁用此用户的此权限" >
+            <template  #default="{row,$index}">
+              <el-switch v-model="row.enable" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(row)"></el-switch>
+<!--              <el-button  type="danger" round slot="reference" ><el-icon style="margin-right: 10px ;size: A4"><DeleteFilled /></el-icon>收回权限</el-button>-->
             </template>
-          </el-popconfirm>
         </el-table-column>
 
       </el-table>
@@ -182,11 +189,21 @@
 
   </div>
 
+
+
+    <el-input
+            class="body"
+            placeholder=""
+            v-model="test"
+            style="width: 200px"
+            >
+    </el-input>
+
+
 </template>
 
 <script>
-  import { Search, Loading, Edit, Share, Apple ,InfoFilled,Menu} from "@element-plus/icons-vue";
-
+  import { Search, Loading, Edit, Share, Apple ,Menu,InfoFilled} from "@element-plus/icons-vue";
   export default {
 
     components: {
@@ -201,6 +218,7 @@
     name: "UserManage",
     data() {
       return {
+        test: "",
         userName:'',
         headerBg: 'headerBg',
         roleSelction:'wseber',
@@ -215,7 +233,6 @@
             gender:'男',
             role:['wseber'],
             enable:true,
-
           },
           {
             userid: 10,
@@ -274,22 +291,59 @@
         genders:['男','女','未知'],
         roles:['项目经理','老板','普通员工','总经理','wseber'],
         role:[],
-        functions:[
-        {
-          name: '权限1',
-          key: "aunthority",
-          status: '已启用',
-        },
-        {
-          name: '权限1',
-          key: "aunthority",
+        allFunctions:[
+        { id : 1,
+          name: "修改个人信息",
+          key:"modifyPersonalInformation",
           status: '已启用',
         },
           {
-            name: '权限1',
-            key: "aunthority",
+            id : 2,
+            name:  "创建项目",
+            key:"modifyPersonalInformation",
+          },
+          {
+            id : 3,
+            name: '删除用户',
+            key:'modifyPersonalInformation',
             status: '已启用',
-          },],
+
+          },
+          {
+            id : 4,
+            name:  '修改用户信息',
+            key:'modifyPersonalInformation',
+            status: '已启用',
+          },
+          {
+            id : 5,
+            name:  '嘤嘤嘤',
+            key:'modifyPersonalInformation',
+            status: '已启用',
+          },
+          ], //全部可选的功能权限
+
+        thisUserFunctions:[
+          { id : 1,
+            name: "修改个人信息",
+            key:"modifyPersonalInformation",
+            status: '已启用',
+            enable:true,
+          },
+          {
+            id : 2,
+            name:  "创建项目",
+            key:"modifyPersonalInformation",
+            status: '已启用',
+            enable:true,
+          },
+          {
+            id : 3,
+            name: '删除用户',
+            key:'modifyPersonalInformation',
+            status: '已启用',
+
+          },], //该用户已经拥有的权限
 
 
 
@@ -354,6 +408,11 @@
 
       },
 
+      changeValue(value) {
+        console.log("value", value);
+        console.log(this.test,'thie.test')
+      },
+
       reset(){
         this.userName =""
         this.phone = ""
@@ -392,29 +451,39 @@
 
       },
       handleManageAuthority(row){
-        const id = row.userid;
+        const id = row.userid
         this.role = row.role
-        // this.$request.get('/api/v1/permission/status/',{
-          //   Params:{
-          //       id : id
-          //   }
-          // }).then(res=>{
-          //   this.functions = res
-          // })
+        //获得当前用户所拥有的角色
+        this.$request.get('/api/v1/permission/status/',{
+          Params:{
+            id : id
+          }
+        }).then(res=>{
+         this.role = res
+        })
+
+        //得到所有给该用户开小灶的权限
+        this.$request.get('/api/v1/permission/status/',{
+            Params:{
+                id : id
+            }
+          }).then(res=>{
+            this.thisUserFunctions = res
+          })
         this.authDialogFormVisible = true
       },
       saveAuthorityInfor(){
-        // this.$request.post("/api/v1/user/",this.functions).then(res =>{
-        //   if(res.code === 219 ){
-        //     this.$message.success("保存成功")
-        //     this.dialogFormVisible = false
-        //     this.load()
-        //   }
-        //   else{
-        //     this.$message.error("保存失败")
-        //   }
-        //
-        // })
+        this.$request.put("/api/v1/user/",this.thisUserFunctions).then(res =>{
+          if(res.code === 219 ){
+            this.$message.success("保存成功")
+            this.dialogFormVisible = false
+            this.load()
+          }
+          else{
+            this.$message.error("保存失败")
+          }
+        })
+        console.log(this.thisUserFunctions)
         this.authDialogFormVisible = false
       },
       load(){
@@ -509,6 +578,8 @@
 
       },
       changeEnable(row){},
+
+
       exp(){
         window.open("http://localhost:9099/employee/export")
       },
@@ -553,21 +624,135 @@
   }
 </style>
 
+<style scoped>
+
+</style>
 
 
-<!--<script>-->
-<!--export default {-->
-<!--  setup() {-->
-<!--    return {}-->
-<!--  },-->
-<!--}-->
-<!--</script>-->
 
-<!--<template>-->
-<!--  <h1>用户管理</h1>-->
-<!--  <div />-->
-<!--</template>-->
+<style lang="scss" scoped>
+  .searchBox {
+    position: absolute;
+    top: 40px;
+    right: 50px;
+  }
+  .body ::v-deep .el-input__inner{
+    background-color: rgba(255, 255, 255, 0.247);
+  }
+</style>
 
-<!--<style lang="scss" scoped>-->
 
-<!--</style>-->
+
+<style lang="scss" >
+  .el-select {
+    width: 115px;
+  }
+  .input-with-select .el-input-group__prepend {
+    background: rgba(10, 30, 55, 0.7);
+    box-shadow: 0 4px 4px rgba(49, 49, 49, 0.5);
+  }
+  .el-input-group {
+    line-height: normal;
+    display: inline-table;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    // height: 46px;
+    .el-input-group__append,
+    .el-input-group__prepend {
+      /*background-color: rgba(10, 30, 55, 0.7);*/
+    }
+  }
+  .el-input__inner {
+    /*background: rgba(10, 30, 55, 0.7);*/
+  }
+  // 修改下拉菜单背景颜色
+  .el-scrollbar {
+    background: #1d2f46;
+    border-radius: 6px;
+  }
+  //下拉背景
+  .el-card.is-hover-shadow:focus,
+  .el-card.is-hover-shadow:hover,
+  .el-color-picker__panel,
+  .el-menu--popup,
+  .el-message-box,
+  .el-picker-panel .el-time-panel,
+  .el-picker__popper.el-popper[role='tooltip'],
+  .el-popover.el-popper,
+  .el-select-v2__popper.el-popper[role='tooltip'],
+  .el-select__popper.el-popper[role='tooltip'],
+  .el-table-filter {
+    opacity: 0.8;
+    border-radius: 6px;
+  }
+  .el-popper__arrow {
+    display: none;
+  }
+  .el-select-dropdown__item {
+    color: #fff;
+  }
+  //修改输入框背景颜色
+  .el-input-group > .el-input__inner {
+    box-shadow: 0px 4px 4px rgba(49, 49, 49, 0.5);
+    background: rgba(10, 30, 55, 0.7);
+    width: 260px;
+    height: 46px;
+    border-left: 0;
+    border-right: 0;
+    font-size: 14px;
+  }
+  .el-input-group--prepend .el-input__inner,
+  .el-input-group__append {
+    background: rgba(10, 30, 55, 0.7);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .el-input-group__append {
+    border-left: 0;
+  }
+  .el-select-dropdown__wrap,
+  .el-scrollbar__wrap,
+  .el-scrollbar__wrap--hidden-default {
+    background: rgba(10, 30, 55, 0.7);
+  }
+  //修改输入框字体
+  .el-input-group--append .el-input__inner,
+  .el-input-group__prepend {
+    font-size: 14px;
+    color: #ffff;
+  }
+  //修改下拉框的字体
+  .el-select-dropdown__list {
+    padding: 5px;
+    text-align: center;
+    //修改单个的选项的样式
+    .el-select-dropdown__item {
+      padding: 0 0.2rem 0 0.2rem;
+      color: #ffff;
+      font-size: 16px;
+    }
+    .el-select-dropdown__item.selected {
+      color: #ffff;
+    }
+    //item选项的hover样式
+    .el-select-dropdown__item.hover,
+    .el-select-dropdown__item:hover {
+      background-color: #67b784;
+    }
+  }
+  // 修改下拉箭头左侧字体大小颜色
+  .el-input-group__append button.el-button,
+  .el-input-group__append div.el-select .el-input__inner,
+  .el-input-group__append div.el-select:hover .el-input__inner,
+  .el-input-group__prepend button.el-button,
+  .el-input-group__prepend div.el-select .el-input__inner,
+  .el-input-group__prepend div.el-select:hover .el-input__inner {
+    color: #ffff !important;
+    font-size: 16px;
+  }
+  // 修改鼠标选中输入框时输入框的颜色
+  input.el-input__inner:focus {
+    border-color: #fff;
+  }
+</style>
