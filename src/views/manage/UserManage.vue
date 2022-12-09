@@ -34,11 +34,11 @@
     <el-table :data="tableData" border stripe :header-cell-class-name="headerBg" @selection-change="handleSelectionChange">>
       <el-table-column type="selection" align="center" width="40"></el-table-column>
       <el-table-column prop="userid" align="center" label="用户ID" width="120"></el-table-column>
-      <el-table-column prop="username" align="center" label="用户名" width="100"></el-table-column>
-      <el-table-column prop="phone" align="center" label="电话号" width="120"></el-table-column>
+      <el-table-column prop="username" align="center" label="用户名" width="180"></el-table-column>
+      <el-table-column prop="phone" align="center" label="电话号" width="180"></el-table-column>
       <el-table-column prop="gender" align="center" label="性别" width="100"></el-table-column>
       <el-table-column prop="email" align="center" label="邮箱" width="200"></el-table-column>
-      <el-table-column prop="regdate" align="center" label="注册日期" width="200"></el-table-column>
+      <el-table-column prop="regdate" align="center" label="注册日期" width="250"></el-table-column>
       <el-table-column label="启用" align="center" width="100">
         <template #default="{row,$index}">
           <el-switch v-model="row.enable" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(row)"></el-switch>
@@ -191,15 +191,6 @@
 
 
 
-    <el-input
-            class="body"
-            placeholder=""
-            v-model="test"
-            style="width: 200px"
-            >
-    </el-input>
-
-
 </template>
 
 <script>
@@ -327,21 +318,22 @@
           { id : 1,
             name: "修改个人信息",
             key:"modifyPersonalInformation",
-            status: '已启用',
+            status: 1,
             enable:true,
           },
           {
             id : 2,
             name:  "创建项目",
             key:"modifyPersonalInformation",
-            status: '已启用',
+            status: 1,
             enable:true,
           },
           {
             id : 3,
             name: '删除用户',
             key:'modifyPersonalInformation',
-            status: '已启用',
+            status: 1,
+            enable:true,
 
           },], //该用户已经拥有的权限
 
@@ -451,21 +443,22 @@
 
       },
       handleManageAuthority(row){
-        const id = row.userid
+        this.userid = row.userid
         this.role = row.role
         //获得当前用户所拥有的角色
-        this.$request.get('/api/v1/permission/status/',{
+        this.$request.get('/api/v1/permission/role/',{
           Params:{
-            id : id
+            id : this.userid
           }
         }).then(res=>{
          this.role = res
+          console.log(res)
         })
 
         //得到所有给该用户开小灶的权限
-        this.$request.get('/api/v1/permission/status/',{
+        this.$request.get('/api/v1/permission/extra/function/',{
             Params:{
-                id : id
+                id : this.userid
             }
           }).then(res=>{
             this.thisUserFunctions = res
@@ -473,7 +466,19 @@
         this.authDialogFormVisible = true
       },
       saveAuthorityInfor(){
-        this.$request.put("/api/v1/user/",this.thisUserFunctions).then(res =>{
+
+        let data = {}
+        data['userId'] = this.userid
+        data['extraFunctionList'] = []
+        let tmp = {}
+        for(let item of this.thisUserFunctions){
+          tmp['id'] = item['id']
+          tmp['enable'] = item['enable']
+          data['extraFunctionList'].push(tmp)
+          tmp = {}
+        }
+        console.log('这是数据',data)
+        this.$request.put("/api/v1/permission/extra/function/",data).then(res =>{
           if(res.code === 219 ){
             this.$message.success("保存成功")
             this.dialogFormVisible = false
