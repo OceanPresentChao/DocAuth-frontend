@@ -300,10 +300,19 @@
                 if (duplicateApplication !== undefined && duplicateApplication.length >0){
                     console.log('发生冲突的小朋友',duplicateApplication)
                     for (let item of duplicateApplication)
-                        ElMessage.error( item + '发生冲突' +'请重新分配')
+                        ElMessage({
+                                    showClose:true,
+                                    message:item + '发生冲突' +'请重新分配',
+                                    type:'error'
+                            })
                     this.dialogFormVisible = true
                 }
                 else{
+                    ElMessage({
+                        showClose:true,
+                        message:'分配成功',
+                        type:'success'
+                    })
                     this.dialogFormVisible = false
                 }
             }
