@@ -5,11 +5,74 @@
         <div class="gl_prs_ctn" :style='[contextstyle]'>
             <ul class='gl_prs_li'>
                 <li ><el-button type="primary" @click="addNode">添加子分支 </el-button></li>
-                <li ><el-button type="success">人员安排</el-button></li>
+                <li ><el-button type="success" @click="applyEmployees">人员安排</el-button></li>
                 <li ><el-button type="danger"  @click="deleteNode">删除分支</el-button></li>
                 <li ><el-button type="info" @click="shutDown">关闭此栏</el-button></li>
             </ul>
         </div>
+
+        <el-dialog v-model="dialogFormVisible" title="人员安排">
+            <el-form :model="form">
+                <el-form-item label="任务名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.name" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="任务持续时间" :label-width="formLabelWidth" >
+                <el-date-picker
+                        v-model="startTime"
+                        type="datetime"
+                        placeholder="任务开始时间"
+                        style="margin-right: 50px"
+                />
+               <el-date-picker
+                            v-model="deadLine"
+                            type="datetime"
+                            placeholder="任务截止时间"
+                />
+                </el-form-item>
+                <el-form-item label="编" :label-width="formLabelWidth">
+                    <el-select v-model="form.editPerson" placeholder="请选择人员">
+                        <el-option label="Zone No.1" value="shanghai" />
+                        <el-option label="Zone No.2" value="beijing" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="审" :label-width="formLabelWidth">
+                    <el-select v-model="form.investigatePerson" placeholder="请选择人员">
+                        <el-option label="Zone No.1" value="shanghai" />
+                        <el-option label="Zone No.2" value="beijing" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="批" :label-width="formLabelWidth">
+                    <el-select v-model="form.ratifyPerson" placeholder="请选择人员">
+                        <el-option label="Zone No.1" value="shanghai" />
+                        <el-option label="Zone No.2" value="beijing" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="会签" :label-width="formLabelWidth" >
+                    <el-select v-model="form.con_sign1" placeholder="请选择人员1" style="margin-right: 50px ;">
+                        <el-option label="Zone No.1" value="shanghai" />
+                        <el-option label="Zone No.2" value="beijing" />
+                    </el-select>
+                    <el-select v-model="form.consign2" placeholder="请选择人员2">
+                        <el-option label="Zone No.1" value="shanghai" />
+                        <el-option label="Zone No.2" value="beijing" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="任务内容概述" :label-width="formLabelWidth">
+                    <el-input v-model="form.desc" type="textarea" />
+                </el-form-item>
+
+            </el-form>
+            <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">
+          Confirm
+        </el-button>
+      </span>
+            </template>
+        </el-dialog>
+
+
     </div>
 </template>
 
@@ -23,6 +86,20 @@
         },
         data() {
             return {
+                dialogFormVisible:false,
+                formLabelWidth:'140px',
+                startTime:'',
+                deadLine:'',
+                form:{
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: '',
+                },
                 idnum:5,
                 tag:0,
                 now:'',
@@ -67,6 +144,7 @@
                     left: '0px',
                     bottom: '0px',
                 },
+                employeesApplication:[]
             }
         },
         methods: {
@@ -142,8 +220,11 @@
                         if(this.tag === 1) return;
                     }
                 }
+            },
+            applyEmployees(){
+                this.dialogFormVisible = true
+                this.contextstyle.display='none'
             }
-
             }
     }
 </script>
