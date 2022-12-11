@@ -15,7 +15,11 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "lib": [
+      "DOM",
+      "ESNext"
+    ]
   },
   "references": [
     {
