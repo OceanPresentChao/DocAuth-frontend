@@ -7,8 +7,10 @@ export default {
 </script>
 
 <template>
-  <h1>权限管理</h1>
-  <div />
+  <div>
+    <h1>权限管理</h1>
+    <div />
+  </div>
 </template>
 
 <style lang="scss" scoped>

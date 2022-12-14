@@ -51,7 +51,6 @@ export const menuRoutes = [
           icon: 'carbon:security-services',
         },
       },
-
     ],
   },
   {
