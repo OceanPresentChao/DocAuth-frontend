@@ -7,11 +7,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    404: typeof import('./src/views/error/404.vue')['default']
+    404: typeof import('./src/views/error/Error404.vue')['default']
     Account: typeof import('./src/views/login/Account.vue')['default']
     BreadCrumb: typeof import('./src/components/layout/header/BreadCrumb.vue')['default']
     Collapse: typeof import('./src/components/layout/header/Collapse.vue')['default']
     DashBoard: typeof import('./src/views/dashboard/DashBoard.vue')['default']
+    EditTask: typeof import('./src/views/task/EditTask.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -43,6 +44,7 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElUpload: typeof import('element-plus/es')['ElUpload']
+    Error404: typeof import('./src/views/error/Error404.vue')['default']
     Forget: typeof import('./src/views/login/Forget.vue')['default']
     Header: typeof import('./src/components/layout/header/Header.vue')['default']
     Layout: typeof import('./src/components/layout/index.vue')['default']

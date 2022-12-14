@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type{ RouteRecordRaw } from 'vue-router'
-import type{ MenuOption } from './types'
+import type { RouteRecordRaw } from 'vue-router'
+import type { MenuOption } from './types'
 import { useMenuStore } from '@/store/menu'
 
 const menuStore = useMenuStore()

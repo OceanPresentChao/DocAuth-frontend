@@ -1,9 +1,12 @@
 <script setup>
 import Layout from '@/components/layout/index.vue'
+const route = useRoute()
 </script>
 
 <template>
-  <Layout />
+  <Account v-if="route.name === 'login'" />
+  <Error404 v-else-if="route.name === '404'" />
+  <Layout v-else />
 </template>
 
 <style>
