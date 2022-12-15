@@ -1,5 +1,6 @@
 <script>
-import { Apple, Edit, InfoFilled, Loading, Menu, Search, Share } from '@element-plus/icons-vue'
+import { Apple, Edit,  Loading, Menu, Search, Share } from '@element-plus/icons-vue'
+import { InfoFilled } from '@element-plus/icons-vue'
 export default {
   name: 'UserManage',
 
@@ -427,7 +428,6 @@ export default {
         style="margin-left: 5px"
         confirm-button-text="yes"
         cancel-button-text="No"
-        :icon="InfoFilled"
         icon-color="#626AEF"
         title="Are you sure to delete this?"
         @confirm="delBatch"
@@ -485,7 +485,6 @@ export default {
             style="margin-left: 5px"
             confirm-button-text="yes"
             cancel-button-text="No"
-            :icon="InfoFilled"
             icon-color="#626AEF"
             title="Are you sure to delete this?"
             @confirm="deleteUser(row.userid)"
