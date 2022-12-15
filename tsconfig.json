@@ -13,9 +13,14 @@
     "allowJs": true,
     "paths": {
       "@/*": [
-        "./src/*"
+        "/src/*"
       ]
-    }
+    },
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    "outDir": "dist",
   },
   "references": [
     {

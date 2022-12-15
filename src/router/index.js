@@ -1,10 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import DashBoard from '@/views/dashboard/DashBoard.vue'
 import Account from '@/views/login/Account.vue'
-import { useAuthStore } from '@/store/auth'
-import nowNewProject from '@/components/layout/project/nowNewProject.vue'
-
-
 
 // 菜单路由在这里配置
 export const menuRoutes = [
@@ -29,6 +25,7 @@ export const menuRoutes = [
   },
   {
     name: 'manage',
+    path: '/manage',
     component: () => import('@/views/manage/index.vue'),
     redirect: '/manage/user',
     meta: {
@@ -47,19 +44,18 @@ export const menuRoutes = [
       },
       {
         name: 'permissionManage',
-        path: '/manage/Permission',
+        path: '/manage/permission',
         component: () => import('@/views/manage/PermissionManage.vue'),
         meta: {
           title: '权限管理',
           icon: 'carbon:security-services',
         },
       },
-
     ],
   },
   {
-    path:'/project',
-    // component:()=>import('@/components/layout/project/nowNewProject.vue'),
+    name: 'project',
+    path: '/project',
     meta: {
       title: '项目',
       icon: 'carbon:home',
@@ -67,16 +63,17 @@ export const menuRoutes = [
     },
     children:
         [
-        {
-        path:'/project/create',
-          component:()=>import('@/components/layout/project/nowNewProject.vue'),
-        meta:{
-          title:'创建项目',
-          roles: ['sys:manage'],
-        }
-        },
-        ]
-  }
+          {
+            name: 'createProject',
+            path: '/project/create',
+            component: () => import('@/components/layout/project/nowNewProject.vue'),
+            meta: {
+              title: '创建项目',
+              roles: ['sys:manage'],
+            },
+          },
+        ],
+  },
 ]
 
 const constantRoutes = [
@@ -85,14 +82,14 @@ const constantRoutes = [
     redirect: '/dashboard',
   },
   {
-    path: '/login',
     name: 'login',
+    path: '/login',
     component: Account,
   },
   {
-    path: '/:pathMatch(.*)*',
     name: '404',
-    component: () => import('@/views/error/404.vue'),
+    path: '/:pathMatch(.*)*',
+    component: () => import('@/views/error/Error404.vue'),
   },
 ]
 
@@ -101,29 +98,3 @@ export const router = createRouter({
   history: createWebHashHistory(),
 })
 
-const whiteList = ['/login']
-
-router.beforeEach((to, from) => {
-  const authStore = useAuthStore()
-  return true
-  // NProgress.start()
-  // if (authStore.getToken()) { // 判断是否有token
-  //   if (to.path === '/login')
-  //     next({ path: '/' })
-
-  //   else
-  //     return true
-  // }
-  // else {
-  //   if (whiteList.includes(to.path)) { // 在免登录白名单，直接进入
-  //     next()
-  //   }
-  //   else {
-  //     next('/login') // 否则全部重定向到登录页
-  //   }
-  // }
-})
-
-router.afterEach(() => {
-  // NProgress.done()
-})

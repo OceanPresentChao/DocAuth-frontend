@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import type{ RouteRecordRaw } from 'vue-router'
-import type{ MenuOption } from './types'
+import type { RouteRecordRaw } from 'vue-router'
+import type { MenuOption } from './types'
 import { useMenuStore } from '@/store/menu'
+
 const menuStore = useMenuStore()
 const { isCollapse, menuList } = storeToRefs(menuStore)
 const menuData = computed(() => getMenuData(menuList.value))
@@ -13,7 +14,7 @@ function getMenuData(menuRoute: RouteRecordRaw[]): MenuOption[] {
       continue
 
     const item: MenuOption = {
-      index: menu.path ? menu.path : menu.redirect,
+      index: (menu.path ? menu.path : menu.redirect?.toString()) || '/',
       title: menu.meta?.title as string || '',
       icon: menu.meta?.icon as string || '',
       children: [],

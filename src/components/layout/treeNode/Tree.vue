@@ -1,103 +1,95 @@
-<template>
-    <div id="app">
-        <TreeChart :json="data" :class="{landscape: 1}" @click-node="clickNode" />
-
-        <div class="gl_prs_ctn" :style='[contextstyle]'>
-            <ul class='gl_prs_li'>
-                <li >添加</li>
-                <li >详情</li>
-                <li >编辑</li>
-                <li >删除</li>
-            </ul>
-        </div>
-
-    </div>
-</template>
-
 <script>
-    import TreeChart from "./treechar";
-    export default {
-        name: 'app',
-        components: {
-            TreeChart
-        },
-        data() {
-            return {
-                data: {
-                    name: 'root',
-                    image_url: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg",
-                    class: ["rootNode"],
-                    children: [
-                        {
-                            name: 'children1',
-                            image_url: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg"
-                        },
-                        {
-                            name: 'children2',
-                            image_url: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg",
-                            children: [
-                                {
-                                    name: 'grandchild',
-                                    image_url: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg"
-                                },
-                                {
-                                    name: 'grandchild2',
-                                    image_url: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg"
-                                },
-                                {
-                                    name: 'grandchild3',
-                                    image_url: "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                contextstyle: {
-                    display: 'none',
-                    right: '0px',
-                    top: '0px',
-                    left: '0px',
-                    bottom: '0px',
-                },
-            }
-        },
-        created(){
-            document.oncontextmenu = ()=>{return false}
-            document.addEventListener("click", (event) => {
-                if(this.contextstyle.display == 'block'){
-                    this.contextstyle.display = 'none'
-                }
-            })
-        },
-        methods: {
-            clickNode(node){
-                if(window.event.x + 188 > document.documentElement.clientWidth){
-                    this.contextstyle.left = 'unset';
-                    this.contextstyle.right = document.documentElement.clientWidth - window.event.x + 'px';
-                }else{
-                    this.contextstyle.left = window.event.x + 'px';
-                }
-                if(window.event.y + 166 > document.documentElement.clientHeight){
-                    this.contextstyle.top = 'unset';
-                    this.contextstyle.bottom = document.documentElement.clientHeight - window.event.y + 'px';
-                }else{
-                    this.contextstyle.top = window.event.y + 'px';
-                }
-                this.contextstyle.display = 'block';
-            },
-        }
+import TreeChart from './treechar'
+export default {
+  name: 'App',
+  components: {
+    TreeChart,
+  },
+  data() {
+    return {
+      data: {
+        name: 'root',
+        image_url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg',
+        class: ['rootNode'],
+        children: [
+          {
+            name: 'children1',
+            image_url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg',
+          },
+          {
+            name: 'children2',
+            image_url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg',
+            children: [
+              {
+                name: 'grandchild',
+                image_url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg',
+              },
+              {
+                name: 'grandchild2',
+                image_url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg',
+              },
+              {
+                name: 'grandchild3',
+                image_url: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3689173839,956040439&fm=26&gp=0.jpg',
+              },
+            ],
+          },
+        ],
+      },
+      contextstyle: {
+        display: 'none',
+        right: '0px',
+        top: '0px',
+        left: '0px',
+        bottom: '0px',
+      },
     }
+  },
+  created() {
+    document.oncontextmenu = () => { return false }
+    document.addEventListener('click', (event) => {
+      if (this.contextstyle.display === 'block')
+        this.contextstyle.display = 'none'
+    })
+  },
+  methods: {
+    clickNode(node) {
+      if (window.event.x + 188 > document.documentElement.clientWidth) {
+        this.contextstyle.left = 'unset'
+        this.contextstyle.right = `${document.documentElement.clientWidth - window.event.x}px`
+      }
+      else {
+        this.contextstyle.left = `${window.event.x}px`
+      }
+      if (window.event.y + 166 > document.documentElement.clientHeight) {
+        this.contextstyle.top = 'unset'
+        this.contextstyle.bottom = `${document.documentElement.clientHeight - window.event.y}px`
+      }
+      else {
+        this.contextstyle.top = `${window.event.y}px`
+      }
+      this.contextstyle.display = 'block'
+    },
+  },
+}
 </script>
 
+<template>
+  <div id="tree-app">
+    <TreeChart :json="data" :class="{ landscape: 1 }" @click-node="clickNode" />
+
+    <div class="gl_prs_ctn" :style="[contextstyle]">
+      <ul class="gl_prs_li">
+        <li>添加</li>
+        <li>详情</li>
+        <li>编辑</li>
+        <li>删除</li>
+      </ul>
+    </div>
+  </div>
+</template>
+
 <style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
     .gl_prs_ctn{
         width: 188px;
         background: rgb(255, 255, 255);

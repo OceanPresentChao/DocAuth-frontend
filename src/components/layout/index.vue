@@ -7,7 +7,7 @@ const { isCollapse } = storeToRefs(menuStore)
 <template>
   <el-container>
     <el-aside
-      style="height: 100vh;position: fixed;"
+      style="height: 100vh;position: fixed;left: 0;top: 0;"
       :style="{ width: isCollapse ? '5%' : '10%' }"
     >
       <!-- Aside content -->
@@ -23,7 +23,6 @@ const { isCollapse } = storeToRefs(menuStore)
         <Tabs />
       </el-header>
 
-
       <el-main>
         <!-- Main content -->
         <router-view v-slot="{ Component }">
@@ -31,9 +30,7 @@ const { isCollapse } = storeToRefs(menuStore)
             <component :is="Component" />
           </transition>
         </router-view>
-
       </el-main>
-
     </el-container>
   </el-container>
 </template>

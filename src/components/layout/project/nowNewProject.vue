@@ -18,13 +18,13 @@
                 </el-form-item>
                 <el-form-item label="任务持续时间" :label-width="formLabelWidth" >
                 <el-date-picker
-                        v-model="form.startTime"
+                        v-model="startTime"
                         type="datetime"
                         placeholder="任务开始时间"
                         style="margin-right: 50px"
                 />
                <el-date-picker
-                            v-model="form.deadLine"
+                            v-model="deadLine"
                             type="datetime"
                             placeholder="任务截止时间"
                 />
@@ -83,6 +83,8 @@
             return {
                 dialogFormVisible:false,
                 formLabelWidth:'140px',
+                startTime:'',
+                deadLine:'',
                 form:{
                     name: '',
                     startTime: '',
@@ -275,7 +277,6 @@
             applyEmployees(){
                 this.dialogFormVisible = true
                 this.contextstyle.display='none'
-                this.form = {}
             },
             confirmOneTaskApplication(){
                 console.log(this.form["editPerson"])
@@ -313,13 +314,16 @@
                         type:'success'
                     })
                     this.dialogFormVisible = false
-                    console.log(this.form)
                 }
             }
+
+
 
             }
     }
 </script>
+
+
 
 
 <style>
