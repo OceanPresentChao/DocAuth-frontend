@@ -1,8 +1,11 @@
 <template>
     <div id="nowNewProject">
         <div style="margin-bottom: 20px">
-            <el-button size="small" @click="addTab(editableTabsValue)">
-                add tab
+            <el-button size="large" type = "primary" @click="addTab(editableTabsValue)">
+                新增阶段
+            </el-button>
+            <el-button size="large" type = "success" @click="saveCurrentProject(editableTabsValue)">
+                保存当前项目
             </el-button>
         </div>
         <el-tabs
@@ -28,55 +31,55 @@
         <div class="gl_prs_ctn" :style='[contextstyle]'>
             <ul class='gl_prs_li'>
                 <li ><el-button type="primary" @click="addNode">添加子分支 </el-button></li>
-                <li ><el-button type="success" @click="applyEmployees">人员安排</el-button></li>
+                <li ><el-button type="success" @click="applyEmployees">任务安排</el-button></li>
                 <li ><el-button type="danger"  @click="deleteNode">删除分支</el-button></li>
                 <li ><el-button type="info" @click="shutDown">关闭此栏</el-button></li>
             </ul>
         </div>
 
         <el-dialog v-model="dialogFormVisible" title="人员安排">
-            <el-form :model="form">
+            <el-form :model="this.currentTask">
                 <el-form-item label="任务名称" :label-width="formLabelWidth">
-                    <el-input v-model="form.name" autocomplete="off" />
+                    <el-input v-model="this.currentTask.name" autocomplete="off" />
                 </el-form-item>
                 <el-form-item label="任务持续时间" :label-width="formLabelWidth" >
                 <el-date-picker
-                        v-model="startTime"
+                        v-model="this.currentTask.startTime"
                         type="datetime"
                         placeholder="任务开始时间"
                         style="margin-right: 50px"
                 />
                <el-date-picker
-                            v-model="deadLine"
+                            v-model="this.currentTask.deadLine"
                             type="datetime"
                             placeholder="任务截止时间"
                 />
                 </el-form-item>
                 <el-form-item label="编" :label-width="formLabelWidth">
-                    <el-select value-key="userid" v-model="form.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
+                    <el-select value-key="userid" v-model="this.currentTask.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
                         <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="审" :label-width="formLabelWidth">
-                    <el-select v-model="form.investigatePerson" placeholder="请选择人员" effect="dark">
+                    <el-select v-model="this.currentTask.investigatePerson" placeholder="请选择人员" effect="dark">
                         <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="批" :label-width="formLabelWidth">
-                    <el-select v-model="form.ratifyPerson" placeholder="请选择人员" effect="dark">
+                    <el-select v-model="this.currentTask.ratifyPerson" placeholder="请选择人员" effect="dark">
                         <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="会签" :label-width="formLabelWidth" >
-                    <el-select v-model="form.con_signPerson1" placeholder="请选择人员1" style="margin-right: 50px ;" effect="dark">
+                    <el-select v-model="this.currentTask.con_signPerson1" placeholder="请选择人员1" style="margin-right: 50px ;" effect="dark">
                         <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
-                    <el-select v-model="form.con_signPerson2" placeholder="请选择人员2" effect="dark">
+                    <el-select v-model="this.currentTask.con_signPerson2" placeholder="请选择人员2" effect="dark">
                         <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="任务内容概述" :label-width="formLabelWidth">
-                    <el-input v-model="form.desc" type="textarea" />
+                    <el-input v-model="this.currentTask.taskDescription" type="textarea" />
                 </el-form-item>
 
             </el-form>
@@ -104,56 +107,98 @@
         },
         data() {
             return {
-                tabIndex :2,
+                tabIndex :1,
                 editableTabsValue: '1',
                 editableTabs: [
                         {
                             title: 'Phase 1',
                             name: '1',
                             content: {
-                                name: 'root',
+                                name: '1',
                                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                thisId : 1,
+                                fartherId : 0,
+                                startTime: '',
+                                deadLine: '',
+                                editPerson: '',
+                                investigatePerson: '',
+                                ratifyPerson: '',
+                                con_signPerson1: '',
+                                con_signPerson2:'',
+                                taskDescription:'',
                                 //class: ["rootNode"],
                                 children: [
                                     {
-                                        name: '1',
+                                        name: '2',
                                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                        thisId : 2 ,
+                                        fartherId : 1 ,
+                                        startTime: '',
+                                        deadLine: '',
+                                        editPerson: '',
+                                        investigatePerson: '',
+                                        ratifyPerson: '',
+                                        con_signPerson1: '',
+                                        con_signPerson2:'',
+                                        taskDescription:'',
                                         children:[],
                                     },
                                     {
-                                        name: '2',
+                                        name: '3',
                                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                        thisId : 3,
+                                        fartherId : 1,
                                         children: [
-                                            {
-                                                name: '3',
-                                                image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                                children:[],
-                                            },
                                             {
                                                 name: '4',
                                                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                                thisId : 4,
+                                                fartherId : 3,
+                                                startTime: '',
+                                                deadLine: '',
+                                                editPerson: '',
+                                                investigatePerson: '',
+                                                ratifyPerson: '',
+                                                con_signPerson1: '',
+                                                con_signPerson2:'',
+                                                taskDescription:'',
                                                 children:[],
                                             },
                                             {
                                                 name: '5',
                                                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                                thisId : 5,
+                                                fartherId : 3,
+                                                startTime: '',
+                                                deadLine: '',
+                                                editPerson: '',
+                                                investigatePerson: '',
+                                                ratifyPerson: '',
+                                                con_signPerson1: '',
+                                                con_signPerson2:'',
+                                                taskDescription:'',
+                                                children:[],
+                                            },
+                                            {
+                                                name: '6',
+                                                image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                                thisId : 6,
+                                                fartherId : 3,
+                                                startTime: '',
+                                                deadLine: '',
+                                                editPerson: '',
+                                                investigatePerson: '',
+                                                ratifyPerson: '',
+                                                con_signPerson1: '',
+                                                con_signPerson2:'',
+                                                taskDescription:'',
                                                 children:[],
                                             }
                                         ]
                                     }
                                 ]
                             },
-                        },
-                        {
-                            title: 'Phase 2',
-                            name: '2',
-                            content: {
-                                name: 'root',
-                                image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                //class: ["rootNode"],
-                                children: []
-                            },
-                        },
+                        }
                     ],
                 dialogFormVisible:false,
                 formLabelWidth:'140px',
@@ -172,6 +217,7 @@
                     resource: '',
                     desc: '',
                 },
+                currentTask:{},
                 users:[
                  {
                     userid: 1,
@@ -226,8 +272,7 @@
                         enable:true,
                     },
                 ],
-
-                idnum:5,
+                idnum:6,
                 tag:0,
                 now:'',
                 landscape: [],
@@ -276,8 +321,12 @@
         },
         methods: {
             clickNode: function(node){
+                this.currentTask = node
                 this.now = node.name
-                console.log(node.name)
+                console.log(this.currentTask)
+                console.log(this.currentTask.name)
+                console.log(this.currentTask.thisId)
+                console.log(this.currentTask.fartherId)
                 if(window.event.x + 188 > document.documentElement.clientWidth){
                     this.contextstyle.left = 'unset';
                     this.contextstyle.right = document.documentElement.clientWidth - window.event.x + 'px';
@@ -346,7 +395,17 @@
                         this.idnum=this.idnum+1;
                         array[i].children.push({
                             name: this.idnum,
+                            thisId : this.idnum,
+                            fartherId : array[i].thisId ,
                             image_url: "https://static.refined-x.com/static/avatar.jpg",
+                            startTime: '',
+                            deadLine: '',
+                            editPerson: '',
+                            investigatePerson: '',
+                            ratifyPerson: '',
+                            con_signPerson1: '',
+                            con_signPerson2:'',
+                            taskDescription:'',
                             children:[],
                         });
 
@@ -364,15 +423,16 @@
                 this.contextstyle.display='none'
             },
             confirmOneTaskApplication(){
-                console.log(this.form["editPerson"])
+                console.log(this.currentTask)
+                console.log(this.editableTabs)
                 let judgeValidity = {}
                 let duplicateApplication = []
                 let hash={}
-                judgeValidity["editPerson"] = this.form["editPerson"]
-                judgeValidity["investigatePerson"] = this.form["investigatePerson"]
-                judgeValidity["ratifyPerson"] = this.form["ratifyPerson"]
-                judgeValidity["con_signPerson1"] = this.form["con_signPerson1"]
-                judgeValidity["con_signPerson2"] = this.form["con_signPerson2"]
+                judgeValidity["editPerson"] = this.currentTask["editPerson"]
+                judgeValidity["investigatePerson"] = this.currentTask["investigatePerson"]
+                judgeValidity["ratifyPerson"] =this.currentTask["ratifyPerson"]
+                judgeValidity["con_signPerson1"] = this.currentTask["con_signPerson1"]
+                judgeValidity["con_signPerson2"] = this.currentTask["con_signPerson2"]
 
                 for (let key in judgeValidity){
                     if(hash[judgeValidity[key]])
@@ -401,15 +461,27 @@
                     this.dialogFormVisible = false
                 }
             },
+            saveCurrentProject(){
 
+            },
             addTab(targetName){
                 let newTabName = ++this.tabIndex + '';
                 this.editableTabs.push({
                     title: 'Phase ' + this.tabIndex,
                     name: newTabName,
                     content: {
-                        name: 'root',
+                        name: this.idnum + "",
                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+                        thisId:  this.idnum,
+                        fartherId: 0,
+                        startTime: '',
+                        deadLine: '',
+                        editPerson: '',
+                        investigatePerson: '',
+                        ratifyPerson: '',
+                        con_signPerson1: '',
+                        con_signPerson2:'',
+                        taskDescription:'',
                         //class: ["rootNode"],
                         children: []
                         },
@@ -486,3 +558,4 @@
         margin-right: 10px;
     }
 </style>
+
