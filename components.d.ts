@@ -7,12 +7,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    404: typeof import('./src/views/error/Error404.vue')['default']
     Account: typeof import('./src/views/login/Account.vue')['default']
     BreadCrumb: typeof import('./src/components/layout/header/BreadCrumb.vue')['default']
     Collapse: typeof import('./src/components/layout/header/Collapse.vue')['default']
     DashBoard: typeof import('./src/views/dashboard/DashBoard.vue')['default']
-    EditTask: typeof import('./src/views/task/EditTask.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
@@ -23,7 +21,6 @@ declare module '@vue/runtime-core' {
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
-    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
@@ -38,17 +35,12 @@ declare module '@vue/runtime-core' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
-    ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
-    ElUpload: typeof import('element-plus/es')['ElUpload']
     Error404: typeof import('./src/views/error/Error404.vue')['default']
     Forget: typeof import('./src/views/login/Forget.vue')['default']
     Header: typeof import('./src/components/layout/header/Header.vue')['default']
@@ -69,5 +61,6 @@ declare module '@vue/runtime-core' {
     UserDetail: typeof import('./src/views/user/UserDetail.vue')['default']
     UserInfo: typeof import('./src/components/layout/header/UserInfo.vue')['default']
     UserManage: typeof import('./src/views/manage/UserManage.vue')['default']
+    ViewProject: typeof import('./src/components/layout/project/viewProject.vue')['default']
   }
 }

@@ -1,5 +1,6 @@
 <script>
-import { Apple, Edit, InfoFilled, Loading, Menu, Search, Share } from '@element-plus/icons-vue'
+import { Apple, Edit,  Loading, Menu, Search, Share } from '@element-plus/icons-vue'
+import { InfoFilled } from '@element-plus/icons-vue'
 export default {
   name: 'UserManage',
 
@@ -69,6 +70,17 @@ export default {
           regdate: '2022-11-24 21:14:31.000000',
           password: 'sasdsasadas',
           gender: '男',
+          enable: true,
+        },
+        {
+          userid: 10,
+          username: 'dasdsa',
+          phone: '6465464654',
+          email: 'sdsadsa@qq.com',
+          regdate: '2022-11-24 21:14:31.000000',
+          password: 'sasdsasadas',
+          gender: '男',
+          role: ['wseber'],
           enable: true,
         },
       ],
@@ -407,7 +419,7 @@ export default {
     <div style="text-align: left">
       <el-input v-model="userName" style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" />
       <el-input v-model="phone" style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" />
-      <el-select v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="“width:100%”">
+      <el-select v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
         <el-option v-for="(item) in roles" :value="item" />
       </el-select>
       <el-button type="primary" style="margin-left: 20px" @click="load">
@@ -427,7 +439,6 @@ export default {
         style="margin-left: 5px"
         confirm-button-text="yes"
         cancel-button-text="No"
-        :icon="InfoFilled"
         icon-color="#626AEF"
         title="Are you sure to delete this?"
         @confirm="delBatch"
@@ -453,18 +464,18 @@ export default {
     <el-table :data="tableData" border stripe :header-cell-class-name="headerBg" @selection-change="handleSelectionChange">
       >
       <el-table-column type="selection" align="center" width="40" />
-      <el-table-column prop="userid" align="center" label="用户ID" width="120" />
-      <el-table-column prop="username" align="center" label="用户名" width="180" />
-      <el-table-column prop="phone" align="center" label="电话号" width="180" />
-      <el-table-column prop="gender" align="center" label="性别" width="100" />
-      <el-table-column prop="email" align="center" label="邮箱" width="200" />
-      <el-table-column prop="regdate" align="center" label="注册日期" width="250" />
+      <el-table-column prop="userid" align="center" label="用户ID" width="80"  />
+      <el-table-column prop="username" align="center" label="用户名" width="100" />
+      <el-table-column prop="phone" align="center" label="电话号"  />
+      <el-table-column prop="gender" align="center" label="性别" width="50" />
+      <el-table-column prop="email" align="center" label="邮箱" />
+      <el-table-column prop="regdate" align="center" label="注册日期"  />
       <el-table-column label="启用" align="center" width="100">
         <template #default="{ row, $index }">
           <el-switch v-model="row.enable" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(row)" />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="编辑用户信息" width="200">
+      <el-table-column align="center" label="编辑用户信息" width="100">
         <template #default="{ row, $index }">
           <el-button type="primary" round @click="handleEditPersonalInformation(row)">
             <el-icon style="color: #55e0e5 ;margin-right: 10px">
@@ -485,7 +496,6 @@ export default {
             style="margin-left: 5px"
             confirm-button-text="yes"
             cancel-button-text="No"
-            :icon="InfoFilled"
             icon-color="#626AEF"
             title="Are you sure to delete this?"
             @confirm="deleteUser(row.userid)"

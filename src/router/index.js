@@ -69,6 +69,17 @@ export const menuRoutes = [
             component: () => import('@/components/layout/project/nowNewProject.vue'),
             meta: {
               title: '创建项目',
+              icon: 'carbon:star',
+              roles: ['sys:manage'],
+            },
+          },
+          {
+            name: 'viewProject',
+            path: '/project/view',
+            component: () => import('@/components/layout/project/viewProject.vue'),
+            meta: {
+              title: '观看项目',
+              icon: 'carbon:view',
               roles: ['sys:manage'],
             },
           },
