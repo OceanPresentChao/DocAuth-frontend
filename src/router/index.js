@@ -15,8 +15,8 @@ export const menuRoutes = [
     },
   },
   {
-    name: 'project',
-    path: '/project',
+    name: 'projectlist',
+    path: '/projectList',
     component: () => import('@/views/project/ProjectList.vue'),
     meta: {
       title: '个人项目',
@@ -56,8 +56,9 @@ export const menuRoutes = [
   {
     name: 'project',
     path: '/project',
+    redirect: '/project/create',
     meta: {
-      title: '项目',
+      title: '项目管理',
       icon: 'carbon:home',
       roles: ['sys:manage'],
     },
@@ -89,10 +90,11 @@ export const menuRoutes = [
 
 const asyncRoutes = [
   {
-    user: 'userDetail',
+    name: 'userDetail',
     path: '/userDetail',
     component: () => import('@/views/user/UserDetail.vue'),
   },
+
 ]
 
 const constantRoutes = [
