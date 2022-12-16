@@ -76,6 +76,14 @@ export const menuRoutes = [
   },
 ]
 
+const asyncRoutes = [
+  {
+    user: 'userDetail',
+    path: '/userDetail',
+    component: () => import('@/views/user/UserDetail.vue'),
+  },
+]
+
 const constantRoutes = [
   {
     path: '/',
@@ -94,7 +102,7 @@ const constantRoutes = [
 ]
 
 export const router = createRouter({
-  routes: [...menuRoutes, ...constantRoutes],
+  routes: [...menuRoutes, ...constantRoutes, ...asyncRoutes],
   history: createWebHashHistory(),
 })
 
