@@ -193,6 +193,49 @@
                                 }
                             ]
                         },
+                    },
+                    {
+                        title: 'Phase 2',
+                        name: '2',
+                        content: {
+                            name: '7',
+                            image_url: "https://static.refined-x.com/static/avatar.jpg",
+                            thisId : 7,
+                            fartherId : 0,
+                            startTime: '',
+                            deadLine: '',
+                            editPerson: '',
+                            investigatePerson: '',
+                            ratifyPerson: '',
+                            con_signPerson1: '',
+                            con_signPerson2:'',
+                            taskDescription:'',
+                            //class: ["rootNode"],
+                            children: [
+                                {
+                                    name: '8',
+                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                    thisId : 8 ,
+                                    fartherId : 7 ,
+                                    startTime: '',
+                                    deadLine: '',
+                                    editPerson: '',
+                                    investigatePerson: '',
+                                    ratifyPerson: '',
+                                    con_signPerson1: '',
+                                    con_signPerson2:'',
+                                    taskDescription:'',
+                                    children:[],
+                                },
+                                {
+                                    name: '9',
+                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                    thisId : 9,
+                                    fartherId : 7,
+                                    children: []
+                                }
+                            ]
+                        },
                     }
                 ],
                 dialogFormVisible:false,
