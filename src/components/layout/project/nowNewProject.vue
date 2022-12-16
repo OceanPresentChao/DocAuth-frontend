@@ -4,7 +4,7 @@
             <el-button size="large" type = "primary" @click="addTab(editableTabsValue)">
                 新增阶段
             </el-button>
-            <el-button size="large" type = "success" @click="saveCurrentProject()">
+            <el-button size="large" type = "success" @click="saveCurrentProject">
                 保存当前项目
             </el-button>
         </div>

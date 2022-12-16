@@ -11,7 +11,7 @@
                 type="card"
                 class="demo-tabs"
                 :tab-position="tabPosition"
-                style="height: 2000px"
+                style="height: 1000px"
         >
             <el-tab-pane
                     v-for="item in editableTabs"
@@ -23,14 +23,10 @@
             </el-tab-pane>
         </el-tabs>
 
-
-
-
         <div class="gl_prs_ctn" :style='[contextstyle]'>
             <ul class='gl_prs_li'>
-                <li ><el-button type="primary" @click="addNode">添加子分支 </el-button></li>
-                <li ><el-button type="success" @click="applyEmployees">任务安排</el-button></li>
-                <li ><el-button type="danger"  @click="deleteNode">删除分支</el-button></li>
+                <li ><el-button type="primary" @click="">进入任务 </el-button></li>
+                <li ><el-button type="success" @click="applyEmployees">重新编排</el-button></li>
                 <li ><el-button type="info" @click="shutDown">关闭此栏</el-button></li>
             </ul>
         </div>
@@ -203,19 +199,6 @@
                 formLabelWidth:'140px',
                 startTime:'',
                 deadLine:'',
-                form:{
-                    name: '',
-                    startTime: '',
-                    deadLine: '',
-                    editPerson: '',
-                    investigatePerson: '',
-                    ratifyPerson: '',
-                    con_signPerson1: '',
-                    con_signPerson2:'',
-                    type: [],
-                    resource: '',
-                    desc: '',
-                },
                 currentTask:{},
                 users:[
                     {
@@ -275,39 +258,6 @@
                 tag:0,
                 now:'',
                 landscape: [],
-                data: {
-                    name: 'root',
-                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                    //class: ["rootNode"],
-                    children: [
-                        {
-                            name: '1',
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            children:[],
-                        },
-                        {
-                            name: '2',
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            children: [
-                                {
-                                    name: '3',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    children:[],
-                                },
-                                {
-                                    name: '4',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    children:[],
-                                },
-                                {
-                                    name: '5',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    children:[],
-                                }
-                            ]
-                        }
-                    ]
-                },
                 contextstyle: {
                     display: 'none',
                     right: '0px',
@@ -343,17 +293,7 @@
             shutDown(){
                 this.contextstyle.display='none';
             },
-            deleteNode(){
-                if(this.now==='root') return
-                this.tag =0;
-                for(let item of this.editableTabs){
-                    if(item.name === this.editableTabsValue){
-                        this.findChild([item.content])
-                        break
-                    }
-                }
-                this.shutDown();
-            },
+
             //delete find
             findChild(array){
                 if(this.tag === 1) return;
@@ -373,50 +313,12 @@
                     }
                 }
             },
-            addNode(){
+            enterTheNode(){
                 this.tag =0;
-                for(let item of this.editableTabs){
-                    if(item.name === this.editableTabsValue){
-                        this.addreal([item.content])
-                        break
-                    }
-                }
-                // this.addreal([this.data])
+                //下面转到朝海波负责的任务详情页或编辑页
                 this.shutDown();
             },
-            addreal(array){
-                for(let i in array)
-                {
-                    //console.log(array[i].name);
-                    if(array[i].name === this.now){
-                        console.log('findit');
-                        this.tag = 1;
-                        this.idnum=this.idnum+1;
-                        array[i].children.push({
-                            name: this.idnum,
-                            thisId : this.idnum,
-                            fartherId : array[i].thisId ,
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            startTime: '',
-                            deadLine: '',
-                            editPerson: '',
-                            investigatePerson: '',
-                            ratifyPerson: '',
-                            con_signPerson1: '',
-                            con_signPerson2:'',
-                            taskDescription:'',
-                            children:[],
-                        });
 
-                    }
-                    if(this.tag === 1) return;
-                    if(array[i].children){
-                        if(this.tag === 1) return;
-                        this.addreal(array[i].children);
-                        if(this.tag === 1) return;
-                    }
-                }
-            },
             applyEmployees(){
                 this.dialogFormVisible = true
                 this.contextstyle.display='none'
@@ -496,7 +398,7 @@
         position: fixed;
         padding: 10px;
         box-sizing: content-box;
-        height: 180px;
+        height: 135px;
     }
     .gl_prs_li{padding: unset;margin: unset;}
     .gl_prs_li>li{
@@ -510,15 +412,22 @@
         background: #ccc;
         color: #fff;
     }
-    .demo-tabs > .el-tabs__content {
-        padding: 32px;
-        color: #6b778c;
-        font-size: 32px;
-        font-weight: 600;
-    }
+    /*下面被注释的部分是调整tab内容大小的*/
+    /*.demo-tabs > .el-tabs__content {*/
+    /*    padding: 32px;*/
+    /*    color: #6b778c;*/
+    /*    font-size: 32px;*/
+    /*    font-weight: 600;*/
+    /*}*/
 
     .el-tabs--right .el-tabs__content,
     .el-tabs--left .el-tabs__content {
+        height: 100%;
+    }
+    .el-tabs--bottom .el-tabs__content {
+        height: 100%;
+    }
+    .el-tabs--top .el-tabs__content {
         height: 100%;
     }
 </style>
