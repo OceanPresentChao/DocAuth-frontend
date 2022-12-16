@@ -1,7 +1,30 @@
 <template>
     <div id="nowNewProject">
+        <div style="margin-bottom: 20px">
+            <el-button size="small" @click="addTab(editableTabsValue)">
+                add tab
+            </el-button>
+        </div>
+        <el-tabs
+                v-model="editableTabsValue"
+                type="card"
+                class="demo-tabs"
+                closable
+                @tab-remove="removeTab"
+        >
+            <el-tab-pane
+                    v-for="item in editableTabs"
+                    :key="item.name"
+                    :label="item.title"
+                    :name="item.name"
+            >
+                <TreeChart :json="item.content" :class="{landscape: 1}" @click-node="clickNode" />
+            </el-tab-pane>
+        </el-tabs>
 
-        <TreeChart :json="data" :class="{landscape: 1}" @click-node="clickNode" />
+
+
+
         <div class="gl_prs_ctn" :style='[contextstyle]'>
             <ul class='gl_prs_li'>
                 <li ><el-button type="primary" @click="addNode">添加子分支 </el-button></li>
@@ -81,6 +104,57 @@
         },
         data() {
             return {
+                tabIndex :2,
+                editableTabsValue: '1',
+                editableTabs: [
+                        {
+                            title: 'Tab 1',
+                            name: '1',
+                            content: {
+                                name: 'root',
+                                image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                //class: ["rootNode"],
+                                children: [
+                                    {
+                                        name: '1',
+                                        image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                        children:[],
+                                    },
+                                    {
+                                        name: '2',
+                                        image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                        children: [
+                                            {
+                                                name: '3',
+                                                image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                                children:[],
+                                            },
+                                            {
+                                                name: '4',
+                                                image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                                children:[],
+                                            },
+                                            {
+                                                name: '5',
+                                                image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                                children:[],
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                        },
+                        {
+                            title: 'Tab 2',
+                            name: '2',
+                            content: {
+                                name: 'root',
+                                image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                //class: ["rootNode"],
+                                children: []
+                            },
+                        },
+                    ],
                 dialogFormVisible:false,
                 formLabelWidth:'140px',
                 startTime:'',
@@ -153,6 +227,8 @@
                     },
                 ],
 
+
+
                 idnum:5,
                 tag:0,
                 now:'',
@@ -203,7 +279,7 @@
         methods: {
             clickNode: function(node){
                 this.now = node.name
-                //console.log(node.name)
+                console.log(node.name)
                 if(window.event.x + 188 > document.documentElement.clientWidth){
                     this.contextstyle.left = 'unset';
                     this.contextstyle.right = document.documentElement.clientWidth - window.event.x + 'px';
@@ -224,7 +300,12 @@
             deleteNode(){
                 if(this.now==='root') return
                 this.tag =0;
-                this.findChild([this.data])
+                for(let item of this.editableTabs){
+                    if(item.name === this.editableTabsValue){
+                        this.findChild([item.content])
+                        break
+                    }
+                }
                 this.shutDown();
             },
             //delete find
@@ -248,7 +329,13 @@
             },
             addNode(){
                 this.tag =0;
-                this.addreal([this.data])
+                for(let item of this.editableTabs){
+                    if(item.name === this.editableTabsValue){
+                        this.addreal([item.content])
+                        break
+                    }
+                }
+                // this.addreal([this.data])
                 this.shutDown();
             },
             addreal(array){
@@ -315,6 +402,37 @@
                     })
                     this.dialogFormVisible = false
                 }
+            },
+
+            addTab(targetName){
+                let newTabName = ++this.tabIndex + '';
+                this.editableTabs.push({
+                    title: 'New Tab',
+                    name: newTabName,
+                    content: {
+                        name: 'root',
+                        image_url: "https://static.refined-x.com/static/avatar.jpg",
+                        //class: ["rootNode"],
+                        children: []
+                        },
+                })
+                this.editableTabsValue = newTabName
+            },
+            removeTab(targetName){
+                let tabs = this.editableTabs
+                let activeName = this.editableTabsValue
+                if (activeName === targetName) {
+                    tabs.forEach((tab, index) => {
+                        if (tab.name === targetName) {
+                            let nextTab = tabs[index + 1] || tabs[index - 1]
+                            if (nextTab) {
+                                activeName = nextTab.name
+                            }
+                        }
+                    })
+                }
+                this.editableTabsValue = activeName
+                this.editableTabs = tabs.filter((tab) => tab.name !== targetName)
             }
 
 
