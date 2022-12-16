@@ -1,19 +1,17 @@
 <template>
+    <el-radio-group v-model="tabPosition" style="margin-bottom: 5px">
+        <el-radio-button label="top">top</el-radio-button>
+        <el-radio-button label="right">right</el-radio-button>
+        <el-radio-button label="bottom">bottom</el-radio-button>
+        <el-radio-button label="left">left</el-radio-button>
+    </el-radio-group>
     <div id="nowNewProject">
-        <div style="margin-bottom: 20px">
-            <el-button size="large" type = "primary" @click="addTab(editableTabsValue)">
-                新增阶段
-            </el-button>
-            <el-button size="large" type = "success" @click="saveCurrentProject()">
-                保存当前项目
-            </el-button>
-        </div>
         <el-tabs
                 v-model="editableTabsValue"
                 type="card"
                 class="demo-tabs"
-                closable
-                @tab-remove="removeTab"
+                :tab-position="tabPosition"
+                style="height: 2000px"
         >
             <el-tab-pane
                     v-for="item in editableTabs"
@@ -43,17 +41,17 @@
                     <el-input v-model="this.currentTask.name" autocomplete="off" />
                 </el-form-item>
                 <el-form-item label="任务持续时间" :label-width="formLabelWidth" >
-                <el-date-picker
-                        v-model="this.currentTask.startTime"
-                        type="datetime"
-                        placeholder="任务开始时间"
-                        style="margin-right: 50px"
-                />
-               <el-date-picker
+                    <el-date-picker
+                            v-model="this.currentTask.startTime"
+                            type="datetime"
+                            placeholder="任务开始时间"
+                            style="margin-right: 50px"
+                    />
+                    <el-date-picker
                             v-model="this.currentTask.deadLine"
                             type="datetime"
                             placeholder="任务截止时间"
-                />
+                    />
                 </el-form-item>
                 <el-form-item label="编" :label-width="formLabelWidth">
                     <el-select value-key="userid" v-model="this.currentTask.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
@@ -101,105 +99,106 @@
     import TreeChart from "@/components/layout/treeNode/treeChart.vue";
     import { ElMessage } from 'element-plus'
     export default {
-        name: 'nowNewProject',
+        name: 'viewProject',
         components: {
             TreeChart
         },
         data() {
             return {
+                tabPosition: 'left',
                 tabIndex :1,
                 editableTabsValue: '1',
                 editableTabs: [
-                        {
-                            title: 'Phase 1',
+                    {
+                        title: 'Phase 1',
+                        name: '1',
+                        content: {
                             name: '1',
-                            content: {
-                                name: '1',
-                                image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                thisId : 1,
-                                fartherId : 0,
-                                startTime: '',
-                                deadLine: '',
-                                editPerson: '',
-                                investigatePerson: '',
-                                ratifyPerson: '',
-                                con_signPerson1: '',
-                                con_signPerson2:'',
-                                taskDescription:'',
-                                //class: ["rootNode"],
-                                children: [
-                                    {
-                                        name: '2',
-                                        image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                        thisId : 2 ,
-                                        fartherId : 1 ,
-                                        startTime: '',
-                                        deadLine: '',
-                                        editPerson: '',
-                                        investigatePerson: '',
-                                        ratifyPerson: '',
-                                        con_signPerson1: '',
-                                        con_signPerson2:'',
-                                        taskDescription:'',
-                                        children:[],
-                                    },
-                                    {
-                                        name: '3',
-                                        image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                        thisId : 3,
-                                        fartherId : 1,
-                                        children: [
-                                            {
-                                                name: '4',
-                                                image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                                thisId : 4,
-                                                fartherId : 3,
-                                                startTime: '',
-                                                deadLine: '',
-                                                editPerson: '',
-                                                investigatePerson: '',
-                                                ratifyPerson: '',
-                                                con_signPerson1: '',
-                                                con_signPerson2:'',
-                                                taskDescription:'',
-                                                children:[],
-                                            },
-                                            {
-                                                name: '5',
-                                                image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                                thisId : 5,
-                                                fartherId : 3,
-                                                startTime: '',
-                                                deadLine: '',
-                                                editPerson: '',
-                                                investigatePerson: '',
-                                                ratifyPerson: '',
-                                                con_signPerson1: '',
-                                                con_signPerson2:'',
-                                                taskDescription:'',
-                                                children:[],
-                                            },
-                                            {
-                                                name: '6',
-                                                image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                                thisId : 6,
-                                                fartherId : 3,
-                                                startTime: '',
-                                                deadLine: '',
-                                                editPerson: '',
-                                                investigatePerson: '',
-                                                ratifyPerson: '',
-                                                con_signPerson1: '',
-                                                con_signPerson2:'',
-                                                taskDescription:'',
-                                                children:[],
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                        }
-                    ],
+                            image_url: "https://static.refined-x.com/static/avatar.jpg",
+                            thisId : 1,
+                            fartherId : 0,
+                            startTime: '',
+                            deadLine: '',
+                            editPerson: '',
+                            investigatePerson: '',
+                            ratifyPerson: '',
+                            con_signPerson1: '',
+                            con_signPerson2:'',
+                            taskDescription:'',
+                            //class: ["rootNode"],
+                            children: [
+                                {
+                                    name: '2',
+                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                    thisId : 2 ,
+                                    fartherId : 1 ,
+                                    startTime: '',
+                                    deadLine: '',
+                                    editPerson: '',
+                                    investigatePerson: '',
+                                    ratifyPerson: '',
+                                    con_signPerson1: '',
+                                    con_signPerson2:'',
+                                    taskDescription:'',
+                                    children:[],
+                                },
+                                {
+                                    name: '3',
+                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                    thisId : 3,
+                                    fartherId : 1,
+                                    children: [
+                                        {
+                                            name: '4',
+                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                            thisId : 4,
+                                            fartherId : 3,
+                                            startTime: '',
+                                            deadLine: '',
+                                            editPerson: '',
+                                            investigatePerson: '',
+                                            ratifyPerson: '',
+                                            con_signPerson1: '',
+                                            con_signPerson2:'',
+                                            taskDescription:'',
+                                            children:[],
+                                        },
+                                        {
+                                            name: '5',
+                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                            thisId : 5,
+                                            fartherId : 3,
+                                            startTime: '',
+                                            deadLine: '',
+                                            editPerson: '',
+                                            investigatePerson: '',
+                                            ratifyPerson: '',
+                                            con_signPerson1: '',
+                                            con_signPerson2:'',
+                                            taskDescription:'',
+                                            children:[],
+                                        },
+                                        {
+                                            name: '6',
+                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
+                                            thisId : 6,
+                                            fartherId : 3,
+                                            startTime: '',
+                                            deadLine: '',
+                                            editPerson: '',
+                                            investigatePerson: '',
+                                            ratifyPerson: '',
+                                            con_signPerson1: '',
+                                            con_signPerson2:'',
+                                            taskDescription:'',
+                                            children:[],
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                    }
+                ],
                 dialogFormVisible:false,
                 formLabelWidth:'140px',
                 startTime:'',
@@ -219,17 +218,17 @@
                 },
                 currentTask:{},
                 users:[
-                 {
-                    userid: 1,
-                    username: "wser",
-                    phone: '6465464654',
-                    email: 'sdsadsa@qq.com',
-                    regdate :'2022-11-24 21:14:31.000000',
-                    password:'sasdsasadas',
-                    gender:'男',
-                    role:['wseber'],
-                    enable:true,
-                },
+                    {
+                        userid: 1,
+                        username: "wser",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        role:['wseber'],
+                        enable:true,
+                    },
                     {
                         userid: 2,
                         username: "jucy",
@@ -446,10 +445,10 @@
                     console.log('发生冲突的小朋友',duplicateApplication)
                     for (let item of duplicateApplication)
                         ElMessage({
-                                    showClose:true,
-                                    message:item + '发生冲突' +'请重新分配',
-                                    type:'error'
-                            })
+                            showClose:true,
+                            message:item + '发生冲突' +'请重新分配',
+                            type:'error'
+                        })
                     this.dialogFormVisible = true
                 }
                 else{
@@ -469,57 +468,11 @@
                     type:'success'
                 })
             },
-            addTab(targetName){
-                let newTabName = ++this.tabIndex + '';
-                this.idnum ++
-                this.editableTabs.push({
-                    title: 'Phase ' + this.tabIndex,
-                    name: newTabName,
-                    content: {
-                        name: this.idnum + "",
-                        image_url: "https://static.refined-x.com/static/avatar.jpg",
-                        thisId:  this.idnum,
-                        fartherId: 0,
-                        startTime: '',
-                        deadLine: '',
-                        editPerson: '',
-                        investigatePerson: '',
-                        ratifyPerson: '',
-                        con_signPerson1: '',
-                        con_signPerson2:'',
-                        taskDescription:'',
-                        //class: ["rootNode"],
-                        children: []
-                        },
-                })
-                this.editableTabsValue = newTabName
-            },
-            removeTab(targetName){
-                let tabs = this.editableTabs
-                let activeName = this.editableTabsValue
-                if (activeName === targetName) {
-                    tabs.forEach((tab, index) => {
-                        if (tab.name === targetName) {
-                            let nextTab = tabs[index + 1] || tabs[index - 1]
-                            if (nextTab) {
-                                activeName = nextTab.name
-                            }
-                        }
-                    })
-                }
-                this.editableTabsValue = activeName
-                this.editableTabs = tabs.filter((tab) => tab.name !== targetName)
-                this.tabIndex--
-                let ct = 1
-                for(let item of this.editableTabs){
-                    item.title = 'Phase ' + ct
-                    ct++
-                }
-            }
 
 
 
-            }
+
+        }
     }
 </script>
 
@@ -556,6 +509,17 @@
     #tagli:hover{
         background: #ccc;
         color: #fff;
+    }
+    .demo-tabs > .el-tabs__content {
+        padding: 32px;
+        color: #6b778c;
+        font-size: 32px;
+        font-weight: 600;
+    }
+
+    .el-tabs--right .el-tabs__content,
+    .el-tabs--left .el-tabs__content {
+        height: 100%;
     }
 </style>
 

@@ -34,6 +34,8 @@ declare module '@vue/runtime-core' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
+    ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
+    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
@@ -62,5 +64,6 @@ declare module '@vue/runtime-core' {
     UserDetail: typeof import('./src/views/user/UserDetail.vue')['default']
     UserInfo: typeof import('./src/components/layout/header/UserInfo.vue')['default']
     UserManage: typeof import('./src/views/manage/UserManage.vue')['default']
+    ViewProject: typeof import('./src/components/layout/project/viewProject.vue')['default']
   }
 }
