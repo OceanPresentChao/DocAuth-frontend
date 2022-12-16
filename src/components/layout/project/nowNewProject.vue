@@ -108,7 +108,7 @@
                 editableTabsValue: '1',
                 editableTabs: [
                         {
-                            title: 'Tab 1',
+                            title: 'Phase 1',
                             name: '1',
                             content: {
                                 name: 'root',
@@ -145,7 +145,7 @@
                             },
                         },
                         {
-                            title: 'Tab 2',
+                            title: 'Phase 2',
                             name: '2',
                             content: {
                                 name: 'root',
@@ -226,8 +226,6 @@
                         enable:true,
                     },
                 ],
-
-
 
                 idnum:5,
                 tag:0,
@@ -407,7 +405,7 @@
             addTab(targetName){
                 let newTabName = ++this.tabIndex + '';
                 this.editableTabs.push({
-                    title: 'New Tab',
+                    title: 'Phase ' + this.tabIndex,
                     name: newTabName,
                     content: {
                         name: 'root',
@@ -433,6 +431,12 @@
                 }
                 this.editableTabsValue = activeName
                 this.editableTabs = tabs.filter((tab) => tab.name !== targetName)
+                this.tabIndex--
+                let ct = 1
+                for(let item of this.editableTabs){
+                    item.title = 'Phase ' + ct
+                    ct++
+                }
             }
 
 
