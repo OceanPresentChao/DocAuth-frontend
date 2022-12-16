@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    404: typeof import('./src/views/error/404.vue')['default']
     Account: typeof import('./src/views/login/Account.vue')['default']
     BreadCrumb: typeof import('./src/components/layout/header/BreadCrumb.vue')['default']
     Collapse: typeof import('./src/components/layout/header/Collapse.vue')['default']
