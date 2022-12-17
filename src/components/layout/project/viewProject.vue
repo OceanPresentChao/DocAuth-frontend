@@ -157,7 +157,17 @@
                     },
                     {
                         userid: 5,
-                        username: "qingXiao",
+                        username: "zqx",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'女',
+                        enable:true,
+                    },
+                    {
+                        userid: 6,
+                        username: "fxx",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
                         regdate :'2022-11-24 21:14:31.000000',
@@ -187,6 +197,18 @@
             this.load()
         },
         methods: {
+            transferToOperatorName(operatorType){
+              if(operatorType === 1)
+                  return "editPerson"
+              if(operatorType === 2)
+                  return "investigatePerson"
+              if(operatorType === 3)
+                  return "ratifyPerson"
+              if(operatorType === 4)
+                  return "con_signPerson1"
+              if(operatorType === 5)
+                  return "con_signPerson2"
+            },
             load(){
                 this.editableTabs =  [
                     {
@@ -496,22 +518,26 @@
                 for(let item of array){
                     // console.log('这里在插入结点',item.thisId,fartherId)
                     if(item.thisId === fartherId){
-                        item.children.push({
+                        let tmpNode ={
                             name: child.task__name,
                             image_url: this.undoneurl,
                             thisId:  child.task__thisId,
                             fartherId: child.task__thisFarther,
-                            startTime: '',
-                            deadLine: '',
+                            startTime: child.task__startTime,
+                            deadLine: child.task__deadLine,
                             editPerson: '',
                             investigatePerson: '',
                             ratifyPerson: '',
                             con_signPerson1: '',
                             con_signPerson2:'',
-                            taskDescription:'',
+                            taskDescription:child.task__desc,
                             children: [],
                             type:"node",
-                        })
+                        }
+                        for(let person of child.AssignedPersons){
+                            tmpNode[this.transferToOperatorName(person.type)] = person.user__username
+                        }
+                        item.children.push(tmpNode)
                     }
                     if(item.children){
                         this.findNodeAndAddItsChild(child,fartherId,item.children)
