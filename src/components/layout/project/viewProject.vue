@@ -86,8 +86,6 @@
       </span>
             </template>
         </el-dialog>
-
-
     </div>
 </template>
 
@@ -104,7 +102,87 @@
                 tabPosition: 'left',
                 tabIndex :1,
                 editableTabsValue: '1',
-                editableTabs: [
+                editableTabs:[],
+                dialogFormVisible:false,
+                formLabelWidth:'140px',
+                startTime:'',
+                deadLine:'',
+                currentTask:{},
+                users:[
+                    {
+                        userid: 1,
+                        username: "wser",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        role:['wseber'],
+                        enable:true,
+                    },
+                    {
+                        userid: 2,
+                        username: "jucy",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        role:['wseber'],
+                        enable:true,
+                    },
+                    {
+                        userid: 3,
+                        username: "oceanPresent",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },
+                    {
+                        userid: 4,
+                        username: "xvHao",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },
+                    {
+                        userid: 5,
+                        username: "qingXiao",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },
+                ],
+                idnum:6,
+                tag:0,
+                now:'',
+                landscape: [],
+                contextstyle: {
+                    display: 'none',
+                    right: '0px',
+                    top: '0px',
+                    left: '0px',
+                    bottom: '0px',
+                },
+                employeesApplication:[]
+            }
+        },
+
+        created() {
+            this.load()
+        },
+        methods: {
+            load(){
+                this.editableTabs =  [
                     {
                         title: 'Phase 1',
                         name: '1',
@@ -237,81 +315,16 @@
                             ]
                         },
                     }
-                ],
-                dialogFormVisible:false,
-                formLabelWidth:'140px',
-                startTime:'',
-                deadLine:'',
-                currentTask:{},
-                users:[
-                    {
-                        userid: 1,
-                        username: "wser",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        role:['wseber'],
-                        enable:true,
-                    },
-                    {
-                        userid: 2,
-                        username: "jucy",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        role:['wseber'],
-                        enable:true,
-                    },
-                    {
-                        userid: 3,
-                        username: "oceanPresent",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        enable:true,
-                    },
-                    {
-                        userid: 4,
-                        username: "xvHao",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        enable:true,
-                    },
-                    {
-                        userid: 5,
-                        username: "qingXiao",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        enable:true,
-                    },
-                ],
-                idnum:6,
-                tag:0,
-                now:'',
-                landscape: [],
-                contextstyle: {
-                    display: 'none',
-                    right: '0px',
-                    top: '0px',
-                    left: '0px',
-                    bottom: '0px',
-                },
-                employeesApplication:[]
-            }
-        },
-        methods: {
+                ]
+                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
+                    params:{
+                        projectId : 2
+                    }
+                }).then(res=>{
+                    console.log(res.data)
+                })
+
+            },
             clickNode: function(node){
                 this.currentTask = node
                 this.now = node.name
@@ -336,7 +349,6 @@
             shutDown(){
                 this.contextstyle.display='none';
             },
-
             //delete find
             findChild(array){
                 if(this.tag === 1) return;
@@ -413,6 +425,8 @@
                     type:'success'
                 })
             },
+
+
 
 
 
