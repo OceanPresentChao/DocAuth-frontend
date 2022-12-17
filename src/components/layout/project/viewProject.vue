@@ -25,7 +25,7 @@
 
         <div class="gl_prs_ctn" :style='[contextstyle]'>
             <ul class='gl_prs_li'>
-                <li ><el-button type="primary" @click="">进入任务 </el-button></li>
+                <li ><el-button type="primary" @click="enterTheNode">进入任务 </el-button></li>
                 <li ><el-button type="success" @click="applyEmployees">重新编排</el-button></li>
                 <li ><el-button type="info" @click="shutDown">关闭此栏</el-button></li>
             </ul>
@@ -322,42 +322,34 @@
                         },
                     }
                 ]
-                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
-                    params:{
-                        projectId : 2
-                    }
-                }).then(res=>{
-                    console.log(res.data,'这里是后端返回的数据')
-                })
-
                 this.processingDataFromBackEnd = [
                         {
                             "phaseName": "phase 3",
                             "phaseTasks": [
                                 {
-                                    "task___name": "分北况事备",
+                                    "task__name": "分北况事备",
                                     "task__thisId": 1,
                                     "task__id": 1,
                                     "task__thisFarther": 0
                                 },
                                 {
-                                    "task___name": "必满论白",
+                                    "task__name": "必满论白",
                                     "task__thisId": 2,
                                     "task__id": 2,
                                     "task__thisFarther": 1
                                 },
                                 {
-                                    "task___name": "因般体",
+                                    "task__name": "因般体",
                                     "task__thisId": 3,
                                     "task__id": 3,
                                     "task__thisFarther": 1
                                 },
                                 {
-                                    "task___name": "结把三",
+                                    "task__name": "结把三",
                                     "task__thisId": 4,
                                     "task__id": 4,
                                     "task__thisFarther": 2
-                                }
+                                },
                             ],
                             "task__number": 4
                         },
@@ -365,7 +357,7 @@
                             "phaseName": "phase 4",
                             "phaseTasks": [
                                 {
-                                    "task___name": "活进上部流",
+                                    "task__name": "活进上部流",
                                     "task__thisId": 5,
                                     "task__id": 5,
                                     "task__thisFarther": 0
@@ -377,39 +369,73 @@
                             "phaseName": "phase 5",
                             "phaseTasks": [
                                 {
-                                    "task___name": "到人段见",
+                                    "task__name": "到人段见",
                                     "task__thisId": 6,
                                     "task__id": 6,
                                     "task__thisFarther": 0
                                 },
                                 {
-                                    "task___name": "连自白活格",
+                                    "task__name": "连自白活格",
                                     "task__thisId": 7,
                                     "task__id": 7,
                                     "task__thisFarther": 6
                                 },
                                 {
-                                    "task___name": "长学状次身对",
+                                    "task__name": "长学状次身对",
                                     "task__thisId": 8,
                                     "task__id": 8,
                                     "task__thisFarther": 7
                                 },
                                 {
-                                    "task___name": "清极时方",
+                                    "task__name": "清极时方",
                                     "task__thisId": 9,
                                     "task__id": 9,
                                     "task__thisFarther": 8
-                                }
+                                },
+                                {
+                                    "task__name": "wser",
+                                    "task__thisId": 10,
+                                    "task__id": 10,
+                                    "task__thisFarther": 6
+                                },
+                                {
+                                    "task__name": "jucy",
+                                    "task__thisId": 11,
+                                    "task__id": 11,
+                                    "task__thisFarther": 8
+                                },
+                                {
+                                    "task__name": "zqx",
+                                    "task__thisId": 13,
+                                    "task__id": 13,
+                                    "task__thisFarther": 11
+                                },
+                                {
+                                    "task__name": "caobo",
+                                    "task__thisId": 12,
+                                    "task__id": 12,
+                                    "task__thisFarther": 7
+                                },
                             ],
-                            "task__number": 4
+                            "task__number": 8
                         },
                     ]
-                console.log('这里是待处理的后端返回的数据',this.processingDataFromBackEnd)
-                for(let item of this.processingDataFromBackEnd)
-                    this.addTabInefficiency(item)
+                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
+                    params:{
+                        projectId : 2
+                    }
+                }).then(res=>{
+                    this.processingDataFromBackEnd = res.data
+                    console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
+                    // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
+                    for(let item of this.processingDataFromBackEnd) {
+                        console.log('检查阶段里面的内容', item.phaseTasks)
+                        this.addTabInefficiency(item)
+                    }
+                })
                  // this.addTabInefficiency(this.processingDataFromBackEnd[0])
             },
-            //这个地方有更优的算法，后续有时间会写高效的hash建树方法
+            //这个地方想到了更优的算法，后续有时间会写高效的hash建树方法
             addTabInefficiency(phase){
                 console.log(phase,'这里是待处理的一维阶段数据')
                 let taskNum = phase.task__number
@@ -443,7 +469,7 @@
                 // console.log(rootNode,'这里是rootNode')
                 // console.log(taskNum,'本阶段的任务数')
                 // console.log(tabContent,'本阶段的任务数')
-                tabContent.name = rootNode.task___name
+                tabContent.name = rootNode.task__name
                 tabContent.thisId = rootNode.task__thisId
 
                 while(taskNum > 1){
@@ -471,7 +497,7 @@
                     // console.log('这里在插入结点',item.thisId,fartherId)
                     if(item.thisId === fartherId){
                         item.children.push({
-                            name: child.task___name,
+                            name: child.task__name,
                             image_url: this.undoneurl,
                             thisId:  child.task__thisId,
                             fartherId: child.task__thisFarther,
@@ -541,7 +567,6 @@
                 //下面转到朝海波负责的任务详情页或编辑页
                 this.shutDown();
             },
-
             applyEmployees(){
                 this.dialogFormVisible = true
                 this.contextstyle.display='none'
