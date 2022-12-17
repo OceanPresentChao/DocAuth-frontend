@@ -405,9 +405,9 @@
                         },
                     ]
                 console.log('这里是待处理的后端返回的数据',this.processingDataFromBackEnd)
-                // for(let item in this.processingDataFromBackEnd)
-                //     this.addTabInefficiency(item)
-                 this.addTabInefficiency(this.processingDataFromBackEnd[0])
+                for(let item of this.processingDataFromBackEnd)
+                    this.addTabInefficiency(item)
+                 // this.addTabInefficiency(this.processingDataFromBackEnd[0])
             },
             //这个地方有更优的算法，后续有时间会写高效的hash建树方法
             addTabInefficiency(phase){
