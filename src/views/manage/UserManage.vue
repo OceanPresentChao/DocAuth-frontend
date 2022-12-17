@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      test: '',
+      test: 'nihaoadsasdfssdfsfsdada',
       userName: '',
       headerBg: 'headerBg',
       roleSelction: 'wseber',

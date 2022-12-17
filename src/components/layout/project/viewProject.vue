@@ -25,7 +25,7 @@
 
         <div class="gl_prs_ctn" :style='[contextstyle]'>
             <ul class='gl_prs_li'>
-                <li ><el-button type="primary" @click="">进入任务 </el-button></li>
+                <li ><el-button type="primary" @click="enterTheNode">进入任务 </el-button></li>
                 <li ><el-button type="success" @click="applyEmployees">重新编排</el-button></li>
                 <li ><el-button type="info" @click="shutDown">关闭此栏</el-button></li>
             </ul>
@@ -86,8 +86,6 @@
       </span>
             </template>
         </el-dialog>
-
-
     </div>
 </template>
 
@@ -100,11 +98,119 @@
             TreeChart
         },
         data() {
+            let undoneurl="data:image/jpeg;base64,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";
+            let doneurl="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fgss0.baidu.com%2F7Po3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2Fb999a9014c086e06c230311107087bf40bd1cbd4.jpg&refer=http%3A%2F%2Fgss0.baidu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1673779229&t=037e162f8fce2b6db5f25fe434983dfd";
             return {
+                doneurl:doneurl,
+                undoneurl:undoneurl,
                 tabPosition: 'left',
                 tabIndex :1,
                 editableTabsValue: '1',
-                editableTabs: [
+                editableTabs:[],
+                dialogFormVisible:false,
+                formLabelWidth:'140px',
+                startTime:'',
+                deadLine:'',
+                currentTask:{},
+                users:[
+                    {
+                        userid: 1,
+                        username: "wser",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        role:['wseber'],
+                        enable:true,
+                    },
+                    {
+                        userid: 2,
+                        username: "jucy",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        role:['wseber'],
+                        enable:true,
+                    },
+                    {
+                        userid: 3,
+                        username: "oceanPresent",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },
+                    {
+                        userid: 4,
+                        username: "xvHao",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },
+                    {
+                        userid: 5,
+                        username: "zqx",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'女',
+                        enable:true,
+                    },
+                    {
+                        userid: 6,
+                        username: "fxx",
+                        phone: '6465464654',
+                        email: 'sdsadsa@qq.com',
+                        regdate :'2022-11-24 21:14:31.000000',
+                        password:'sasdsasadas',
+                        gender:'男',
+                        enable:true,
+                    },
+                ],
+                idnum:6,
+                tag:0,
+                now:'',
+                landscape: [],
+                contextstyle: {
+                    display: 'none',
+                    right: '0px',
+                    top: '0px',
+                    left: '0px',
+                    bottom: '0px',
+                },
+                employeesApplication:[],
+                processingDataFromBackEnd:[],
+                test:[]
+            }
+        },
+
+        created() {
+            this.load()
+        },
+        methods: {
+            transferToOperatorName(operatorType){
+              if(operatorType === 1)
+                  return "editPerson"
+              if(operatorType === 2)
+                  return "investigatePerson"
+              if(operatorType === 3)
+                  return "ratifyPerson"
+              if(operatorType === 4)
+                  return "con_signPerson1"
+              if(operatorType === 5)
+                  return "con_signPerson2"
+            },
+            load(){
+                this.editableTabs =  [
                     {
                         title: 'Phase 1',
                         name: '1',
@@ -237,81 +343,208 @@
                             ]
                         },
                     }
-                ],
-                dialogFormVisible:false,
-                formLabelWidth:'140px',
-                startTime:'',
-                deadLine:'',
-                currentTask:{},
-                users:[
-                    {
-                        userid: 1,
-                        username: "wser",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        role:['wseber'],
-                        enable:true,
+                ]
+                this.processingDataFromBackEnd = [
+                        {
+                            "phaseName": "phase 3",
+                            "phaseTasks": [
+                                {
+                                    "task__name": "分北况事备",
+                                    "task__thisId": 1,
+                                    "task__id": 1,
+                                    "task__thisFarther": 0
+                                },
+                                {
+                                    "task__name": "必满论白",
+                                    "task__thisId": 2,
+                                    "task__id": 2,
+                                    "task__thisFarther": 1
+                                },
+                                {
+                                    "task__name": "因般体",
+                                    "task__thisId": 3,
+                                    "task__id": 3,
+                                    "task__thisFarther": 1
+                                },
+                                {
+                                    "task__name": "结把三",
+                                    "task__thisId": 4,
+                                    "task__id": 4,
+                                    "task__thisFarther": 2
+                                },
+                            ],
+                            "task__number": 4
+                        },
+                        {
+                            "phaseName": "phase 4",
+                            "phaseTasks": [
+                                {
+                                    "task__name": "活进上部流",
+                                    "task__thisId": 5,
+                                    "task__id": 5,
+                                    "task__thisFarther": 0
+                                }
+                            ],
+                            "task__number": 1
+                        },
+                        {
+                            "phaseName": "phase 5",
+                            "phaseTasks": [
+                                {
+                                    "task__name": "到人段见",
+                                    "task__thisId": 6,
+                                    "task__id": 6,
+                                    "task__thisFarther": 0
+                                },
+                                {
+                                    "task__name": "连自白活格",
+                                    "task__thisId": 7,
+                                    "task__id": 7,
+                                    "task__thisFarther": 6
+                                },
+                                {
+                                    "task__name": "长学状次身对",
+                                    "task__thisId": 8,
+                                    "task__id": 8,
+                                    "task__thisFarther": 7
+                                },
+                                {
+                                    "task__name": "清极时方",
+                                    "task__thisId": 9,
+                                    "task__id": 9,
+                                    "task__thisFarther": 8
+                                },
+                                {
+                                    "task__name": "wser",
+                                    "task__thisId": 10,
+                                    "task__id": 10,
+                                    "task__thisFarther": 6
+                                },
+                                {
+                                    "task__name": "jucy",
+                                    "task__thisId": 11,
+                                    "task__id": 11,
+                                    "task__thisFarther": 8
+                                },
+                                {
+                                    "task__name": "zqx",
+                                    "task__thisId": 13,
+                                    "task__id": 13,
+                                    "task__thisFarther": 11
+                                },
+                                {
+                                    "task__name": "caobo",
+                                    "task__thisId": 12,
+                                    "task__id": 12,
+                                    "task__thisFarther": 7
+                                },
+                            ],
+                            "task__number": 8
+                        },
+                    ]
+                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
+                    params:{
+                        projectId : 2
+                    }
+                }).then(res=>{
+                    this.processingDataFromBackEnd = res.data
+                    console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
+                    // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
+                    for(let item of this.processingDataFromBackEnd) {
+                        console.log('检查阶段里面的内容', item.phaseTasks)
+                        this.addTabInefficiency(item)
+                    }
+                })
+                 // this.addTabInefficiency(this.processingDataFromBackEnd[0])
+            },
+            //这个地方想到了更优的算法，后续有时间会写高效的hash建树方法
+            addTabInefficiency(phase){
+                console.log(phase,'这里是待处理的一维阶段数据')
+                let taskNum = phase.task__number
+                let phaseTaskList = phase.phaseTasks
+                let tab = {
+                    title: phase.phaseName,
+                    name: phase.phaseName,
+                    content: {
+                        name: '',
+                        image_url: this.undoneurl,
+                        thisId:  1,
+                        fartherId: 0,
+                        startTime: '',
+                        deadLine: '',
+                        editPerson: '',
+                        investigatePerson: '',
+                        ratifyPerson: '',
+                        con_signPerson1: '',
+                        con_signPerson2:'',
+                        taskDescription:'',
+                        children: [],
+                        type:"root",
                     },
-                    {
-                        userid: 2,
-                        username: "jucy",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        role:['wseber'],
-                        enable:true,
-                    },
-                    {
-                        userid: 3,
-                        username: "oceanPresent",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        enable:true,
-                    },
-                    {
-                        userid: 4,
-                        username: "xvHao",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        enable:true,
-                    },
-                    {
-                        userid: 5,
-                        username: "qingXiao",
-                        phone: '6465464654',
-                        email: 'sdsadsa@qq.com',
-                        regdate :'2022-11-24 21:14:31.000000',
-                        password:'sasdsasadas',
-                        gender:'男',
-                        enable:true,
-                    },
-                ],
-                idnum:6,
-                tag:0,
-                now:'',
-                landscape: [],
-                contextstyle: {
-                    display: 'none',
-                    right: '0px',
-                    top: '0px',
-                    left: '0px',
-                    bottom: '0px',
-                },
-                employeesApplication:[]
-            }
-        },
-        methods: {
+                }
+                let tabContent = tab.content
+                let rootNode =  phaseTaskList.find(item => item.task__thisFarther === 0)
+                let openList = []
+                let ct = 0;
+
+                openList.push(rootNode)
+                // console.log(rootNode,'这里是rootNode')
+                // console.log(taskNum,'本阶段的任务数')
+                // console.log(tabContent,'本阶段的任务数')
+                tabContent.name = rootNode.task__name
+                tabContent.thisId = rootNode.task__thisId
+
+                while(taskNum > 1){
+                    let tmp = openList[0]
+                    openList.shift()
+                    for(let item of phaseTaskList){
+                        // console.log(item,tmp.task__thisId)
+                        if(item.task__thisFarther === tmp.task__thisId){
+                            this.findNodeAndAddItsChild(item,tmp.task__thisId,[tabContent])
+                            openList.push(item)
+                            taskNum --
+                        }
+                    }
+                }
+                console.log(tab.content,'这里是处理后的tab 阶段')
+                // console.log(phaseTaskList)
+                // console.log(phaseTaskList.shift())
+                this.editableTabs.push(tab)
+                this.editableTabsValue = '3'
+            },
+            findNodeAndAddItsChild(child,fartherId,array){
+                // console.log('**************************************')
+                // console.log(array,'这里是元素')
+                for(let item of array){
+                    // console.log('这里在插入结点',item.thisId,fartherId)
+                    if(item.thisId === fartherId){
+                        let tmpNode ={
+                            name: child.task__name,
+                            image_url: this.undoneurl,
+                            thisId:  child.task__thisId,
+                            fartherId: child.task__thisFarther,
+                            startTime: child.task__startTime,
+                            deadLine: child.task__deadLine,
+                            editPerson: '',
+                            investigatePerson: '',
+                            ratifyPerson: '',
+                            con_signPerson1: '',
+                            con_signPerson2:'',
+                            taskDescription:child.task__desc,
+                            children: [],
+                            type:"node",
+                        }
+                        for(let person of child.AssignedPersons){
+                            tmpNode[this.transferToOperatorName(person.type)] = person.user__username
+                        }
+                        item.children.push(tmpNode)
+                    }
+                    if(item.children){
+                        this.findNodeAndAddItsChild(child,fartherId,item.children)
+                    }
+                }
+
+            },
             clickNode: function(node){
                 this.currentTask = node
                 this.now = node.name
@@ -336,7 +569,6 @@
             shutDown(){
                 this.contextstyle.display='none';
             },
-
             //delete find
             findChild(array){
                 if(this.tag === 1) return;
@@ -361,7 +593,6 @@
                 //下面转到朝海波负责的任务详情页或编辑页
                 this.shutDown();
             },
-
             applyEmployees(){
                 this.dialogFormVisible = true
                 this.contextstyle.display='none'
@@ -413,6 +644,10 @@
                     type:'success'
                 })
             },
+
+
+
+
 
 
 
