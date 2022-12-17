@@ -178,7 +178,7 @@
         },
 
         created() {
-            // this.load()
+            this.load()
         },
         methods: {
             load(){
@@ -316,7 +316,7 @@
                         },
                     }
                 ]
-                this.$request.get('http://localhost:8000/api/v1/business/getTasksFromTheProject',{
+                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
                     params:{
                         projectId : 2
                     }
