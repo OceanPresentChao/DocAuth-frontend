@@ -380,6 +380,8 @@
                             return;
                         };
                         array.splice(i,1);
+                        console.log(array)
+                        // console.log(this.)
                     }
                     if(this.tag === 1) return;
                     if(array[i].children){
@@ -519,6 +521,7 @@
 
                 }
             },
+
             getChild(array,Data){
                 for(let i in array)
                 {
