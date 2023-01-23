@@ -1,4 +1,5 @@
 <template>
+
     <div id="nowNewProject">
         <div style="margin-bottom: 20px">
             <el-button size="large" type = "primary" @click="addTab(editableTabsValue)">
@@ -100,6 +101,7 @@
 <script>
     import TreeChart from "@/components/layout/treeNode/treeChart.vue";
     import { ElMessage } from 'element-plus'
+    import axios from "axios";
     export default {
         name: 'nowNewProject',
         components: {
@@ -380,7 +382,7 @@
                             return;
                         };
                         array.splice(i,1);
-                        console.log(array)
+                        //console.log(array)
                         // console.log(this.)
                     }
                     if(this.tag === 1) return;
@@ -407,7 +409,7 @@
                 {
                     //console.log(array[i].name);
                     if(array[i].thisId === this.now){
-                        console.log('findit');
+                        //console.log('findit');
                         this.tag = 1;
                         this.idnum=this.idnum+1;
                         let undoneurl=this.undoneurl;
@@ -441,8 +443,8 @@
                 this.contextstyle.display='none'
             },
             confirmOneTaskApplication(){
-                console.log(this.currentTask)
-                console.log(this.editableTabs)
+                //console.log(this.currentTask)
+                //console.log(this.editableTabs)
                 let judgeValidity = {}
                 let duplicateApplication = []
                 let hash={}
@@ -455,7 +457,7 @@
                 for (let key in judgeValidity){
                     if(hash[judgeValidity[key]])
                     {
-                        console.log(judgeValidity[key])
+                        //console.log(judgeValidity[key])
                         duplicateApplication.push(key)
                     }
                     hash[judgeValidity[key]] = true
@@ -464,7 +466,7 @@
                     //发生冲突项目不可提交
                     this.savable =false;
                     this.currentTask.image_url= this.undoneurl;
-                    console.log('发生冲突的小朋友',duplicateApplication)
+                    //console.log('发生冲突的小朋友',duplicateApplication)
                     for (let item of duplicateApplication)
                         ElMessage({
                                     showClose:true,
@@ -486,7 +488,7 @@
             },
             //检查项目全做完了
             examSavable(){
-                console.log(this.editableTabs);
+                //console.log(this.editableTabs);
                 for(let item of this.editableTabs){
                     if(this.examComplete([item.content]) ===false){
                         this.savable = false;
@@ -504,7 +506,7 @@
                     }
                     if(array[i].children){
                         if(this. examComplete(array[i].children)===false){
-                            console.log(array[i]);
+                            //console.log(array[i]);
                            return false;
                         }
                     }
@@ -512,28 +514,69 @@
 
                return true;
             },
+            exp(){
+                let postData= [];
+                for(let [index,item] of this.editableTabs.entries()){
+                    var tmp = "phase"+index;
+                    postData["phase"+index]=[];
+                    if(index===1){
+                        console.log("postData1111111111")
+                    }
+                    this.getChild([item.content],postData[tmp])
+                    //console.log(postData)
+                    break;
+                }
+                console.log(postData)
+            },
             saveCurrentProject(){
                 let postData= [];
-                for(let item of this.editableTabs){
-                    
-                        this.getChild([item.content],postData)
-                        break;
-
+                for(let [index,item] of this.editableTabs.entries()){
+                    var tmp = "phase"+index;
+                    postData["phase"+index]=[];
+                        this.getChild([item.content],postData[tmp])
+                        //console.log(postData)
                 }
-            },
+                axios.post("/api/v1/business/saveProject",
+                    {postData})
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                //console.log(postData)
 
+            },
+            //this exam is uesd for save project and pack the information
             getChild(array,Data){
+               // console.log("why!!!!!")
+                //console.log(Data)
+                //console.log("No!!!")
+                //console.log(array)
                 for(let i in array)
                 {
                     Data.push({
-
+                        thisId:array[i].thisId,
+                        name:array[i].name,
+                        fatherID:array[i].fartherId,
+                        staffs:[
+                            array[i].editPerson,
+                            array[i].investigatePerson,
+                            array[i].ratifyPerson,
+                            array[i].con_signPerson1,
+                            array[i].con_signPerson2,
+                        ]
                     }
                     )
                     if(array[i].children){
-                        this.getChild(array[i].children);
+                        this.getChild(array[i].children,Data);
                     }
                 }
+                //console.log("Data")
+                //console.log(Data)
             },
+
+
             addTab(targetName){
                 this.idnum = this.idnum+1;
                 let newTabName = ++this.tabIndex + '';
