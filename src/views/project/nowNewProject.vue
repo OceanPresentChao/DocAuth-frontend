@@ -126,11 +126,11 @@
                                 fartherId : 0,
                                 startTime: '',
                                 deadLine: '',
-                                editPerson: 'wser',
-                                investigatePerson: 'jucy',
-                                ratifyPerson: 'oceanPresent',
-                                con_signPerson1: 'xvHao',
-                                con_signPerson2:'qingXiao',
+                                editPerson: '1',
+                                investigatePerson: '2',
+                                ratifyPerson: '3',
+                                con_signPerson1: '4',
+                                con_signPerson2:'5',
                                 taskDescription:'',
                                 type:'root',
                                 //class: ["rootNode"],
@@ -371,6 +371,17 @@
                 // this.addreal([this.data])
                 this.shutDown();
             },
+            addNode(){
+                this.tag =0;
+                for(let item of this.editableTabs){
+                    if(item.name === this.editableTabsValue){
+                        this.addreal([item.content])
+                        break
+                    }
+                }
+                // this.addreal([this.data])
+                this.shutDown();
+            },
             addreal(array){
                 for(let i in array)
                 {
@@ -504,23 +515,16 @@
                     var tmp =index;
                     postData[index]=[];
                     this.getChild([item.content],postData[tmp])
-                        //console.log(postData)
+                    //console.log(postData)
                 }
-                console.log(postData)
+                console.log('这里是postData',postData)
                 allData["phases"] = postData
+                allData["phaseNumber"] = postData.length
+                allData["projectId"] = 3
                 console.log('这里是数据',allData)
                 this.$request.post("http://127.0.0.1:13500/api/v1/business/saveProject",allData).then(res=>{
                         console.log(res)
                 })
-                // axios.post("http://127.0.0.1:13500/api/v1/business/saveProject",
-                //     postData)
-                //     .then(function (response) {
-                //         console.log(response);
-                //     })
-                //     .catch(function (error) {
-                //         console.log(error);
-                //     });
-
 
             },
             //this exam is uesd for save project and pack the information
@@ -566,11 +570,11 @@
                         fartherId: 0,
                         startTime: '',
                         deadLine: '',
-                        editPerson: 'wser',
-                        investigatePerson: 'jucy',
-                        ratifyPerson: 'oceanPresent',
-                        con_signPerson1: 'xvHao',
-                        con_signPerson2:'qingXiao',
+                        editPerson: '1',
+                        investigatePerson: '2',
+                        ratifyPerson: '3',
+                        con_signPerson1: '4',
+                        con_signPerson2:'5',
                         taskDescription:'',
                         children: [],
                         type:"root",
