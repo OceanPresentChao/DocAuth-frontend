@@ -392,22 +392,6 @@ export default {
       this.load()
     },
 
-    saveRoleMenu() {
-      // console.log(this.$refs.tree.getCheckedNodes());
-      this.request.post(`/employee/rolemenu/${this.roleId}`, this.$refs.tree.getCheckedKeys()).then((res) => {
-        if (res) {
-          this.$message.success('权限绑定成功')
-          this.menuDialogVis = false
-
-          console.log(this.roleFlag)
-          if (this.roleFlag === 'MANAGER')
-            this.$store.commit('logout')
-        }
-        else {
-          this.$message.error('权限绑定失败')
-        }
-      })
-    },
 
   },
 
@@ -419,7 +403,7 @@ export default {
     <div style="text-align: left">
       <el-input v-model="userName" style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" />
       <el-input v-model="phone" style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" />
-      <el-select v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
+      <el-select class="selectStyle" v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
         <el-option v-for="(item) in roles" :value="item" />
       </el-select>
       <el-button type="primary" style="margin-left: 20px" @click="load">
@@ -661,7 +645,7 @@ export default {
 
 <style lang="scss">
   .el-select {
-    width: 115px;
+    width: 1150px;
   }
   .input-with-select .el-input-group__prepend {
     background: rgba(10, 30, 55, 0.7);

@@ -1,17 +1,17 @@
 <template>
-    <el-radio-group v-model="tabPosition" style="margin-bottom: 5px">
-        <el-radio-button label="top">top</el-radio-button>
-        <el-radio-button label="right">right</el-radio-button>
-        <el-radio-button label="bottom">bottom</el-radio-button>
-        <el-radio-button label="left">left</el-radio-button>
-    </el-radio-group>
     <div id="nowNewProject">
+        <el-radio-group v-model="tabPosition" style="margin-bottom: 5px">
+            <el-radio-button label="top">top</el-radio-button>
+            <el-radio-button label="right">right</el-radio-button>
+            <el-radio-button label="bottom">bottom</el-radio-button>
+            <el-radio-button label="left">left</el-radio-button>
+        </el-radio-group>
         <el-tabs
                 v-model="editableTabsValue"
                 type="card"
                 class="demo-tabs"
                 :tab-position="tabPosition"
-                style="height: 1000px"
+                style="height: 1500px"
         >
             <el-tab-pane
                     v-for="item in editableTabs"
@@ -344,104 +344,105 @@
                         },
                     }
                 ]
-                this.processingDataFromBackEnd = [
-                        {
-                            "phaseName": "phase 3",
-                            "phaseTasks": [
-                                {
-                                    "task__name": "分北况事备",
-                                    "task__thisId": 1,
-                                    "task__id": 1,
-                                    "task__thisFarther": 0
-                                },
-                                {
-                                    "task__name": "必满论白",
-                                    "task__thisId": 2,
-                                    "task__id": 2,
-                                    "task__thisFarther": 1
-                                },
-                                {
-                                    "task__name": "因般体",
-                                    "task__thisId": 3,
-                                    "task__id": 3,
-                                    "task__thisFarther": 1
-                                },
-                                {
-                                    "task__name": "结把三",
-                                    "task__thisId": 4,
-                                    "task__id": 4,
-                                    "task__thisFarther": 2
-                                },
-                            ],
-                            "task__number": 4
-                        },
-                        {
-                            "phaseName": "phase 4",
-                            "phaseTasks": [
-                                {
-                                    "task__name": "活进上部流",
-                                    "task__thisId": 5,
-                                    "task__id": 5,
-                                    "task__thisFarther": 0
-                                }
-                            ],
-                            "task__number": 1
-                        },
-                        {
-                            "phaseName": "phase 5",
-                            "phaseTasks": [
-                                {
-                                    "task__name": "到人段见",
-                                    "task__thisId": 6,
-                                    "task__id": 6,
-                                    "task__thisFarther": 0
-                                },
-                                {
-                                    "task__name": "连自白活格",
-                                    "task__thisId": 7,
-                                    "task__id": 7,
-                                    "task__thisFarther": 6
-                                },
-                                {
-                                    "task__name": "长学状次身对",
-                                    "task__thisId": 8,
-                                    "task__id": 8,
-                                    "task__thisFarther": 7
-                                },
-                                {
-                                    "task__name": "清极时方",
-                                    "task__thisId": 9,
-                                    "task__id": 9,
-                                    "task__thisFarther": 8
-                                },
-                                {
-                                    "task__name": "wser",
-                                    "task__thisId": 10,
-                                    "task__id": 10,
-                                    "task__thisFarther": 6
-                                },
-                                {
-                                    "task__name": "jucy",
-                                    "task__thisId": 11,
-                                    "task__id": 11,
-                                    "task__thisFarther": 8
-                                },
-                                {
-                                    "task__name": "zqx",
-                                    "task__thisId": 13,
-                                    "task__id": 13,
-                                    "task__thisFarther": 11
-                                },
-                                {
-                                    "task__name": "caobo",
-                                    "task__thisId": 12,
-                                    "task__id": 12,
-                                    "task__thisFarther": 7
-                                },
-                            ],
-                            "task__number": 8
-                        },
-                    ]
+                // this.processingDataFromBackEnd = [
+                //         {
+                //             "phaseName": "phase 3",
+                //             "phaseTasks": [
+                //                 {
+                //                     "task__name": "分北况事备",
+                //                     "task__thisId": 1,
+                //                     "task__id": 1,
+                //                     "task__thisFarther": 0
+                //                 },
+                //                 {
+                //                     "task__name": "必满论白",
+                //                     "task__thisId": 2,
+                //                     "task__id": 2,
+                //                     "task__thisFarther": 1
+                //                 },
+                //                 {
+                //                     "task__name": "因般体",
+                //                     "task__thisId": 3,
+                //                     "task__id": 3,
+                //                     "task__thisFarther": 1
+                //                 },
+                //                 {
+                //                     "task__name": "结把三",
+                //                     "task__thisId": 4,
+                //                     "task__id": 4,
+                //                     "task__thisFarther": 2
+                //                 },
+                //             ],
+                //             "task__number": 4
+                //         },
+                //         {
+                //             "phaseName": "phase 4",
+                //             "phaseTasks": [
+                //                 {
+                //                     "task__name": "活进上部流",
+                //                     "task__thisId": 5,
+                //                     "task__id": 5,
+                //                     "task__thisFarther": 0
+                //                 }
+                //             ],
+                //             "task__number": 1
+                //         },
+                //         {
+                //             "phaseName": "phase 5",
+                //             "phaseTasks": [
+                //                 {
+                //                     "task__name": "到人段见",
+                //                     "task__thisId": 6,
+                //                     "task__id": 6,
+                //                     "task__thisFarther": 0
+                //                 },
+                //                 {
+                //                     "task__name": "连自白活格",
+                //                     "task__thisId": 7,
+                //                     "task__id": 7,
+                //                     "task__thisFarther": 6
+                //                 },
+                //                 {
+                //                     "task__name": "长学状次身对",
+                //                     "task__thisId": 8,
+                //                     "task__id": 8,
+                //                     "task__thisFarther": 7
+                //                 },
+                //                 {
+                //                     "task__name": "清极时方",
+                //                     "task__thisId": 9,
+                //                     "task__id": 9,
+                //                     "task__thisFarther": 8
+                //                 },
+                //                 {
+                //                     "task__name": "wser",
+                //                     "task__thisId": 10,
+                //                     "task__id": 10,
+                //                     "task__thisFarther": 6
+                //                 },
+                //                 {
+                //                     "task__name": "jucy",
+                //                     "task__thisId": 11,
+                //                     "task__id": 11,
+                //                     "task__thisFarther": 8
+                //                 },
+                //                 {
+                //                     "task__name": "zqx",
+                //                     "task__thisId": 13,
+                //                     "task__id": 13,
+                //                     "task__thisFarther": 11
+                //                 },
+                //                 {
+                //                     "task__name": "caobo",
+                //                     "task__thisId": 12,
+                //                     "task__id": 12,
+                //                     "task__thisFarther": 7
+                //                 },
+                //             ],
+                //             "task__number": 8
+                //         },
+                //     ]
+                this.processingDataFromBackEnd=[]
                 this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
                     params:{
                         projectId : 2
@@ -483,7 +484,7 @@
                     },
                 }
                 let tabContent = tab.content
-                let rootNode =  phaseTaskList.find(item => item.task__thisFarther === 0)
+                let rootNode =  phaseTaskList.find(item => item.thisFarther === 0)
                 let openList = []
                 let ct = 0;
 
@@ -491,16 +492,17 @@
                 // console.log(rootNode,'这里是rootNode')
                 // console.log(taskNum,'本阶段的任务数')
                 // console.log(tabContent,'本阶段的任务数')
-                tabContent.name = rootNode.task__name
-                tabContent.thisId = rootNode.task__thisId
+                tabContent.name = rootNode.name
+                console.log('注意了这里事tabname',tabContent.name)
+                tabContent.thisId = rootNode.thisId
 
                 while(taskNum > 1){
                     let tmp = openList[0]
                     openList.shift()
                     for(let item of phaseTaskList){
                         // console.log(item,tmp.task__thisId)
-                        if(item.task__thisFarther === tmp.task__thisId){
-                            this.findNodeAndAddItsChild(item,tmp.task__thisId,[tabContent])
+                        if(item.thisFarther === tmp.thisId){
+                            this.findNodeAndAddItsChild(item,tmp.thisId,[tabContent])
                             openList.push(item)
                             taskNum --
                         }
@@ -519,18 +521,18 @@
                     // console.log('这里在插入结点',item.thisId,fartherId)
                     if(item.thisId === fartherId){
                         let tmpNode ={
-                            name: child.task__name,
+                            name: child.name,
                             image_url: this.undoneurl,
-                            thisId:  child.task__thisId,
-                            fartherId: child.task__thisFarther,
-                            startTime: child.task__startTime,
-                            deadLine: child.task__deadLine,
+                            thisId:  child.thisId,
+                            fartherId: child.thisFarther,
+                            startTime: child.startTime,
+                            deadLine: child.deadLine,
                             editPerson: '',
                             investigatePerson: '',
                             ratifyPerson: '',
                             con_signPerson1: '',
                             con_signPerson2:'',
-                            taskDescription:child.task__desc,
+                            taskDescription:child.desc,
                             children: [],
                             type:"node",
                         }
@@ -644,13 +646,6 @@
                     type:'success'
                 })
             },
-
-
-
-
-
-
-
 
         }
     }
