@@ -533,8 +533,11 @@
                 for(let [index,item] of this.editableTabs.entries()){
                     var tmp = "phase"+index;
                     postData["phase"+index]=[];
-                        this.getChild([item.content],postData[tmp])
-                        //console.log(postData)
+                    postData["startTime"]=item.content.startTime;
+                    postData["deadLine"]=item.content.deadLine;
+                    postData["taskDescription"]=item.content.taskDescription;
+                    this.getChild([item.content],postData[tmp])
+
                 }
                 axios.post("/api/v1/business/saveProject",
                     {postData})
