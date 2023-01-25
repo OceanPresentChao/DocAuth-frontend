@@ -1,5 +1,4 @@
 <template>
-
     <div id="nowNewProject">
         <div style="margin-bottom: 20px">
             <el-button size="large" type = "primary" @click="addTab(editableTabsValue)">
@@ -127,84 +126,86 @@
                                 fartherId : 0,
                                 startTime: '',
                                 deadLine: '',
-                                editPerson: '',
-                                investigatePerson: '',
-                                ratifyPerson: '',
-                                con_signPerson1: '',
-                                con_signPerson2:'',
+                                editPerson: 'wser',
+                                investigatePerson: 'jucy',
+                                ratifyPerson: 'oceanPresent',
+                                con_signPerson1: 'xvHao',
+                                con_signPerson2:'qingXiao',
                                 taskDescription:'',
                                 type:'root',
                                 //class: ["rootNode"],
-                                children: [
-                                    {
-                                        name: '2',
-                                        image_url: undoneurl,
-                                        thisId : 2 ,
-                                        fartherId : 1 ,
-                                        startTime: '',
-                                        deadLine: '',
-                                        editPerson: '',
-                                        investigatePerson: '',
-                                        ratifyPerson: '',
-                                        con_signPerson1: '',
-                                        con_signPerson2:'',
-                                        taskDescription:'',
-                                        children:[],
-                                    },
-                                    {
-                                        name: '3',
-                                        image_url: undoneurl,
-                                        thisId : 3,
-                                        fartherId : 1,
-                                        children: [
-                                            {
-                                                name: '4',
-                                                image_url: undoneurl,
-                                                thisId : 4,
-                                                fartherId : 3,
-                                                startTime: '',
-                                                deadLine: '',
-                                                editPerson: '',
-                                                investigatePerson: '',
-                                                ratifyPerson: '',
-                                                con_signPerson1: '',
-                                                con_signPerson2:'',
-                                                taskDescription:'',
-                                                children:[],
-                                            },
-                                            {
-                                                name: '5',
-                                                image_url: undoneurl,
-                                                thisId : 5,
-                                                fartherId : 3,
-                                                startTime: '',
-                                                deadLine: '',
-                                                editPerson: '',
-                                                investigatePerson: '',
-                                                ratifyPerson: '',
-                                                con_signPerson1: '',
-                                                con_signPerson2:'',
-                                                taskDescription:'',
-                                                children:[],
-                                            },
-                                            {
-                                                name: '6',
-                                                image_url: undoneurl,
-                                                thisId : 6,
-                                                fartherId : 3,
-                                                startTime: '',
-                                                deadLine: '',
-                                                editPerson: '',
-                                                investigatePerson: '',
-                                                ratifyPerson: '',
-                                                con_signPerson1: '',
-                                                con_signPerson2:'',
-                                                taskDescription:'',
-                                                children:[],
-                                            }
-                                        ]
-                                    }
-                                ]
+                                // children: [
+                                //     {
+                                //         name: '2',
+                                //         image_url: undoneurl,
+                                //         thisId : 2 ,
+                                //         fartherId : 1 ,
+                                //         startTime: '',
+                                //         deadLine: '',
+                                //         editPerson: '',
+                                //         investigatePerson: '',
+                                //         ratifyPerson: '',
+                                //         con_signPerson1: '',
+                                //         con_signPerson2:'',
+                                //         taskDescription:'',
+                                //         children:[],
+                                //     },
+                                //     {
+                                //         name: '3',
+                                //         image_url: undoneurl,
+                                //         thisId : 3,
+                                //         fartherId : 1,
+                                //         children: [
+                                //             {
+                                //                 name: '4',
+                                //                 image_url: undoneurl,
+                                //                 thisId : 4,
+                                //                 fartherId : 3,
+                                //                 startTime: '',
+                                //                 deadLine: '',
+                                //                 editPerson: '',
+                                //                 investigatePerson: '',
+                                //                 ratifyPerson: '',
+                                //                 con_signPerson1: '',
+                                //                 con_signPerson2:'',
+                                //                 taskDescription:'',
+                                //                 children:[],
+                                //             },
+                                //             {
+                                //                 name: '5',
+                                //                 image_url: undoneurl,
+                                //                 thisId : 5,
+                                //                 fartherId : 3,
+                                //                 startTime: '',
+                                //                 deadLine: '',
+                                //                 editPerson: '',
+                                //                 investigatePerson: '',
+                                //                 ratifyPerson: '',
+                                //                 con_signPerson1: '',
+                                //                 con_signPerson2:'',
+                                //                 taskDescription:'',
+                                //                 children:[],
+                                //             },
+                                //             {
+                                //                 name: '6',
+                                //                 image_url: undoneurl,
+                                //                 thisId : 6,
+                                //                 fartherId : 3,
+                                //                 startTime: '',
+                                //                 deadLine: '',
+                                //                 editPerson: '',
+                                //                 investigatePerson: '',
+                                //                 ratifyPerson: '',
+                                //                 con_signPerson1: '',
+                                //                 con_signPerson2:'',
+                                //                 taskDescription:'',
+                                //                 children:[],
+                                //             }
+                                //         ]
+                                //     }
+                                // ]
+                                children: []
+
                             },
                         }
                     ],
@@ -284,40 +285,6 @@
                 tag:0,
                 now:'',
                 landscape: [],
-                /*data: {
-                    name: 'root',
-                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                    type:"root",
-                    //class: ["rootNode"],
-                    children: [
-                        {
-                            name: '1',
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            children:[],
-                        },
-                        {
-                            name: '2',
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            children: [
-                                {
-                                    name: '3',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    children:[],
-                                },
-                                {
-                                    name: '4',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    children:[],
-                                },
-                                {
-                                    name: '5',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    children:[],
-                                }
-                            ]
-                        }
-                    ]
-                },*/
                 contextstyle: {
                     display: 'none',
                     right: '0px',
@@ -526,23 +493,34 @@
                 }
                 console.log(postData)
             },
+
+
             saveCurrentProject(){
+                let allData = {}
+                allData["name"] = "项目数据"
+
                 let postData= [];
                 for(let [index,item] of this.editableTabs.entries()){
-                    var tmp = "phase"+index;
-                    postData["phase"+index]=[];
-                        this.getChild([item.content],postData[tmp])
+                    var tmp =index;
+                    postData[index]=[];
+                    this.getChild([item.content],postData[tmp])
                         //console.log(postData)
                 }
-                axios.post("/api/v1/business/saveProject",
-                    {postData})
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
                 console.log(postData)
+                allData["phases"] = postData
+                console.log('这里是数据',allData)
+                this.$request.post("http://127.0.0.1:13500/api/v1/business/saveProject",allData).then(res=>{
+                        console.log(res)
+                })
+                // axios.post("http://127.0.0.1:13500/api/v1/business/saveProject",
+                //     postData)
+                //     .then(function (response) {
+                //         console.log(response);
+                //     })
+                //     .catch(function (error) {
+                //         console.log(error);
+                //     });
+
 
             },
             //this exam is uesd for save project and pack the information
@@ -588,11 +566,11 @@
                         fartherId: 0,
                         startTime: '',
                         deadLine: '',
-                        editPerson: '',
-                        investigatePerson: '',
-                        ratifyPerson: '',
-                        con_signPerson1: '',
-                        con_signPerson2:'',
+                        editPerson: 'wser',
+                        investigatePerson: 'jucy',
+                        ratifyPerson: 'oceanPresent',
+                        con_signPerson1: 'xvHao',
+                        con_signPerson2:'qingXiao',
                         taskDescription:'',
                         children: [],
                         type:"root",

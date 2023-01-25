@@ -1,11 +1,11 @@
 <template>
-    <el-radio-group v-model="tabPosition" style="margin-bottom: 5px">
-        <el-radio-button label="top">top</el-radio-button>
-        <el-radio-button label="right">right</el-radio-button>
-        <el-radio-button label="bottom">bottom</el-radio-button>
-        <el-radio-button label="left">left</el-radio-button>
-    </el-radio-group>
     <div id="nowNewProject">
+        <el-radio-group v-model="tabPosition" style="margin-bottom: 5px">
+            <el-radio-button label="top">top</el-radio-button>
+            <el-radio-button label="right">right</el-radio-button>
+            <el-radio-button label="bottom">bottom</el-radio-button>
+            <el-radio-button label="left">left</el-radio-button>
+        </el-radio-group>
         <el-tabs
                 v-model="editableTabsValue"
                 type="card"
@@ -644,9 +644,6 @@
                     type:'success'
                 })
             },
-
-
-
 
 
 
