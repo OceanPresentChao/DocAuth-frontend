@@ -468,7 +468,7 @@ export default {
       <el-table-column prop="username" align="center" label="用户名" width="100" />
       <el-table-column prop="phone" align="center" label="电话号"  />
       <el-table-column prop="gender" align="center" label="性别" width="50" />
-      <el-table-column prop="email" align="center" label="邮箱" />
+      <el-table-column prop="email" align="center" label="邮箱" width="150" />
       <el-table-column prop="regdate" align="center" label="注册日期"  />
       <el-table-column label="启用" align="center" width="100">
         <template #default="{ row, $index }">
@@ -639,13 +639,13 @@ export default {
 </template>
 
 <style>
-  .headerBg{
-    background: #55e0e5!important;
-  }
+
 </style>
 
 <style scoped>
-
+  .headerBg{
+    background: #55e0e5!important;
+  }
 </style>
 
 <style lang="scss" scoped>
@@ -736,7 +736,7 @@ export default {
   .el-input-group--append .el-input__inner,
   .el-input-group__prepend {
     font-size: 14px;
-    color: #ffff;
+    color: rgba(255, 255, 255, 0.67);
   }
   //修改下拉框的字体
   .el-select-dropdown__list {
@@ -764,7 +764,7 @@ export default {
   .el-input-group__prepend button.el-button,
   .el-input-group__prepend div.el-select .el-input__inner,
   .el-input-group__prepend div.el-select:hover .el-input__inner {
-    color: #ffff !important;
+    color: #ffff ;
     font-size: 16px;
   }
   // 修改鼠标选中输入框时输入框的颜色

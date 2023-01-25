@@ -67,7 +67,7 @@ export const menuRoutes = [
           {
             name: 'createProject',
             path: '/project/create',
-            component: () => import('@/components/layout/project/nowNewProject.vue'),
+            component: () => import('@/views/project/nowNewProject.vue'),
             meta: {
               title: '创建项目',
               icon: 'carbon:star',
@@ -77,7 +77,7 @@ export const menuRoutes = [
           {
             name: 'viewProject',
             path: '/project/view',
-            component: () => import('@/components/layout/project/viewProject.vue'),
+            component: () => import('@/views/project/viewProject.vue'),
             meta: {
               title: '观看项目',
               icon: 'carbon:view',
