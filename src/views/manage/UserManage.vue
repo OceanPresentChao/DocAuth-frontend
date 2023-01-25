@@ -1,417 +1,417 @@
 <script>
-import { Apple, Edit,  Loading, Menu, Search, Share } from '@element-plus/icons-vue'
-import { InfoFilled } from '@element-plus/icons-vue'
-export default {
-  name: 'UserManage',
+  import { Apple, Edit,  Loading, Menu, Search, Share } from '@element-plus/icons-vue'
+  import { InfoFilled } from '@element-plus/icons-vue'
+  export default {
+    name: 'UserManage',
 
-  components: {
-    Search,
-    Loading,
-    Edit,
-    Share,
-    Apple,
-    InfoFilled,
-    Menu,
-  },
-  data() {
-    return {
-      test: 'nihaoadsasdfssdfsfsdada',
-      userName: '',
-      headerBg: 'headerBg',
-      roleSelction: 'wseber',
-      tableData: [
-        {
-          userid: 10,
-          username: 'dasdsa',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          role: ['wseber'],
-          enable: true,
-        },
-        {
-          userid: 10,
-          username: 'dasdsa',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          role: ['wseber'],
-          enable: true,
-        },
-        {
-          userid: 10,
-          username: 'dasdsa',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-        {
-          userid: 10,
-          username: 'dasdsa',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-        {
-          userid: 10,
-          username: 'dasdsa',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-        {
-          userid: 10,
-          username: 'dasdsa',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          role: ['wseber'],
-          enable: true,
-        },
-      ],
-      total: 0,
-      pageNum: 1,
-      pageSize: 5,
-      nickname: '',
-      phone: '',
-      email: '',
-      form: {},
-      loginForm: {},
-      formLabelWidth: '80px',
-      infodialogFormVisible: false,
-      loginDialogFormVisible: false,
-      authDialogFormVisible: false,
-      genders: ['男', '女', '未知'],
-      roles: ['项目经理', '老板', '普通员工', '总经理', 'wseber'],
-      role: [],
-      allFunctions: [
-        {
-          id: 1,
-          name: '修改个人信息',
-          key: 'modifyPersonalInformation',
-          status: '已启用',
-        },
-        {
-          id: 2,
-          name: '创建项目',
-          key: 'modifyPersonalInformation',
-        },
-        {
-          id: 3,
-          name: '删除用户',
-          key: 'modifyPersonalInformation',
-          status: '已启用',
+    components: {
+      Search,
+      Loading,
+      Edit,
+      Share,
+      Apple,
+      InfoFilled,
+      Menu,
+    },
+    data() {
+      return {
+        test: 'nihaoadsasdfssdfsfsdada',
+        userName: '',
+        headerBg: 'headerBg',
+        roleSelction: 'wseber',
+        tableData: [
+          {
+            userid: 10,
+            username: 'dasdsa',
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate: '2022-11-24 21:14:31.000000',
+            password: 'sasdsasadas',
+            gender: '男',
+            role: ['wseber'],
+            enable: true,
+          },
+          {
+            userid: 10,
+            username: 'dasdsa',
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate: '2022-11-24 21:14:31.000000',
+            password: 'sasdsasadas',
+            gender: '男',
+            role: ['wseber'],
+            enable: true,
+          },
+          {
+            userid: 10,
+            username: 'dasdsa',
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate: '2022-11-24 21:14:31.000000',
+            password: 'sasdsasadas',
+            gender: '男',
+            enable: true,
+          },
+          {
+            userid: 10,
+            username: 'dasdsa',
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate: '2022-11-24 21:14:31.000000',
+            password: 'sasdsasadas',
+            gender: '男',
+            enable: true,
+          },
+          {
+            userid: 10,
+            username: 'dasdsa',
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate: '2022-11-24 21:14:31.000000',
+            password: 'sasdsasadas',
+            gender: '男',
+            enable: true,
+          },
+          {
+            userid: 10,
+            username: 'dasdsa',
+            phone: '6465464654',
+            email: 'sdsadsa@qq.com',
+            regdate: '2022-11-24 21:14:31.000000',
+            password: 'sasdsasadas',
+            gender: '男',
+            role: ['wseber'],
+            enable: true,
+          },
+        ],
+        total: 0,
+        pageNum: 1,
+        pageSize: 5,
+        nickname: '',
+        phone: '',
+        email: '',
+        form: {},
+        loginForm: {},
+        formLabelWidth: '80px',
+        infodialogFormVisible: false,
+        loginDialogFormVisible: false,
+        authDialogFormVisible: false,
+        genders: ['男', '女', '未知'],
+        roles: ['项目经理', '老板', '普通员工', '总经理', 'wseber'],
+        role: [],
+        allFunctions: [
+          {
+            id: 1,
+            name: '修改个人信息',
+            key: 'modifyPersonalInformation',
+            status: '已启用',
+          },
+          {
+            id: 2,
+            name: '创建项目',
+            key: 'modifyPersonalInformation',
+          },
+          {
+            id: 3,
+            name: '删除用户',
+            key: 'modifyPersonalInformation',
+            status: '已启用',
 
+          },
+          {
+            id: 4,
+            name: '修改用户信息',
+            key: 'modifyPersonalInformation',
+            status: '已启用',
+          },
+          {
+            id: 5,
+            name: '嘤嘤嘤',
+            key: 'modifyPersonalInformation',
+            status: '已启用',
+          },
+        ], // 全部可选的功能权限
+
+        thisUserFunctions: [
+          {
+            id: 1,
+            name: '修改个人信息',
+            key: 'modifyPersonalInformation',
+            status: 1,
+            enable: true,
+          },
+          {
+            id: 2,
+            name: '创建项目',
+            key: 'modifyPersonalInformation',
+            status: 1,
+            enable: true,
+          },
+          {
+            id: 3,
+            name: '删除用户',
+            key: 'modifyPersonalInformation',
+            status: 1,
+            enable: true,
+
+          }], // 该用户已经拥有的权限
+
+        membership: '',
+        realName: '',
+        position: '',
+        authorityKey: '',
+        menuData: [],
+        multipleSelection: [],
+
+        menuDialogVis: false,
+        props: {
+          label: 'name',
         },
-        {
-          id: 4,
-          name: '修改用户信息',
-          key: 'modifyPersonalInformation',
-          status: '已启用',
-        },
-        {
-          id: 5,
-          name: '嘤嘤嘤',
-          key: 'modifyPersonalInformation',
-          status: '已启用',
-        },
-      ], // 全部可选的功能权限
+        expends: [],
+        checks: [],
+        roleId: 0,
+        roleFlag: '',
 
-      thisUserFunctions: [
-        {
-          id: 1,
-          name: '修改个人信息',
-          key: 'modifyPersonalInformation',
-          status: 1,
-          enable: true,
-        },
-        {
-          id: 2,
-          name: '创建项目',
-          key: 'modifyPersonalInformation',
-          status: 1,
-          enable: true,
-        },
-        {
-          id: 3,
-          name: '删除用户',
-          key: 'modifyPersonalInformation',
-          status: 1,
-          enable: true,
+      }
+    },
+    created() {
 
-        }], // 该用户已经拥有的权限
+      // this.load()
 
-      membership: '',
-      realName: '',
-      position: '',
-      authorityKey: '',
-      menuData: [],
-      multipleSelection: [],
+    },
 
-      menuDialogVis: false,
-      props: {
-        label: 'name',
-      },
-      expends: [],
-      checks: [],
-      roleId: 0,
-      roleFlag: '',
-
-    }
-  },
-  created() {
-
-    // this.load()
-
-  },
-
-  methods: {
-    selectMenu(role) {
-      this.roleId = role.id
-      this.menuDialogVis = true
-      console.log(`${role.authorityKey}这里是该角色的权限键值`)
-      this.roleFlag = role.authorityKey
-
-      this.$request.get('/menu', {
-        params: {
-          name: '',
-        },
-      }).then((res) => {
-        this.menuData = res
-        this.expends = this.menuData.map(v => v.id)
-      })
-      this.$request.get(`/employee/rolemenu/${this.roleId}`).then((res) => {
-        this.checks = res.data
+    methods: {
+      selectMenu(role) {
+        this.roleId = role.id
         this.menuDialogVis = true
+        console.log(`${role.authorityKey}这里是该角色的权限键值`)
+        this.roleFlag = role.authorityKey
 
-        this.$request.get('/menu/ids').then((r) => {
-          const ids = r.data
-          ids.forEach((id) => {
-            if (!this.checks.includes(id))
-              this.$refs.tree.setChecked(id, false)
+        this.$request.get('/menu', {
+          params: {
+            name: '',
+          },
+        }).then((res) => {
+          this.menuData = res
+          this.expends = this.menuData.map(v => v.id)
+        })
+        this.$request.get(`/employee/rolemenu/${this.roleId}`).then((res) => {
+          this.checks = res.data
+          this.menuDialogVis = true
+
+          this.$request.get('/menu/ids').then((r) => {
+            const ids = r.data
+            ids.forEach((id) => {
+              if (!this.checks.includes(id))
+                this.$refs.tree.setChecked(id, false)
+            })
           })
         })
-      })
+      },
+
+      changeValue(value) {
+        console.log('value', value)
+        console.log(this.test, 'thie.test')
+      },
+
+      reset() {
+        this.userName = ''
+        this.phone = ''
+        // let f  = new FormData()
+        // f.append("current",1);
+        // f.append("size", 2);
+        // f.append("tableName", 3);
+        // console.log(f)
+        // this. ="",
+        // this.load()
+      },
+      saveLoginInfor() {
+        this.$request.post('/api/v1/user/', this.loginForm).then((res) => {
+          if (res.code === 219) {
+            this.$message.success('注册成功')
+            this.dialogFormVisible = false
+            this.load()
+          }
+          else {
+            this.$message.error('注册失败')
+          }
+        })
+      },
+      handleEditPersonalInformation(row) {
+        this.form = row
+        console.log(row)
+        this.infodialogFormVisible = true
+      },
+      handleAdd() {
+        this.loginDialogFormVisible = true
+        this.form = {}
+      },
+      handleEdit() {
+
+      },
+      handleManageAuthority(row) {
+        this.userid = row.userid
+        this.role = row.role
+        // 获得当前用户所拥有的角色
+        this.$request.get('/api/v1/permission/role/', {
+          Params: {
+            id: this.userid,
+          },
+        }).then((res) => {
+          this.role = res
+          console.log(res)
+        })
+
+        // 得到所有给该用户开小灶的权限
+        this.$request.get('/api/v1/permission/extra/function/', {
+          Params: {
+            id: this.userid,
+          },
+        }).then((res) => {
+          this.thisUserFunctions = res
+        })
+        this.authDialogFormVisible = true
+      },
+      saveAuthorityInfor() {
+        const data = {}
+        data.userId = this.userid
+        data.extraFunctionList = []
+        let tmp = {}
+        for (const item of this.thisUserFunctions) {
+          tmp.id = item.id
+          tmp.enable = item.enable
+          data.extraFunctionList.push(tmp)
+          tmp = {}
+        }
+        console.log('这是数据', data)
+        this.$request.put('/api/v1/permission/extra/function/', data).then((res) => {
+          if (res.code === 219) {
+            this.$message.success('保存成功')
+            this.dialogFormVisible = false
+            this.load()
+          }
+          else {
+            this.$message.error('保存失败')
+          }
+        })
+        console.log(this.thisUserFunctions)
+        this.authDialogFormVisible = false
+      },
+      load() {
+        // 请求分页查询
+        this.$request.get('/api/v1/user/list', {
+          params: {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize,
+            userName: this.userName,
+            phone: this.phone,
+            role: this.role,
+          },
+        }).then((res) => {
+          console.log(res)
+          this.tableData = res.records
+          this.total = res.total
+        })
+        // //浪费流量，需要后续优化
+        // this.request.get("/employee").then(res =>{
+        //
+        //   // let arr1 = this.unique(res.data.rows)
+        //   let flag =  this.unique(res.data.map(v => v.authorityKey))
+        //   this.roles = flag
+        //   console.log("这里是roles")
+        //   console.log(this.roles)
+        //
+        // })
+      },
+      handleSizeChange(pageSize) {
+        console.log(pageSize)
+        this.pageSize = pageSize
+        this.load()
+      },
+      handleCurrentChange(pageNum) {
+        console.log(pageNum)
+        this.pageNum = pageNum
+        this.load()
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val
+      },
+      delBatch() {
+        const ids = this.multipleSelection.map(v => v.id) // 将对象数组变成纯ID的数组
+        console.log(this.multipleSelection)
+        console.log(ids)
+        this.$request.delete('/api/v1/user/ids', {
+          params: {
+            ids,
+          },
+        }).then((res) => {
+          console.log(res)
+          if (res) {
+            this.$message.success('批量辞退成功')
+            this.dialogFormVisible = false
+            this.load()
+          }
+          else {
+            this.$message.error('批量辞退失败')
+          }
+        })
+      },
+      deleteUser(id) {
+        this.$request.delete(`/api/v1/user/${id}`).then((res) => {
+          if (res) {
+            this.$message.success('删除成功')
+            this.dialogFormVisible = false
+            this.load()
+          }
+          else {
+            this.$message.error('删除失败')
+          }
+        })
+      },
+      update() {
+        console.log(this.form)
+        // this.$request.post("/api/v1/user/"+this.form.userid , this.form).then(res =>{
+        //   if(res.code === 223){
+        //     this.$message.success("保存成功")
+        //     this.dialogFormVisible = false
+        //     this.load()
+        //   }
+        //   else{
+        //     this.$message.error("保存失败")
+        //   }
+        //
+        // })
+      },
+      changeEnable(row) {},
+
+      exp() {
+        window.open('http://localhost:9099/employee/export')
+      },
+      handleExcelImportSuccess() {
+        this.$message.success('导入成功')
+        this.load()
+      },
+
+      saveRoleMenu() {
+        // console.log(this.$refs.tree.getCheckedNodes());
+        this.request.post(`/employee/rolemenu/${this.roleId}`, this.$refs.tree.getCheckedKeys()).then((res) => {
+          if (res) {
+            this.$message.success('权限绑定成功')
+            this.menuDialogVis = false
+
+            console.log(this.roleFlag)
+            if (this.roleFlag === 'MANAGER')
+              this.$store.commit('logout')
+          }
+          else {
+            this.$message.error('权限绑定失败')
+          }
+        })
+      },
+
     },
 
-    changeValue(value) {
-      console.log('value', value)
-      console.log(this.test, 'thie.test')
-    },
-
-    reset() {
-      this.userName = ''
-      this.phone = ''
-      // let f  = new FormData()
-      // f.append("current",1);
-      // f.append("size", 2);
-      // f.append("tableName", 3);
-      // console.log(f)
-      // this. ="",
-      // this.load()
-    },
-    saveLoginInfor() {
-      this.$request.post('/api/v1/user/', this.loginForm).then((res) => {
-        if (res.code === 219) {
-          this.$message.success('注册成功')
-          this.dialogFormVisible = false
-          this.load()
-        }
-        else {
-          this.$message.error('注册失败')
-        }
-      })
-    },
-    handleEditPersonalInformation(row) {
-      this.form = row
-      console.log(row)
-      this.infodialogFormVisible = true
-    },
-    handleAdd() {
-      this.loginDialogFormVisible = true
-      this.form = {}
-    },
-    handleEdit() {
-
-    },
-    handleManageAuthority(row) {
-      this.userid = row.userid
-      this.role = row.role
-      // 获得当前用户所拥有的角色
-      this.$request.get('/api/v1/permission/role/', {
-        Params: {
-          id: this.userid,
-        },
-      }).then((res) => {
-        this.role = res
-        console.log(res)
-      })
-
-      // 得到所有给该用户开小灶的权限
-      this.$request.get('/api/v1/permission/extra/function/', {
-        Params: {
-          id: this.userid,
-        },
-      }).then((res) => {
-        this.thisUserFunctions = res
-      })
-      this.authDialogFormVisible = true
-    },
-    saveAuthorityInfor() {
-      const data = {}
-      data.userId = this.userid
-      data.extraFunctionList = []
-      let tmp = {}
-      for (const item of this.thisUserFunctions) {
-        tmp.id = item.id
-        tmp.enable = item.enable
-        data.extraFunctionList.push(tmp)
-        tmp = {}
-      }
-      console.log('这是数据', data)
-      this.$request.put('/api/v1/permission/extra/function/', data).then((res) => {
-        if (res.code === 219) {
-          this.$message.success('保存成功')
-          this.dialogFormVisible = false
-          this.load()
-        }
-        else {
-          this.$message.error('保存失败')
-        }
-      })
-      console.log(this.thisUserFunctions)
-      this.authDialogFormVisible = false
-    },
-    load() {
-      // 请求分页查询
-      this.$request.get('/api/v1/user/list', {
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          userName: this.userName,
-          phone: this.phone,
-          role: this.role,
-        },
-      }).then((res) => {
-        console.log(res)
-        this.tableData = res.records
-        this.total = res.total
-      })
-      // //浪费流量，需要后续优化
-      // this.request.get("/employee").then(res =>{
-      //
-      //   // let arr1 = this.unique(res.data.rows)
-      //   let flag =  this.unique(res.data.map(v => v.authorityKey))
-      //   this.roles = flag
-      //   console.log("这里是roles")
-      //   console.log(this.roles)
-      //
-      // })
-    },
-    handleSizeChange(pageSize) {
-      console.log(pageSize)
-      this.pageSize = pageSize
-      this.load()
-    },
-    handleCurrentChange(pageNum) {
-      console.log(pageNum)
-      this.pageNum = pageNum
-      this.load()
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-    },
-    delBatch() {
-      const ids = this.multipleSelection.map(v => v.id) // 将对象数组变成纯ID的数组
-      console.log(this.multipleSelection)
-      console.log(ids)
-      this.$request.delete('/api/v1/user/ids', {
-        params: {
-          ids,
-        },
-      }).then((res) => {
-        console.log(res)
-        if (res) {
-          this.$message.success('批量辞退成功')
-          this.dialogFormVisible = false
-          this.load()
-        }
-        else {
-          this.$message.error('批量辞退失败')
-        }
-      })
-    },
-    deleteUser(id) {
-      this.$request.delete(`/api/v1/user/${id}`).then((res) => {
-        if (res) {
-          this.$message.success('删除成功')
-          this.dialogFormVisible = false
-          this.load()
-        }
-        else {
-          this.$message.error('删除失败')
-        }
-      })
-    },
-    update() {
-      console.log(this.form)
-      // this.$request.post("/api/v1/user/"+this.form.userid , this.form).then(res =>{
-      //   if(res.code === 223){
-      //     this.$message.success("保存成功")
-      //     this.dialogFormVisible = false
-      //     this.load()
-      //   }
-      //   else{
-      //     this.$message.error("保存失败")
-      //   }
-      //
-      // })
-    },
-    changeEnable(row) {},
-
-    exp() {
-      window.open('http://localhost:9099/employee/export')
-    },
-    handleExcelImportSuccess() {
-      this.$message.success('导入成功')
-      this.load()
-    },
-
-    saveRoleMenu() {
-      // console.log(this.$refs.tree.getCheckedNodes());
-      this.request.post(`/employee/rolemenu/${this.roleId}`, this.$refs.tree.getCheckedKeys()).then((res) => {
-        if (res) {
-          this.$message.success('权限绑定成功')
-          this.menuDialogVis = false
-
-          console.log(this.roleFlag)
-          if (this.roleFlag === 'MANAGER')
-            this.$store.commit('logout')
-        }
-        else {
-          this.$message.error('权限绑定失败')
-        }
-      })
-    },
-
-  },
-
-}
+  }
 </script>
 
 <template>
@@ -436,12 +436,12 @@ export default {
         </el-icon>注册新用户<i class="el-icon-circle-plus-outline" style="margin-left: 5px" />
       </el-button>
       <el-popconfirm
-        style="margin-left: 5px"
-        confirm-button-text="yes"
-        cancel-button-text="No"
-        icon-color="#626AEF"
-        title="Are you sure to delete this?"
-        @confirm="delBatch"
+              style="margin-left: 5px"
+              confirm-button-text="yes"
+              cancel-button-text="No"
+              icon-color="#626AEF"
+              title="Are you sure to delete this?"
+              @confirm="delBatch"
       >
         <template #reference>
           <el-button slot="reference" type="danger">
@@ -493,12 +493,12 @@ export default {
             </el-icon>权限管理
           </el-button>
           <el-popconfirm
-            style="margin-left: 5px"
-            confirm-button-text="yes"
-            cancel-button-text="No"
-            icon-color="#626AEF"
-            title="Are you sure to delete this?"
-            @confirm="deleteUser(row.userid)"
+                  style="margin-left: 5px"
+                  confirm-button-text="yes"
+                  cancel-button-text="No"
+                  icon-color="#626AEF"
+                  title="Are you sure to delete this?"
+                  @confirm="deleteUser(row.userid)"
           >
             <template #reference>
               <el-button slot="reference" type="danger" round>
@@ -626,13 +626,13 @@ export default {
     <!--    下面为页面转换按钮 -->
     <div style="padding: 10px 0">
       <el-pagination
-        :current-page="pageNum"
-        :page-sizes="[2, 5, 10, 20]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+              :current-page="pageNum"
+              :page-sizes="[2, 5, 10, 20]"
+              :page-size="pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
       />
     </div>
   </div>
