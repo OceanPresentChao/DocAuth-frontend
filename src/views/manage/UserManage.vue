@@ -764,7 +764,7 @@ export default {
   .el-input-group__prepend button.el-button,
   .el-input-group__prepend div.el-select .el-input__inner,
   .el-input-group__prepend div.el-select:hover .el-input__inner {
-    color: #ffff !important;
+    color: #ffff ;
     font-size: 16px;
   }
   // 修改鼠标选中输入框时输入框的颜色

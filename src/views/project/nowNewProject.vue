@@ -443,8 +443,6 @@
                 this.contextstyle.display='none'
             },
             confirmOneTaskApplication(){
-                //console.log(this.currentTask)
-                //console.log(this.editableTabs)
                 let judgeValidity = {}
                 let duplicateApplication = []
                 let hash={}
@@ -544,7 +542,7 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-                //console.log(postData)
+                console.log(postData)
 
             },
             //this exam is uesd for save project and pack the information
@@ -632,20 +630,19 @@
 
 
 <style>
-
-</style>
-
-<style scoped>
-    .dialog-footer button:first-child {
-        margin-right: 10px;
-    }
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
+        margin-top: 0px;
+    }
+</style>
+
+<style scoped>
+    .dialog-footer button:first-child {
+        margin-right: 10px;
     }
     .gl_prs_ctn{
         width: 188px;
