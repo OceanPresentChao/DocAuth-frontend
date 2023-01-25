@@ -632,6 +632,13 @@
 
 
 <style>
+
+</style>
+
+<style scoped>
+    .dialog-footer button:first-child {
+        margin-right: 10px;
+    }
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -661,12 +668,6 @@
     #tagli:hover{
         background: #ccc;
         color: #fff;
-    }
-</style>
-
-<style scoped>
-    .dialog-footer button:first-child {
-        margin-right: 10px;
     }
 </style>
 

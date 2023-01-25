@@ -660,6 +660,13 @@
 
 
 <style>
+
+</style>
+
+<style scoped>
+    .dialog-footer button:first-child {
+        margin-right: 10px;
+    }
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -707,12 +714,6 @@
     }
     .el-tabs--top .el-tabs__content {
         height: 100%;
-    }
-</style>
-
-<style scoped>
-    .dialog-footer button:first-child {
-        margin-right: 10px;
     }
 </style>
 

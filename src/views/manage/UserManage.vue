@@ -639,13 +639,13 @@ export default {
 </template>
 
 <style>
-  .headerBg{
-    background: #55e0e5!important;
-  }
+
 </style>
 
 <style scoped>
-
+  .headerBg{
+    background: #55e0e5!important;
+  }
 </style>
 
 <style lang="scss" scoped>
