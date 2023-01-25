@@ -6,10 +6,8 @@ export default {
     return {
       roleid:'',//角色id
       rolename:'',//角色姓名
-      rstatus:'',//角色状态
+
       role:[],//某个角色
-
-
 
       //所有权限
       allfunctions:[
@@ -120,14 +118,29 @@ export default {
       AddRoleDialogFormVisible:false,
       FunctionDialogFormVisible:false,
       infodialogFormVisible:false,
+
+      //分页查询
+      pageNum:0,
+      pageSize:0,
+      total:0,
     }
   },
   methods :{
-
     //加载所有角色
     load()
     {
-
+      // 请求分页查询
+      this.$request.get('/api/v1/role/list', {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          roleName: this.rolename,
+        },
+      }).then((res) => {
+        console.log(res)
+        this.tableData = res.records
+        this.total = res.total
+      })
     },
     reset()
     {
@@ -144,7 +157,10 @@ export default {
     },
     handleEditRoleInformation(row)
     {
+      this.role = [];
       this.infodialogFormVisible = true;
+      this.role.rolename = row.rolename;
+      this.role.desc = row.desc;
     },
     loadThisRoleFunction()
     {
@@ -320,10 +336,10 @@ export default {
     <el-dialog v-model="infodialogFormVisible" title="角色信息" width="40%">
       <el-form label-width="80px">
         <el-form-item label="角色名" :label-width="formLabelWidth">
-          <el-input v-model="form.rolename" autocomplete="off" />
+          <el-input v-model="role.rolename" autocomplete="off" />
         </el-form-item>
         <el-form-item label="概述">
-          <el-input v-model="form.rolename" autocomplete="off" />
+          <el-input v-model="role.desc" autocomplete="off" />
         </el-form-item>
 
       </el-form>
@@ -331,7 +347,7 @@ export default {
         <el-button @click="infodialogFormVisible = false">
           取 消
         </el-button>
-        <el-button type="success" @click="update">
+        <el-button type="success" @click="update()">
           确 定
         </el-button>
       </div>
