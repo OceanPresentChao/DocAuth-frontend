@@ -25,7 +25,7 @@
 
         <div class="gl_prs_ctn" :style='[contextstyle]'>
             <ul class='gl_prs_li'>
-                <li ><el-button type="primary" @click="enterTheNode">进入任务 </el-button></li>
+                <li ><el-button type="primary" @click="enterTheNode">进入任务</el-button></li>
                 <li ><el-button type="success" @click="applyEmployees">重新编排</el-button></li>
                 <li ><el-button type="info" @click="shutDown">关闭此栏</el-button></li>
             </ul>
