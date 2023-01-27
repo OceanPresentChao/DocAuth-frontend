@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      test: '',
+      test: 'nihaoadsasdfssdfsfsdada',
       userName: '',
       headerBg: 'headerBg',
       roleSelction: 'wseber',
@@ -392,22 +392,6 @@ export default {
       this.load()
     },
 
-    saveRoleMenu() {
-      // console.log(this.$refs.tree.getCheckedNodes());
-      this.request.post(`/employee/rolemenu/${this.roleId}`, this.$refs.tree.getCheckedKeys()).then((res) => {
-        if (res) {
-          this.$message.success('权限绑定成功')
-          this.menuDialogVis = false
-
-          console.log(this.roleFlag)
-          if (this.roleFlag === 'MANAGER')
-            this.$store.commit('logout')
-        }
-        else {
-          this.$message.error('权限绑定失败')
-        }
-      })
-    },
 
   },
 
@@ -419,7 +403,7 @@ export default {
     <div style="text-align: left">
       <el-input v-model="userName" style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" />
       <el-input v-model="phone" style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" />
-      <el-select v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
+      <el-select class="selectStyle" v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
         <el-option v-for="(item) in roles" :value="item" />
       </el-select>
       <el-button type="primary" style="margin-left: 20px" @click="load">
@@ -468,7 +452,7 @@ export default {
       <el-table-column prop="username" align="center" label="用户名" width="100" />
       <el-table-column prop="phone" align="center" label="电话号"  />
       <el-table-column prop="gender" align="center" label="性别" width="50" />
-      <el-table-column prop="email" align="center" label="邮箱" />
+      <el-table-column prop="email" align="center" label="邮箱" width="150" />
       <el-table-column prop="regdate" align="center" label="注册日期"  />
       <el-table-column label="启用" align="center" width="100">
         <template #default="{ row, $index }">
@@ -639,13 +623,13 @@ export default {
 </template>
 
 <style>
-  .headerBg{
-    background: #55e0e5!important;
-  }
+
 </style>
 
 <style scoped>
-
+  .headerBg{
+    background: #55e0e5!important;
+  }
 </style>
 
 <style lang="scss" scoped>
@@ -661,7 +645,7 @@ export default {
 
 <style lang="scss">
   .el-select {
-    width: 115px;
+    width: 1150px;
   }
   .input-with-select .el-input-group__prepend {
     background: rgba(10, 30, 55, 0.7);
@@ -736,7 +720,7 @@ export default {
   .el-input-group--append .el-input__inner,
   .el-input-group__prepend {
     font-size: 14px;
-    color: #ffff;
+    color: rgba(255, 255, 255, 0.67);
   }
   //修改下拉框的字体
   .el-select-dropdown__list {
@@ -764,7 +748,7 @@ export default {
   .el-input-group__prepend button.el-button,
   .el-input-group__prepend div.el-select .el-input__inner,
   .el-input-group__prepend div.el-select:hover .el-input__inner {
-    color: #ffff !important;
+    color: #ffff ;
     font-size: 16px;
   }
   // 修改鼠标选中输入框时输入框的颜色
