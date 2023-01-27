@@ -114,6 +114,7 @@ export default {
       ],
       thisRoleFunctions:[],
       thisRoleFunctions1:[],
+      newRoleFunctions:[],
       newRole:{},
       AddRoleDialogFormVisible:false,
       FunctionDialogFormVisible:false,
@@ -146,11 +147,32 @@ export default {
     {
 
     },
+    //相应添加新角色按钮
     handleAdd()
     {
+      this.newRoleFunctions = [];
       this.AddRoleDialogFormVisible = true;
     },
-    //
+    //确定添加此新角色
+    confirmHandleAdd()
+    {
+      let newRoleAllInfo = [];
+      newRoleAllInfo.push(this.newRole);
+      newRoleAllInfo.push(this.newRoleFunctions);
+
+      this.$request.put('api/v1/role/add',newRoleAllInfo).then((res)=> {
+        this.$message.success('成功')
+        })
+      //加载角色
+      this.load();
+    },
+
+    //删除某个角色
+    deleteRole(row)
+    {
+      this.$request.delete('api/v1')
+    },
+    //批量删除角色
     delBatch()
     {
 
@@ -165,7 +187,7 @@ export default {
     loadThisRoleFunction()
     {
       // 获得当前角色所拥有的权限
-      this.$request.get('/api/v1/permission/', {
+      this.$request.get('/api/v1/permission/oneRoleList', {
         Params: {
           id: this.roleid,
         },
@@ -183,7 +205,7 @@ export default {
     },
     handleConfirm()
     {
-      this.FunctionDialogFormVisible = false;
+      //this.FunctionDialogFormVisible = false;
       //当前处于this.roleid
 
       let List = [];
@@ -199,6 +221,11 @@ export default {
         },
       }).then((res) => {
         //this.role = res
+        if(true)//如果成功,再显示此用户的所有权限
+        {
+          this.$message.success('更新成功！')
+          this.loadThisRoleFunction();
+        }
         console.log(res)
       })
 
@@ -319,7 +346,7 @@ export default {
                   cancel-button-text="No"
                   icon-color="#626AEF"
                   title="Are you sure to delete this?"
-                  @confirm="deleteRole(row.roleid)"
+                  @confirm="deleteRole(row)"
           >
             <template #reference>
               <el-button slot="reference" type="danger" round>
@@ -361,12 +388,26 @@ export default {
         <el-form-item label="概述" :label-width="formLabelWidth">
           <el-input v-model="newRole.desc"/>
         </el-form-item>
+        <el-form-item label="管理权限" >
+          <el-select v-model="newRoleFunctions"  value-key="id" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择权限" style = "width:100%" effect="dark">
+            <el-option-group
+                    v-for="group in allfunctions"
+                    :key="group.options"
+                    :label="group.label">
+              <el-option
+                      v-for="item in group.options"
+                      :key = "item.id"
+                      :label = "item.name"
+                      :value="item"/>
+            </el-option-group>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="AddRoleDialogFormVisible = false">
           取 消
         </el-button>
-        <el-button type="success" @click="saveAddRole()">
+        <el-button type="success" @click="confirmHandleAdd()">
           确 定
         </el-button>
       </div>
