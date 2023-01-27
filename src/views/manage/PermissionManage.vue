@@ -4,8 +4,8 @@ export default {
 
   data() {
     return {
-      roleid:'',//角色id
-      rolename:'',//角色姓名
+      roleid:'',
+      rolename:'',
 
       role:[],//某个角色
 
