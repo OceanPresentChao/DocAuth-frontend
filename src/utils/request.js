@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import NProgress from 'nprogress'
 import { useAuthStore } from '@/store/auth'
 // 创建axios实例
 const service = axios.create({
@@ -56,6 +57,27 @@ service.interceptors.response.use(
       type: 'error',
       duration: 3 * 1000,
     })
+    return Promise.reject(error)
+  },
+)
+
+// nprogress进度条
+axios.interceptors.request.use(
+  (config) => {
+    NProgress.start() // 设置加载进度条(开始..)
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
+// axios响应拦截器
+axios.interceptors.response.use(
+  (response) => {
+    NProgress.done() // 设置加载进度条(结束..)
+    return response
+  },
+  (error) => {
     return Promise.reject(error)
   },
 )

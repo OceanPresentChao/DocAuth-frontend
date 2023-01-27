@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import NProgress from 'nprogress'
 import DashBoard from '@/views/dashboard/DashBoard.vue'
 import Account from '@/views/login/Account.vue'
 
@@ -94,7 +95,56 @@ const asyncRoutes = [
     path: '/userDetail',
     component: () => import('@/views/user/UserDetail.vue'),
   },
-
+  {
+    path: '/task/:id',
+    component: () => import('@/views/project/TaskDetail.vue'),
+    redirect: '/task/:id/timeline',
+    meta: {
+      title: '任务信息',
+    },
+    children:
+        [
+          {
+            path: '/task/:id/timeline',
+            component: () => import('@/views/project/TaskTimeline.vue'),
+            meta: {
+              title: '任务时间线',
+            },
+          },
+          {
+            path: '/task/:id/edit',
+            component: () => import('@/views/project/StepEdit.vue'),
+            meta: {
+              title: '编撰任务',
+              step: 'edit',
+            },
+          },
+          {
+            path: '/task/:id/review',
+            component: () => import('@/views/project/StepEdit.vue'),
+            meta: {
+              title: '审阅任务',
+              step: 'review',
+            },
+          },
+          {
+            path: '/task/:id/judge',
+            component: () => import('@/views/project/StepEdit.vue'),
+            meta: {
+              title: '审批任务',
+              step: 'judge',
+            },
+          },
+          {
+            path: '/task/:id/compile',
+            component: () => import('@/views/project/StepEdit.vue'),
+            meta: {
+              title: '汇编任务',
+              step: 'compile',
+            },
+          },
+        ],
+  },
 ]
 
 const constantRoutes = [
@@ -117,5 +167,14 @@ const constantRoutes = [
 export const router = createRouter({
   routes: [...menuRoutes, ...constantRoutes, ...asyncRoutes],
   history: createWebHashHistory(),
+})
+
+router.beforeEach(() => {
+  NProgress.start()
+  return true
+})
+
+router.afterEach(() => {
+  NProgress.done()
 })
 
