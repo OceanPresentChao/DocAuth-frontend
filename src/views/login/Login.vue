@@ -26,13 +26,12 @@ function submitForm(formEl) {
   formEl.validate(async (valid) => {
     if (valid) {
       try {
-        const data = await requestLogin(ruleForm)
+        const res = await requestLogin({}, ruleForm)
         ElMessage({
           type: 'success',
           message: '登录成功',
         })
-        // console.log(data)
-        authStore.setToken(data.data.access)
+        authStore.setToken(res.data.data)
         router.replace({ path: '/' })
       }
       catch (error) {

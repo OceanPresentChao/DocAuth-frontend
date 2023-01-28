@@ -30,7 +30,7 @@ export const useAuthStore = defineStore({
       return null
     },
     setToken(token) {
-      localStorage.setItem(this.TokenKey, token)
+      localStorage.setItem(this.TokenKey, JSON.stringify(token))
     },
     removeToken() {
       localStorage.removeItem(this.TokenKey)
@@ -48,9 +48,8 @@ export const useAuthStore = defineStore({
     async fetchUserInfo() {
       const token = this.getToken()
       if (token) {
-        const data = (await requestUserDetail({ id: token.id })).data
+        const data = (await requestUserDetail({ id: token.id }))
         const user = data.data
-        console.log(user)
         Object.assign(this.userInfo, user)
       }
     },
