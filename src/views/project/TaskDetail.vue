@@ -124,7 +124,10 @@ async function getTaskInfo(id: string) {
     </el-descriptions>
     <el-row :gutter="24" justify="center" my-8>
       <el-col :span="20">
-        <el-steps :active="taskInfo.step" finish-status="success" align-center process-status="finish">
+        <el-steps
+          :active="taskInfo.status === 'f' || taskInfo.status === 'w' ? 5 : taskInfo.step - 1"
+          finish-status="success" align-center process-status="finish"
+        >
           <el-step v-for="v in steps" :key="v.title" :icon="v.icon">
             <template #title>
               <router-link :to="v.link">
@@ -135,9 +138,9 @@ async function getTaskInfo(id: string) {
         </el-steps>
       </el-col>
       <el-col :span="4">
-        <router-link to="/task/6/timeline">
-          <el-button type="primary" icon="el-icon-arrow-right" size="large">
-            TimeLine
+        <router-link :to="`/task/${route.params.id}/timeline`">
+          <el-button type="primary" size="large">
+            <Icon icon="mdi:timeline-clock-outline" width="25" color="#916" /><span> TimeLine </span>
           </el-button>
         </router-link>
       </el-col>

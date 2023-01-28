@@ -52,7 +52,8 @@ function httpErrorStatusHandle(error) {
     if (error.message.includes('Network'))
       message = window.navigator.onLine ? '服务端异常！' : '您断网了！'
   }
-
+  if (error.response.data.message)
+    message = error.response.data.message
   ElMessage({
     type: 'error',
     message,

@@ -3,7 +3,7 @@ import type { Quill } from '@vueup/vue-quill'
 import { QuillEditor } from '@vueup/vue-quill'
 import type { ITask } from './type'
 import { useAuthStore } from '@/store/auth'
-import { requestSubmitStep, requestUserDuty } from '@/api'
+import { requestFinishTask, requestRevertTask, requestSubmitStep, requestUserDuty } from '@/api'
 const quill = ref<Quill>()
 const editorRef = ref<typeof QuillEditor>()
 const editorContent = ref('')
@@ -33,14 +33,31 @@ async function getUserDuty() {
   Object.assign(stepContext.value, res.data.data.results[0])
 }
 
-function submitStep() {
-  ElMessageBox.confirm('确认提交吗？', '提示', {
+function handleSubmit(type: 'submit' | 'finish' | 'revert') {
+  const options = {
+    submit: {
+      title: '确认提交吗？',
+      fail: '提交失败',
+      request: requestSubmitStep,
+    },
+    finish: {
+      title: '确认完成吗？',
+      fail: '完成失败',
+      request: requestFinishTask,
+    },
+    revert: {
+      title: '确认打回吗？',
+      fail: '打回失败',
+      request: requestRevertTask,
+    },
+  }
+  ElMessageBox.confirm(options[type].title, '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   }).then(async () => {
     try {
-      const res = await requestSubmitStep({
+      const res = await options[type].request({
         task: stepContext.value.task,
       }, {
         user: stepContext.value.user.id,
@@ -58,7 +75,7 @@ function submitStep() {
   }).catch(() => {
     ElMessage({
       type: 'info',
-      message: '已取消提交',
+      message: options[type].fail,
     })
   })
 }
@@ -66,7 +83,7 @@ function submitStep() {
 
 <template>
   <div>
-    <div v-if="stepContext.duty === taskInfo?.step">
+    <div v-if="stepContext.duty === taskInfo?.step && taskInfo.status === 'r'">
       <QuillEditor
         ref="editorRef"
         v-model:content="editorContent"
@@ -77,15 +94,26 @@ function submitStep() {
       />
       <div>
         <div ml-auto mr-10 my-5 style="width: fit-content;">
-          <el-button v-if="stepContext.duty > 1" type="danger" size="large" mx-2 text-lg>
+          <el-button
+            v-if="stepContext.duty > 1"
+            type="danger" size="large" mx-2 text-lg @click="handleSubmit('revert')"
+          >
             打回
           </el-button>
-          <el-button type="primary" size="large" mx-2 text-lg @click="submitStep">
+          <el-button
+            type="primary" size="large" mx-2 text-lg @click="handleSubmit('submit')"
+          >
             提交
           </el-button>
         </div>
       </div>
     </div>
+    <el-button
+      v-if="stepContext.duty === taskInfo?.step && taskInfo.status === 'w'"
+      type="success" size="large" mx-2 text-lg @click="handleSubmit('finish')"
+    >
+      完成
+    </el-button>
   </div>
 </template>
 

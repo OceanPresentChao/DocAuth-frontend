@@ -27,6 +27,24 @@ export function requestSubmitStep(params = {}, data = {}) {
   })
 }
 
+export function requestFinishTask(params = {}, data = {}) {
+  return request({
+    url: `/django/business/task/finish/${params.task}`,
+    method: 'post',
+    params,
+    data,
+  })
+}
+
+export function requestRevertTask(params = {}, data = {}) {
+  return request({
+    url: `/django/business/task/revert/${params.task}`,
+    method: 'post',
+    params,
+    data,
+  })
+}
+
 export function requestTaskRecord(params = {}, data = {}) {
   return request({
     url: '/django/business/record/list',

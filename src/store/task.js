@@ -42,6 +42,10 @@ export const useTaskStore = defineStore({
           name: '暂停中',
           style: 'danger',
         },
+        w: {
+          name: '待提交',
+          style: 'warning',
+        },
       },
       recordStatus: {
         r: {

@@ -12,7 +12,7 @@ export interface ITask {
   project: string
   name: string
   desc: string
-  status: 'r' | 's' | 'f'
+  status: 'r' | 's' | 'f' | 'w'
   step: 1 | 2 | 3 | 4
   members: any[]
   addTime: string
