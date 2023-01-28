@@ -37,7 +37,7 @@
             </ul>
         </div>
         <!--people arrange -->
-        <el-dialog v-model="dialogFormVisible" title="人员安排">
+        <el-dialog v-model="dialogFormVisible" title="任务创建">
             <el-form :model="this.currentTask">
                 <el-form-item label="任务名称" :label-width="formLabelWidth">
                     <el-input v-model="this.currentTask.name" autocomplete="off" />
@@ -133,79 +133,8 @@
                                 con_signPerson2:'5',
                                 taskDescription:'',
                                 type:'root',
-                                //class: ["rootNode"],
-                                // children: [
-                                //     {
-                                //         name: '2',
-                                //         image_url: undoneurl,
-                                //         thisId : 2 ,
-                                //         fartherId : 1 ,
-                                //         startTime: '',
-                                //         deadLine: '',
-                                //         editPerson: '',
-                                //         investigatePerson: '',
-                                //         ratifyPerson: '',
-                                //         con_signPerson1: '',
-                                //         con_signPerson2:'',
-                                //         taskDescription:'',
-                                //         children:[],
-                                //     },
-                                //     {
-                                //         name: '3',
-                                //         image_url: undoneurl,
-                                //         thisId : 3,
-                                //         fartherId : 1,
-                                //         children: [
-                                //             {
-                                //                 name: '4',
-                                //                 image_url: undoneurl,
-                                //                 thisId : 4,
-                                //                 fartherId : 3,
-                                //                 startTime: '',
-                                //                 deadLine: '',
-                                //                 editPerson: '',
-                                //                 investigatePerson: '',
-                                //                 ratifyPerson: '',
-                                //                 con_signPerson1: '',
-                                //                 con_signPerson2:'',
-                                //                 taskDescription:'',
-                                //                 children:[],
-                                //             },
-                                //             {
-                                //                 name: '5',
-                                //                 image_url: undoneurl,
-                                //                 thisId : 5,
-                                //                 fartherId : 3,
-                                //                 startTime: '',
-                                //                 deadLine: '',
-                                //                 editPerson: '',
-                                //                 investigatePerson: '',
-                                //                 ratifyPerson: '',
-                                //                 con_signPerson1: '',
-                                //                 con_signPerson2:'',
-                                //                 taskDescription:'',
-                                //                 children:[],
-                                //             },
-                                //             {
-                                //                 name: '6',
-                                //                 image_url: undoneurl,
-                                //                 thisId : 6,
-                                //                 fartherId : 3,
-                                //                 startTime: '',
-                                //                 deadLine: '',
-                                //                 editPerson: '',
-                                //                 investigatePerson: '',
-                                //                 ratifyPerson: '',
-                                //                 con_signPerson1: '',
-                                //                 con_signPerson2:'',
-                                //                 taskDescription:'',
-                                //                 children:[],
-                                //             }
-                                //         ]
-                                //     }
-                                // ]
+                                class: ["rootNode"],
                                 children: []
-
                             },
                         }
                     ],
@@ -281,7 +210,7 @@
                         enable:true,
                     },
                 ],
-                idnum:6,
+                idnum:1,
                 tag:0,
                 now:'',
                 landscape: [],
@@ -458,7 +387,8 @@
                         type:'success'
                     })
                     this.dialogFormVisible = false;
-                    this.currentTask.image_url= this.doneurl;
+                    // this.currentTask.image_url= this.doneurl;
+                    this.console('这里是即将提交的表单信息',this.currentTask)
                     this.examSavable();
                 }
             },
@@ -520,7 +450,7 @@
                 console.log('这里是postData',postData)
                 allData["phases"] = postData
                 allData["phaseNumber"] = postData.length
-                allData["projectId"] = 3
+                allData["projectId"] = 4
                 console.log('这里是数据',allData)
                 this.$request.post("http://127.0.0.1:13500/api/v1/business/saveProject",allData).then(res=>{
                         console.log(res)
@@ -545,7 +475,10 @@
                             array[i].ratifyPerson,
                             array[i].con_signPerson1,
                             array[i].con_signPerson2,
-                        ]
+                        ],
+                        startTime:array[i].startTime,
+                        deadTime:array[i].deadLine,
+                        taskDescription:array[i].taskDescription,
                     }
                     )
                     if(array[i].children){
@@ -650,3 +583,73 @@
     }
 </style>
 
+// children: [
+//     {
+//         name: '2',
+//         image_url: undoneurl,
+//         thisId : 2 ,
+//         fartherId : 1 ,
+//         startTime: '',
+//         deadLine: '',
+//         editPerson: '',
+//         investigatePerson: '',
+//         ratifyPerson: '',
+//         con_signPerson1: '',
+//         con_signPerson2:'',
+//         taskDescription:'',
+//         children:[],
+//     },
+//     {
+//         name: '3',
+//         image_url: undoneurl,
+//         thisId : 3,
+//         fartherId : 1,
+//         children: [
+//             {
+//                 name: '4',
+//                 image_url: undoneurl,
+//                 thisId : 4,
+//                 fartherId : 3,
+//                 startTime: '',
+//                 deadLine: '',
+//                 editPerson: '',
+//                 investigatePerson: '',
+//                 ratifyPerson: '',
+//                 con_signPerson1: '',
+//                 con_signPerson2:'',
+//                 taskDescription:'',
+//                 children:[],
+//             },
+//             {
+//                 name: '5',
+//                 image_url: undoneurl,
+//                 thisId : 5,
+//                 fartherId : 3,
+//                 startTime: '',
+//                 deadLine: '',
+//                 editPerson: '',
+//                 investigatePerson: '',
+//                 ratifyPerson: '',
+//                 con_signPerson1: '',
+//                 con_signPerson2:'',
+//                 taskDescription:'',
+//                 children:[],
+//             },
+//             {
+//                 name: '6',
+//                 image_url: undoneurl,
+//                 thisId : 6,
+//                 fartherId : 3,
+//                 startTime: '',
+//                 deadLine: '',
+//                 editPerson: '',
+//                 investigatePerson: '',
+//                 ratifyPerson: '',
+//                 con_signPerson1: '',
+//                 con_signPerson2:'',
+//                 taskDescription:'',
+//                 children:[],
+//             }
+//         ]
+//     }
+// ]

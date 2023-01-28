@@ -6,6 +6,9 @@
             <el-radio-button label="bottom">bottom</el-radio-button>
             <el-radio-button label="left">left</el-radio-button>
         </el-radio-group>
+        <el-button style="margin-left: 15px ;margin-top: 8px " size="" type = "success" @click="flashCurrentProject()">
+            刷新当前项目
+        </el-button>
         <el-tabs
                 v-model="editableTabsValue"
                 type="card"
@@ -31,7 +34,7 @@
             </ul>
         </div>
 
-        <el-dialog v-model="dialogFormVisible" title="人员安排">
+        <el-dialog v-model="dialogFormVisible" title="任务修改">
             <el-form :model="this.currentTask">
                 <el-form-item label="任务名称" :label-width="formLabelWidth">
                     <el-input v-model="this.currentTask.name" autocomplete="off" />
@@ -50,32 +53,31 @@
                     />
                 </el-form-item>
                 <el-form-item label="编" :label-width="formLabelWidth">
-                    <el-select value-key="userid" v-model="this.currentTask.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                    <el-select value-key="id" v-model="this.currentTask.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="审" :label-width="formLabelWidth">
                     <el-select v-model="this.currentTask.investigatePerson" placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="批" :label-width="formLabelWidth">
                     <el-select v-model="this.currentTask.ratifyPerson" placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="会签" :label-width="formLabelWidth" >
                     <el-select v-model="this.currentTask.con_signPerson1" placeholder="请选择人员1" style="margin-right: 50px ;" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5 ;text-align: center"></el-option>
                     </el-select>
                     <el-select v-model="this.currentTask.con_signPerson2" placeholder="请选择人员2" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="任务内容概述" :label-width="formLabelWidth">
                     <el-input v-model="this.currentTask.taskDescription" type="textarea" />
                 </el-form-item>
-
             </el-form>
             <template #footer>
       <span class="dialog-footer">
@@ -105,7 +107,7 @@
                 undoneurl:undoneurl,
                 tabPosition: 'left',
                 tabIndex :1,
-                editableTabsValue: '1',
+                editableTabsValue: 'Phase 1',
                 editableTabs:[],
                 dialogFormVisible:false,
                 formLabelWidth:'140px',
@@ -114,7 +116,7 @@
                 currentTask:{},
                 users:[
                     {
-                        userid: 1,
+                        id: 1,
                         username: "wser",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -125,7 +127,7 @@
                         enable:true,
                     },
                     {
-                        userid: 2,
+                        id: 2,
                         username: "jucy",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -136,7 +138,7 @@
                         enable:true,
                     },
                     {
-                        userid: 3,
+                        id: 3,
                         username: "oceanPresent",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -146,7 +148,7 @@
                         enable:true,
                     },
                     {
-                        userid: 4,
+                        id: 4,
                         username: "xvHao",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -156,7 +158,7 @@
                         enable:true,
                     },
                     {
-                        userid: 5,
+                        id: 5,
                         username: "zqx",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -166,7 +168,7 @@
                         enable:true,
                     },
                     {
-                        userid: 6,
+                        id: 6,
                         username: "fxx",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -195,6 +197,7 @@
 
         created() {
             this.load()
+            this.userInformationInit()
         },
         methods: {
             transferToOperatorName(operatorType){
@@ -209,252 +212,66 @@
               if(operatorType === 5)
                   return "con_signPerson2"
             },
-            load(){
-                this.editableTabs =  [
-                    {
-                        title: 'Phase 1',
-                        name: '1',
-                        content: {
-                            name: '1',
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            thisId : 1,
-                            fartherId : 0,
-                            startTime: '',
-                            deadLine: '',
-                            editPerson: '',
-                            investigatePerson: '',
-                            ratifyPerson: '',
-                            con_signPerson1: '',
-                            con_signPerson2:'',
-                            taskDescription:'',
-                            //class: ["rootNode"],
-                            children: [
-                                {
-                                    name: '2',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    thisId : 2 ,
-                                    fartherId : 1 ,
-                                    startTime: '',
-                                    deadLine: '',
-                                    editPerson: '',
-                                    investigatePerson: '',
-                                    ratifyPerson: '',
-                                    con_signPerson1: '',
-                                    con_signPerson2:'',
-                                    taskDescription:'',
-                                    children:[],
-                                },
-                                {
-                                    name: '3',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    thisId : 3,
-                                    fartherId : 1,
-                                    children: [
-                                        {
-                                            name: '4',
-                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                            thisId : 4,
-                                            fartherId : 3,
-                                            startTime: '',
-                                            deadLine: '',
-                                            editPerson: '',
-                                            investigatePerson: '',
-                                            ratifyPerson: '',
-                                            con_signPerson1: '',
-                                            con_signPerson2:'',
-                                            taskDescription:'',
-                                            children:[],
-                                        },
-                                        {
-                                            name: '5',
-                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                            thisId : 5,
-                                            fartherId : 3,
-                                            startTime: '',
-                                            deadLine: '',
-                                            editPerson: '',
-                                            investigatePerson: '',
-                                            ratifyPerson: '',
-                                            con_signPerson1: '',
-                                            con_signPerson2:'',
-                                            taskDescription:'',
-                                            children:[],
-                                        },
-                                        {
-                                            name: '6',
-                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                            thisId : 6,
-                                            fartherId : 3,
-                                            startTime: '',
-                                            deadLine: '',
-                                            editPerson: '',
-                                            investigatePerson: '',
-                                            ratifyPerson: '',
-                                            con_signPerson1: '',
-                                            con_signPerson2:'',
-                                            taskDescription:'',
-                                            children:[],
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                    },
-                    {
-                        title: 'Phase 2',
-                        name: '2',
-                        content: {
-                            name: '7',
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            thisId : 7,
-                            fartherId : 0,
-                            startTime: '',
-                            deadLine: '',
-                            editPerson: '',
-                            investigatePerson: '',
-                            ratifyPerson: '',
-                            con_signPerson1: '',
-                            con_signPerson2:'',
-                            taskDescription:'',
-                            //class: ["rootNode"],
-                            children: [
-                                {
-                                    name: '8',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    thisId : 8 ,
-                                    fartherId : 7 ,
-                                    startTime: '',
-                                    deadLine: '',
-                                    editPerson: '',
-                                    investigatePerson: '',
-                                    ratifyPerson: '',
-                                    con_signPerson1: '',
-                                    con_signPerson2:'',
-                                    taskDescription:'',
-                                    children:[],
-                                },
-                                {
-                                    name: '9',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    thisId : 9,
-                                    fartherId : 7,
-                                    children: []
-                                }
-                            ]
-                        },
+            transferUserNameToId(trans){
+                for(let user of this.users){
+                    if(trans === user.username){
+                        // console.log('这里是发生改变的trans',trans)
+                        return user.id
                     }
-                ]
-                // this.processingDataFromBackEnd = [
-                //         {
-                //             "phaseName": "phase 3",
-                //             "phaseTasks": [
-                //                 {
-                //                     "task__name": "分北况事备",
-                //                     "task__thisId": 1,
-                //                     "task__id": 1,
-                //                     "task__thisFarther": 0
-                //                 },
-                //                 {
-                //                     "task__name": "必满论白",
-                //                     "task__thisId": 2,
-                //                     "task__id": 2,
-                //                     "task__thisFarther": 1
-                //                 },
-                //                 {
-                //                     "task__name": "因般体",
-                //                     "task__thisId": 3,
-                //                     "task__id": 3,
-                //                     "task__thisFarther": 1
-                //                 },
-                //                 {
-                //                     "task__name": "结把三",
-                //                     "task__thisId": 4,
-                //                     "task__id": 4,
-                //                     "task__thisFarther": 2
-                //                 },
-                //             ],
-                //             "task__number": 4
-                //         },
-                //         {
-                //             "phaseName": "phase 4",
-                //             "phaseTasks": [
-                //                 {
-                //                     "task__name": "活进上部流",
-                //                     "task__thisId": 5,
-                //                     "task__id": 5,
-                //                     "task__thisFarther": 0
-                //                 }
-                //             ],
-                //             "task__number": 1
-                //         },
-                //         {
-                //             "phaseName": "phase 5",
-                //             "phaseTasks": [
-                //                 {
-                //                     "task__name": "到人段见",
-                //                     "task__thisId": 6,
-                //                     "task__id": 6,
-                //                     "task__thisFarther": 0
-                //                 },
-                //                 {
-                //                     "task__name": "连自白活格",
-                //                     "task__thisId": 7,
-                //                     "task__id": 7,
-                //                     "task__thisFarther": 6
-                //                 },
-                //                 {
-                //                     "task__name": "长学状次身对",
-                //                     "task__thisId": 8,
-                //                     "task__id": 8,
-                //                     "task__thisFarther": 7
-                //                 },
-                //                 {
-                //                     "task__name": "清极时方",
-                //                     "task__thisId": 9,
-                //                     "task__id": 9,
-                //                     "task__thisFarther": 8
-                //                 },
-                //                 {
-                //                     "task__name": "wser",
-                //                     "task__thisId": 10,
-                //                     "task__id": 10,
-                //                     "task__thisFarther": 6
-                //                 },
-                //                 {
-                //                     "task__name": "jucy",
-                //                     "task__thisId": 11,
-                //                     "task__id": 11,
-                //                     "task__thisFarther": 8
-                //                 },
-                //                 {
-                //                     "task__name": "zqx",
-                //                     "task__thisId": 13,
-                //                     "task__id": 13,
-                //                     "task__thisFarther": 11
-                //                 },
-                //                 {
-                //                     "task__name": "caobo",
-                //                     "task__thisId": 12,
-                //                     "task__id": 12,
-                //                     "task__thisFarther": 7
-                //                 },
-                //             ],
-                //             "task__number": 8
-                //         },
-                //     ]
+                }
+            },
+            judgeIfModifyEmployeesAndTransfer() {
+                if (typeof this.currentTask.editPerson === 'string') {
+                    this.currentTask.editPerson = this.transferUserNameToId(this.currentTask.editPerson)
+                    // console.log('这里是发生改变的职位', this.currentTask.editPerson)
+                }
+                if (typeof this.currentTask.investigatePerson === 'string') {
+                    this.currentTask.investigatePerson = this.transferUserNameToId(this.currentTask.investigatePerson)
+                }
+                if (typeof this.currentTask.ratifyPerson === 'string') {
+                    this.currentTask.ratifyPerson =  this.transferUserNameToId(this.currentTask.ratifyPerson)
+                }
+                if (typeof this.currentTask.con_signPerson1 === 'string') {
+                   this.currentTask.con_signPerson1 =  this.transferUserNameToId(this.currentTask.con_signPerson1)
+                }
+                if (typeof this.currentTask.con_signPerson2 === 'string') {
+                    this.currentTask.con_signPerson2 =  this.transferUserNameToId(this.currentTask.con_signPerson2)
+                }
+
+            },
+
+            userInformationInit(){
+                this.users = []
+                this.$request.get("http://localhost:13500/api/v1/user/list/",{
+                    params:{
+                          page: 1,
+                          page_size:999999999,
+                          userName : null,
+                          phone : null,
+                          role : null
+                }}).then(res=>{
+                    console.log('这里是users',res)
+                    console.log('这里是users',res.data.results)
+                    this.users = res.data.results
+
+                })
+            },
+            load(){
+                this.editableTabs =  []
                 this.processingDataFromBackEnd=[]
                 this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
                     params:{
-                        projectId : 2
+                        projectId : 4
                     }
                 }).then(res=>{
                     this.processingDataFromBackEnd = res.data
-                    console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
+                    // console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
                     // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
                     for(let item of this.processingDataFromBackEnd) {
-                        console.log('检查阶段里面的内容', item.phaseTasks)
+                        // console.log('检查阶段里面的内容', item.phaseTasks)
                         this.addTabInefficiency(item)
                     }
+                    // console.log('这里是初始化的项目数据',this.editableTabs)
                 })
                  // this.addTabInefficiency(this.processingDataFromBackEnd[0])
             },
@@ -463,10 +280,12 @@
                 console.log(phase,'这里是待处理的一维阶段数据')
                 let taskNum = phase.task__number
                 let phaseTaskList = phase.phaseTasks
+                console.log('这里是阶段名称',phase.phaseName)
                 let tab = {
                     title: phase.phaseName,
                     name: phase.phaseName,
                     content: {
+                        id: -1,
                         name: '',
                         image_url: this.undoneurl,
                         thisId:  1,
@@ -492,9 +311,18 @@
                 // console.log(rootNode,'这里是rootNode')
                 // console.log(taskNum,'本阶段的任务数')
                 // console.log(tabContent,'本阶段的任务数')
+
+                //对本阶段根结点初始化
+                tabContent.id = rootNode.id;
                 tabContent.name = rootNode.name
                 console.log('注意了这里事tabname',tabContent.name)
                 tabContent.thisId = rootNode.thisId
+                tabContent.startTime = rootNode.startTime
+                tabContent.deadLine = rootNode.deadLine
+                tabContent.taskDescription = rootNode.desc
+                for(let rp of rootNode.AssignedPersons){
+                    tabContent[this.transferToOperatorName(rp.duty)] = rp.user__username
+                }
 
                 while(taskNum > 1){
                     let tmp = openList[0]
@@ -521,6 +349,7 @@
                     // console.log('这里在插入结点',item.thisId,fartherId)
                     if(item.thisId === fartherId){
                         let tmpNode ={
+                            id: child.id,
                             name: child.name,
                             image_url: this.undoneurl,
                             thisId:  child.thisId,
@@ -537,7 +366,7 @@
                             type:"node",
                         }
                         for(let person of child.AssignedPersons){
-                            tmpNode[this.transferToOperatorName(person.type)] = person.user__username
+                            tmpNode[this.transferToOperatorName(person.duty)] = person.user__username
                         }
                         item.children.push(tmpNode)
                     }
@@ -548,12 +377,13 @@
 
             },
             clickNode: function(node){
+                console.log('这里是当前被选择的结点',node)
                 this.currentTask = node
                 this.now = node.name
-                console.log(this.currentTask)
-                console.log(this.currentTask.name)
-                console.log(this.currentTask.thisId)
-                console.log(this.currentTask.fartherId)
+                console.log('这里是当前任务',this.currentTask)
+                console.log('这里是当前任务名',this.currentTask.name)
+                console.log('这里是当前任务的相对id',this.currentTask.thisId)
+                console.log('这里是当前任务的父任务id',this.currentTask.fartherId)
                 if(window.event.x + 188 > document.documentElement.clientWidth){
                     this.contextstyle.left = 'unset';
                     this.contextstyle.right = document.documentElement.clientWidth - window.event.x + 'px';
@@ -600,8 +430,13 @@
                 this.contextstyle.display='none'
             },
             confirmOneTaskApplication(){
-                console.log(this.currentTask)
-                console.log(this.editableTabs)
+                // console.log('这是当前的任务啊1',this.currentTask)
+
+                // console.log('这里是类型',typeof this.currentTask.editPerson === 'string')
+                this.judgeIfModifyEmployeesAndTransfer()
+
+                // console.log('这是当前的任务啊2',this.currentTask)
+                // console.log(this.editableTabs)
                 let judgeValidity = {}
                 let duplicateApplication = []
                 let hash={}
@@ -636,13 +471,36 @@
                         type:'success'
                     })
                     this.dialogFormVisible = false
+                    // this.console('这里是即将提交的表单信息',this.currentTask)
+                    this.saveCurrentTask()
+
                 }
             },
-            saveCurrentProject(){
+            saveCurrentTask(){
+                let taskData = {}
+                taskData["id"] = this.currentTask.id
+                taskData["name"] = this.currentTask.name
+                taskData["thisId"] = this.currentTask.thisId
+                taskData["thisFarther"] = this.currentTask.fartherId
+                taskData["startTime"] = this.currentTask.startTime
+                taskData["deadLine"] = this.currentTask.deadLine
+                taskData["desc"] = this.currentTask.taskDescription
+                taskData["staffs"] = []
+                taskData["staffs"].push(this.currentTask.editPerson)
+                taskData["staffs"].push(this.currentTask.investigatePerson)
+                taskData["staffs"].push(this.currentTask.ratifyPerson)
+                taskData["staffs"].push(this.currentTask.con_signPerson1)
+                taskData["staffs"].push(this.currentTask.con_signPerson2)
+                this.$request.post("http://127.0.0.1:13500/api/v1/business/saveTask",taskData).then(res=>{
+                    console.log(res)
+                })
+            },
+            flashCurrentProject(){
                 console.log(this.editableTabs)
+                this.load()
                 ElMessage({
                     showClose:true,
-                    message:'保存成功',
+                    message:'刷新成功',
                     type:'success'
                 })
             },
@@ -712,3 +570,244 @@
     }
 </style>
 
+// {
+//     title: 'Phase 1',
+//     name: '1',
+//     content: {
+//         name: '1',
+//         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//         thisId : 1,
+//         fartherId : 0,
+//         startTime: '',
+//         deadLine: '',
+//         editPerson: '',
+//         investigatePerson: '',
+//         ratifyPerson: '',
+//         con_signPerson1: '',
+//         con_signPerson2:'',
+//         taskDescription:'',
+//         //class: ["rootNode"],
+//         children: [
+//             {
+//                 name: '2',
+//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                 thisId : 2 ,
+//                 fartherId : 1 ,
+//                 startTime: '',
+//                 deadLine: '',
+//                 editPerson: '',
+//                 investigatePerson: '',
+//                 ratifyPerson: '',
+//                 con_signPerson1: '',
+//                 con_signPerson2:'',
+//                 taskDescription:'',
+//                 children:[],
+//             },
+//             {
+//                 name: '3',
+//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                 thisId : 3,
+//                 fartherId : 1,
+//                 children: [
+//                     {
+//                         name: '4',
+//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                         thisId : 4,
+//                         fartherId : 3,
+//                         startTime: '',
+//                         deadLine: '',
+//                         editPerson: '',
+//                         investigatePerson: '',
+//                         ratifyPerson: '',
+//                         con_signPerson1: '',
+//                         con_signPerson2:'',
+//                         taskDescription:'',
+//                         children:[],
+//                     },
+//                     {
+//                         name: '5',
+//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                         thisId : 5,
+//                         fartherId : 3,
+//                         startTime: '',
+//                         deadLine: '',
+//                         editPerson: '',
+//                         investigatePerson: '',
+//                         ratifyPerson: '',
+//                         con_signPerson1: '',
+//                         con_signPerson2:'',
+//                         taskDescription:'',
+//                         children:[],
+//                     },
+//                     {
+//                         name: '6',
+//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                         thisId : 6,
+//                         fartherId : 3,
+//                         startTime: '',
+//                         deadLine: '',
+//                         editPerson: '',
+//                         investigatePerson: '',
+//                         ratifyPerson: '',
+//                         con_signPerson1: '',
+//                         con_signPerson2:'',
+//                         taskDescription:'',
+//                         children:[],
+//                     }
+//                 ]
+//             }
+//         ]
+//     },
+// },
+// {
+//     title: 'Phase 2',
+//     name: '2',
+//     content: {
+//         name: '7',
+//         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//         thisId : 7,
+//         fartherId : 0,
+//         startTime: '',
+//         deadLine: '',
+//         editPerson: '',
+//         investigatePerson: '',
+//         ratifyPerson: '',
+//         con_signPerson1: '',
+//         con_signPerson2:'',
+//         taskDescription:'',
+//         //class: ["rootNode"],
+//         children: [
+//             {
+//                 name: '8',
+//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                 thisId : 8 ,
+//                 fartherId : 7 ,
+//                 startTime: '',
+//                 deadLine: '',
+//                 editPerson: '',
+//                 investigatePerson: '',
+//                 ratifyPerson: '',
+//                 con_signPerson1: '',
+//                 con_signPerson2:'',
+//                 taskDescription:'',
+//                 children:[],
+//             },
+//             {
+//                 name: '9',
+//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                 thisId : 9,
+//                 fartherId : 7,
+//                 children: []
+//             }
+//         ]
+//     },
+// }
+
+
+
+
+
+
+
+
+
+
+
+// this.processingDataFromBackEnd = [
+//         {
+//             "phaseName": "phase 3",
+//             "phaseTasks": [
+//                 {
+//                     "task__name": "分北况事备",
+//                     "task__thisId": 1,
+//                     "task__id": 1,
+//                     "task__thisFarther": 0
+//                 },
+//                 {
+//                     "task__name": "必满论白",
+//                     "task__thisId": 2,
+//                     "task__id": 2,
+//                     "task__thisFarther": 1
+//                 },
+//                 {
+//                     "task__name": "因般体",
+//                     "task__thisId": 3,
+//                     "task__id": 3,
+//                     "task__thisFarther": 1
+//                 },
+//                 {
+//                     "task__name": "结把三",
+//                     "task__thisId": 4,
+//                     "task__id": 4,
+//                     "task__thisFarther": 2
+//                 },
+//             ],
+//             "task__number": 4
+//         },
+//         {
+//             "phaseName": "phase 4",
+//             "phaseTasks": [
+//                 {
+//                     "task__name": "活进上部流",
+//                     "task__thisId": 5,
+//                     "task__id": 5,
+//                     "task__thisFarther": 0
+//                 }
+//             ],
+//             "task__number": 1
+//         },
+//         {
+//             "phaseName": "phase 5",
+//             "phaseTasks": [
+//                 {
+//                     "task__name": "到人段见",
+//                     "task__thisId": 6,
+//                     "task__id": 6,
+//                     "task__thisFarther": 0
+//                 },
+//                 {
+//                     "task__name": "连自白活格",
+//                     "task__thisId": 7,
+//                     "task__id": 7,
+//                     "task__thisFarther": 6
+//                 },
+//                 {
+//                     "task__name": "长学状次身对",
+//                     "task__thisId": 8,
+//                     "task__id": 8,
+//                     "task__thisFarther": 7
+//                 },
+//                 {
+//                     "task__name": "清极时方",
+//                     "task__thisId": 9,
+//                     "task__id": 9,
+//                     "task__thisFarther": 8
+//                 },
+//                 {
+//                     "task__name": "wser",
+//                     "task__thisId": 10,
+//                     "task__id": 10,
+//                     "task__thisFarther": 6
+//                 },
+//                 {
+//                     "task__name": "jucy",
+//                     "task__thisId": 11,
+//                     "task__id": 11,
+//                     "task__thisFarther": 8
+//                 },
+//                 {
+//                     "task__name": "zqx",
+//                     "task__thisId": 13,
+//                     "task__id": 13,
+//                     "task__thisFarther": 11
+//                 },
+//                 {
+//                     "task__name": "caobo",
+//                     "task__thisId": 12,
+//                     "task__id": 12,
+//                     "task__thisFarther": 7
+//                 },
+//             ],
+//             "task__number": 8
+//         },
+//     ]
