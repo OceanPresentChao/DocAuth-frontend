@@ -16,9 +16,10 @@ export default {
   data() {
     return {
       test: 'nihaoadsasdfssdfsfsdada',
-      userName: '',
+      userName: null,
+      roleSelction: null,
+      phone: null,
       headerBg: 'headerBg',
-      roleSelction: 'wseber',
       tableData: [
         {
           userid: 10,
@@ -88,7 +89,6 @@ export default {
       pageNum: 1,
       pageSize: 5,
       nickname: '',
-      phone: '',
       email: '',
       form: {},
       loginForm: {},
@@ -215,15 +215,9 @@ export default {
     },
 
     reset() {
-      this.userName = ''
-      this.phone = ''
-      // let f  = new FormData()
-      // f.append("current",1);
-      // f.append("size", 2);
-      // f.append("tableName", 3);
-      // console.log(f)
-      // this. ="",
-      // this.load()
+      this.userName = null
+      this.phone = null
+      this.roleSelction = null
     },
     saveLoginInfor() {
       this.$request.post('/api/v1/user/', this.loginForm).then((res) => {
@@ -297,20 +291,31 @@ export default {
       console.log(this.thisUserFunctions)
       this.authDialogFormVisible = false
     },
+
+    likeSerach(){
+      this.$request.get('',{
+        params:{
+          userName: this.userName,
+          phone: this.phone,
+          role: this.roleSelction,
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+        }
+      }).then(res=>{
+        this.tableData = res.data.results
+      })
+    },
     load() {
       // 请求分页查询
-      this.$request.get('/api/v1/user/list', {
+      this.$request.get('http://localhost:13500/api/v1/user/list/', {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          userName: this.userName,
-          phone: this.phone,
-          role: this.role,
         },
       }).then((res) => {
-        console.log(res)
-        this.tableData = res.records
-        this.total = res.total
+        console.log('这里是分页查询',res)
+        // this.tableData = res.records
+        // this.total = res.total
       })
       // //浪费流量，需要后续优化
       // this.request.get("/employee").then(res =>{
@@ -406,6 +411,9 @@ export default {
       <el-select class="selectStyle" v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
         <el-option v-for="(item) in roles" :value="item" />
       </el-select>
+<!--      <el-select v-model="role" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">-->
+<!--        <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #55e0e5" />-->
+<!--      </el-select>-->
       <el-button type="primary" style="margin-left: 20px" @click="load">
         <el-icon><Search /></el-icon>搜索
       </el-button>
@@ -413,6 +421,8 @@ export default {
         <el-icon><Minus /></el-icon>重置
       </el-button>
     </div>
+
+    <!-- 多个按钮栏   -->
     <div style="text-align: left ;margin-top: 10px;margin-bottom: 10px">
       <el-button type="primary" @click="handleAdd">
         <el-icon style="margin-right: 10px">
@@ -445,12 +455,13 @@ export default {
       </el-upload>
     </div>
 
+    <!-- 表格   -->
     <el-table :data="tableData" border stripe :header-cell-class-name="headerBg" @selection-change="handleSelectionChange">
       >
       <el-table-column type="selection" align="center" width="40" />
       <el-table-column prop="userid" align="center" label="用户ID" width="80"  />
       <el-table-column prop="username" align="center" label="用户名" width="100" />
-      <el-table-column prop="phone" align="center" label="电话号"  />
+      <el-table-column prop="phone" align="center" label="电话号" width="100"  />
       <el-table-column prop="gender" align="center" label="性别" width="50" />
       <el-table-column prop="email" align="center" label="邮箱" width="150" />
       <el-table-column prop="regdate" align="center" label="注册日期"  />
@@ -495,7 +506,7 @@ export default {
         </template>
       </el-table-column>
     </el-table>
-
+    <!-- 信息修改   -->
     <el-dialog v-model="infodialogFormVisible" title="用户信息" width="40%">
       <el-form label-width="80px">
         <el-form-item label="用户名" :label-width="formLabelWidth">
@@ -533,7 +544,7 @@ export default {
         </el-button>
       </div>
     </el-dialog>
-
+    <!-- 注册   -->
     <el-dialog v-model="loginDialogFormVisible" title="注册新用户" width="40%">
       <el-form label-width="80px">
         <el-form-item label="用户名" :label-width="formLabelWidth">
@@ -563,7 +574,7 @@ export default {
         </el-button>
       </div>
     </el-dialog>
-
+    <!-- 角色权限管理   -->
     <el-dialog v-model="authDialogFormVisible" title="用户权限管理" width="40%">
       <el-form style="text-align: left">
         <el-form-item label="管理角色">
@@ -571,13 +582,6 @@ export default {
             <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
-        <!--        <el-form-item label="管理功能" > -->
-        <!--          <el-select value-key = "id"   clearable v-model="selectedFunctions"   :popper-append-to-body='false' @change="changeValue" placeholder="请选择想额外赋予该用户的功能权限" style="width:100% " effect="dark"> -->
-        <!--            <el-option v-for="item in allFunctions" :lable="item.name" :key="item.id" :value="item" style="width: 100% ;color: #55e0e5"></el-option> -->
-        <!--            <el-option v-for="item in allFunctions" :label="item.name" :key="item.id" :value="item" style="width: 100% ;color: #55e0e5"></el-option> -->
-        <!--          </el-select> -->
-        <!--                  <el-button type="primary" @click="addThisUserAuth" size="large">增加权限</el-button> -->
-        <!--        </el-form-item> -->
         <el-form-item label="管理功能">
           <el-select v-model="thisUserFunctions" value-key="id" multiple clearable :popper-append-to-body="false" placeholder="请选择想额外赋予该用户的功能权限" style="width:100% " effect="dark" @change="changeValue">
             <el-option v-for="item in allFunctions" :key="item.id" :label="item.name" :value="item" style="width: 100% ;color: #55e0e5" />
@@ -622,9 +626,10 @@ export default {
   </div>
 </template>
 
-<style>
 
-</style>
+
+
+
 
 <style scoped>
   .headerBg{

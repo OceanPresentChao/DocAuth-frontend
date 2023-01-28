@@ -53,32 +53,31 @@
                     />
                 </el-form-item>
                 <el-form-item label="编" :label-width="formLabelWidth">
-                    <el-select value-key="userid" v-model="this.currentTask.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
+                    <el-select value-key="id" v-model="this.currentTask.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="审" :label-width="formLabelWidth">
                     <el-select v-model="this.currentTask.investigatePerson" placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="批" :label-width="formLabelWidth">
                     <el-select v-model="this.currentTask.ratifyPerson" placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="会签" :label-width="formLabelWidth" >
                     <el-select v-model="this.currentTask.con_signPerson1" placeholder="请选择人员1" style="margin-right: 50px ;" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5 ;text-align: center"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5 ;text-align: center"></el-option>
                     </el-select>
                     <el-select v-model="this.currentTask.con_signPerson2" placeholder="请选择人员2" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.id" :value="item.id" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="任务内容概述" :label-width="formLabelWidth">
                     <el-input v-model="this.currentTask.taskDescription" type="textarea" />
                 </el-form-item>
-
             </el-form>
             <template #footer>
       <span class="dialog-footer">
@@ -117,7 +116,7 @@
                 currentTask:{},
                 users:[
                     {
-                        userid: 1,
+                        id: 1,
                         username: "wser",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -128,7 +127,7 @@
                         enable:true,
                     },
                     {
-                        userid: 2,
+                        id: 2,
                         username: "jucy",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -139,7 +138,7 @@
                         enable:true,
                     },
                     {
-                        userid: 3,
+                        id: 3,
                         username: "oceanPresent",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -149,7 +148,7 @@
                         enable:true,
                     },
                     {
-                        userid: 4,
+                        id: 4,
                         username: "xvHao",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -159,7 +158,7 @@
                         enable:true,
                     },
                     {
-                        userid: 5,
+                        id: 5,
                         username: "zqx",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -169,7 +168,7 @@
                         enable:true,
                     },
                     {
-                        userid: 6,
+                        id: 6,
                         username: "fxx",
                         phone: '6465464654',
                         email: 'sdsadsa@qq.com',
@@ -198,6 +197,7 @@
 
         created() {
             this.load()
+            this.userInformationInit()
         },
         methods: {
             transferToOperatorName(operatorType){
@@ -216,7 +216,7 @@
                 for(let user of this.users){
                     if(trans === user.username){
                         // console.log('这里是发生改变的trans',trans)
-                        return user.userid
+                        return user.id
                     }
                 }
             },
@@ -240,6 +240,22 @@
 
             },
 
+            userInformationInit(){
+                this.users = []
+                this.$request.get("http://localhost:13500/api/v1/user/list/",{
+                    params:{
+                          page: 1,
+                          page_size:999999999,
+                          userName : null,
+                          phone : null,
+                          role : null
+                }}).then(res=>{
+                    console.log('这里是users',res)
+                    console.log('这里是users',res.data.results)
+                    this.users = res.data.results
+
+                })
+            },
             load(){
                 this.editableTabs =  []
                 this.processingDataFromBackEnd=[]
