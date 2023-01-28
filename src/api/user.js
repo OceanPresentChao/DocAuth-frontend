@@ -29,7 +29,7 @@ export function requestModifyUser(params = {}, data = {}) {
 
 export function requestUserDetail(params = {}, data = {}) {
   return request({
-    url: `/django/user/${params.id}}`,
+    url: `/django/user/${params.id}`,
     method: 'get',
     params,
     data,

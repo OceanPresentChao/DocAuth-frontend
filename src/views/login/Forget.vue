@@ -36,7 +36,7 @@ function submitForm(formEl) {
   formEl.validate(async (valid) => {
     if (valid) {
       try {
-        const data = await requestModifyUser(ruleForm.value)
+        const data = await requestModifyUser({}, ruleForm.value)
         ElMessage({
           type: 'success',
           message: '修改密码成功',

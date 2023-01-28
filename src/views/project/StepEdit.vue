@@ -20,6 +20,7 @@ const stepContext = ref<{
 })
 const taskInfo = inject<ITask>('taskInfo')
 
+authStore.fetchUserInfo()
 getUserDuty()
 
 function handleReady(q: Quill) {

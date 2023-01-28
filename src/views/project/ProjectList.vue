@@ -28,10 +28,6 @@ function getProjectList(params: {
 }) {
 
 }
-
-function handleCreate() {
-
-}
 </script>
 
 <template>
@@ -46,9 +42,11 @@ function handleCreate() {
         <el-option label="降序" value="desc" />
         <el-option label="升序" value="asc" />
       </el-select>
-      <el-button type="success" size="default" @click="handleCreate">
-        创建项目
-      </el-button>
+      <router-link to="/project/create">
+        <el-button type="success">
+          创建项目
+        </el-button>
+      </router-link>
     </div>
     <div>
       <div v-for="(p, idx) in filterProjectList" :key="p.id">
