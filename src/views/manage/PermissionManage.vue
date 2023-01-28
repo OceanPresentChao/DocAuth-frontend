@@ -5,9 +5,12 @@ export default {
   data() {
     return {
       roleid:'',
-      rolename:'',
+      rolename:'',//搜索框的角色名
 
       role:[],//某个角色
+
+      //被选择要删除的角色
+      selectedRoles:[],
 
       //所有权限
       allfunctions:[
@@ -126,146 +129,199 @@ export default {
       total:0,
     }
   },
-  methods :{
+  methods : {
     //加载所有角色
-    load()
-    {
+    load() {
       // 请求分页查询
-      this.$request.get('/api/v1/role/list', {
+      this.$request.get('/api/v1/permission/role/list/', {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           roleName: this.rolename,
         },
       }).then((res) => {
-        console.log(res)
-        this.tableData = res.records
-        this.total = res.total
+        if (res.code == 200) {
+          this.$message.success(res.message)
+          this.tableData = res.data
+          this.total = res.data.size()
+        } else {
+          this.$message.error(res.message)
+        }
       })
     },
-    reset()
-    {
-
+    reset() {
+      this.rolename = ''
     },
     //相应添加新角色按钮
-    handleAdd()
-    {
+    handleAdd() {
       this.newRoleFunctions = [];
       this.AddRoleDialogFormVisible = true;
     },
     //确定添加此新角色
-    confirmHandleAdd()
-    {
+    confirmHandleAdd() {
       let newRoleAllInfo = [];
       newRoleAllInfo.push(this.newRole);
       newRoleAllInfo.push(this.newRoleFunctions);
 
-      this.$request.put('api/v1/role/add',newRoleAllInfo).then((res)=> {
-        this.$message.success('成功')
-        })
-      //加载角色
-      this.load();
+      this.$request.put('api/v1/permission/role/add/', newRoleAllInfo).then((res) => {
+
+        if (res.code == 200) {
+          this.$message.success(res.message)
+          //加载角色
+          this.load();
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     },
 
     //删除某个角色
-    deleteRole(row)
-    {
-      this.$request.delete('api/v1')
+    deleteRole(id) {
+
+      this.$request.delete('api/v1/permission/role/delOne/', {
+        params: {
+          id
+        },
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(res.message)
+          //加载角色
+          this.load()
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     },
     //批量删除角色
-    delBatch()
-    {
-
+    delBatch() {
+      const ids = this.selectedRoles.map(v => v.roleid) // 将对象数组变成纯ID的数组
+      // console.log(this.multipleSelection)
+      // console.log(ids)
+      this.$request.delete('/api/v1/permission/role/ids/', {
+        params: {
+          ids,
+        },
+      }).then((res) => {
+        //console.log(res)
+        if (res.code == 200) {
+          this.$message.success(res.message)
+          this.load()
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     },
-    handleEditRoleInformation(row)
-    {
+    handleSelectionChange(val) {
+      this.selectedRoles = val;
+    },
+    handleEditRoleInformation(row) {
       this.role = [];
       this.infodialogFormVisible = true;
       this.role.rolename = row.rolename;
       this.role.desc = row.desc;
     },
-    loadThisRoleFunction()
-    {
+    updateRoleInfo(id) {
+      this.$request.put('/api/v1/permission/role/upInfo/', id).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(res.message)
+          this.load();
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    loadThisRoleFunction() {
       // 获得当前角色所拥有的权限
-      this.$request.get('/api/v1/permission/oneRoleList', {
+      this.$request.get('/api/v1/permission/role/oneRoleList/', {
         Params: {
           id: this.roleid,
         },
       }).then((res) => {
-        this.thisRoleFunctions = res
-        this.thisRoleFunctions1 = res
-        console.log(res)
+        if (res.code == 200) {
+          this.thisRoleFunctions = res
+          this.thisRoleFunctions1 = res
+          this.$message.success(res.message)
+        } else {
+          this.$message.error(res.message)
+        }
       })
     },
-    handleManageFunction(row)
-    {
+    handleManageFunction(row) {
       this.roleid = row.roleid;
       this.FunctionDialogFormVisible = true;
       this.loadThisRoleFunction();
     },
-    handleConfirm()
-    {
+    handleConfirm() {
       //this.FunctionDialogFormVisible = false;
       //当前处于this.roleid
 
       let List = [];
-      for(let i = 0;i < this.thisRoleFunctions.length;i++)
-      {
+      for (let i = 0; i < this.thisRoleFunctions.size(); i++) {
         List.push(this.thisRoleFunctions[i].id);
       }
 
-      this.$request.put('/api/v1/permission/role/updfunction', {
+      this.$request.put('/api/v1/permission/role/updfunction/', {
         Params: {
           roleId: this.roleid,
           functionList: List,
         },
       }).then((res) => {
         //this.role = res
-        if(true)//如果成功,再显示此用户的所有权限
+        if (res.data == 200)//如果成功,再显示此用户的所有权限
         {
-          this.$message.success('更新成功！')
+          this.$message.success(res.message)
           this.loadThisRoleFunction();
+        } else {
+          this.$message.error(res.message)
         }
-        console.log(res)
       })
 
     },
 
     // 删除当前角色所拥有的某个权限
-    delfunction(row)
-    {
+    delfunction(row) {
       //当前处于this.roleid
-      this.$request.delete('/api/v1/permission/role/delfunction', {
+      this.$request.delete('/api/v1/permission/role/delfunction/', {
         Params: {
           roleId: this.roleid,
-          functionId:row.id,
+          functionId: row.id,
         },
       }).then((res) => {
-        //this.role = res
-        console.log(res)
+        if (res.code == 200) {
+          this.$message.success(res.message)
+          this.loadThisRoleFunction()
+        } else {
+          this.$message.error(res.message)
+        }
       })
-      this.loadThisRoleFunction();
     },
-    cancelEditFunctionInfo()
-    {
+    cancelEditFunctionInfo() {
       FunctionDialogFormVisible = false;
       this.thisRoleFunctions = []
-      this.thisRoleFunctions1  = []
+      this.thisRoleFunctions1 = []
     },
     //检测该权限是否已经在数据库中
-    check(row)
-    {
-      if(this.thisRoleFunctions1.includes(row))
-      {
+    check(row) {
+      if (this.thisRoleFunctions1.includes(row)) {
         return true;
-      }
-      else
-      {
+      } else {
         return false;
       }
     },
 
-  },
+    //分页查询页面变化
+    handleSizeChange(pageSize) {
+      //console.log(pageSize)
+      this.pageSize = pageSize
+      this.load()
+    },
+    handleCurrentChange(pageNum) {
+      //console.log(pageNum)
+      this.pageNum = pageNum
+      this.load()
+
+    },
+  }
 
 }
 </script>
@@ -273,7 +329,7 @@ export default {
 <template>
   <div>
     <div style="text-align: left">
-      <el-input v-model="roleName" style="width: 200px;margin-right: 10px ;" suffix-icon="Role" placeholder="请输入" />
+      <el-input v-model="rolename" style="width: 200px;margin-right: 10px ;" suffix-icon="Role" placeholder="请输入" />
       <el-button type="primary" style="margin-left: 20px" @click="load()">
         <el-icon><Search /></el-icon>搜索
       </el-button>
@@ -346,10 +402,10 @@ export default {
                   cancel-button-text="No"
                   icon-color="#626AEF"
                   title="Are you sure to delete this?"
-                  @confirm="deleteRole(row)"
+                  @confirm="deleteRole(row.roleid)"
           >
             <template #reference>
-              <el-button slot="reference" type="danger" round>
+              <el-button slot="reference" type="danger" round >
                 <el-icon style="margin-right: 10px">
                   <DeleteFilled />
                 </el-icon>删除
@@ -374,7 +430,7 @@ export default {
         <el-button @click="infodialogFormVisible = false">
           取 消
         </el-button>
-        <el-button type="success" @click="update()">
+        <el-button type="success" @click="updateRoleInfo(row.roleid)">
           确 定
         </el-button>
       </div>
