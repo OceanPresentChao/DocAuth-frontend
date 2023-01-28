@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { ComputedRef, Ref } from 'vue'
-import type { ProjectInfo } from './type'
+import type { IProject } from './type'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
 const authStore = useAuthStore()
 const { userInfo } = storeToRefs(authStore)
 const queryText = ref('')
 const sortType = ref('desc')
-const projectList = ref<ProjectInfo[]>([{
+const projectList = ref<IProject[]>([{
   name: '项目1',
   id: 1,
   desc: '项目1描述',
   addTime: '2021-01-01',
   status: '进行中',
 }])
-const filterProjectList = computed<ProjectInfo[]>(() => {
+const filterProjectList = computed<IProject[]>(() => {
   return projectList.value.sort((a, b) => {
     if (sortType.value === 'desc')
       return a.id - b.id

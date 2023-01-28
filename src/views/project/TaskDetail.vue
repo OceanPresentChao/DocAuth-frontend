@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import { Fragment } from 'vue'
+import type { ITask } from './type'
+import { requestTaskDetail } from '@/api'
 import { useRenderIcon } from '@/utils/icon'
-const taskInfo = ref({
-  name: 'task1',
-  desc: 'desc11111',
-  status: '进行中',
+import { useTaskStore } from '@/store/task'
+
+const taskInfo = ref<ITask>({
+  id: 1,
+  phase: 1,
+  project: '',
+  name: '',
+  desc: '',
+  status: 's',
   step: 1,
-  startTime: '2002-3-9',
-  deadLine: '2008-8-9',
-  project: '项目1',
+  members: [],
+  addTime: '',
+  startTime: '',
+  deadLine: '',
 })
-
-const recordInfo = {
-  name: 'record1',
-  desc: 'desc11111',
-  status: '进行中',
-  step: 2,
-  startTime: '2002-3-9',
-  deadLine: '2008-8-9',
-  project: '项目1',
-}
-
+const taskStore = useTaskStore()
 const route = useRoute()
 
 const steps = computed(() => {
@@ -47,36 +44,81 @@ const steps = computed(() => {
     },
   ]
 })
+getTaskInfo(route.params.id as string)
 
-watch(route, (val) => {
-  taskInfo.value.name = `task${val.params.id}`
-}, { immediate: true })
+provide('taskInfo', taskInfo)
+
+async function getTaskInfo(id: string) {
+  const res = await requestTaskDetail({ id })
+  const task = res.data.data
+  taskInfo.value = task
+}
 </script>
 
 <template>
   <div>
     <el-descriptions
-      :title="`${taskInfo.name}任务详情`"
+      :title="`任务${taskInfo.name}详情`"
       direction="vertical"
       :column="4"
       size="large"
       border
     >
-      <el-descriptions-item label="Name" :span="3">
+      <el-descriptions-item label="Id" :span="1">
+        {{ taskInfo.id }}
+      </el-descriptions-item>
+      <el-descriptions-item label="Name" :span="2">
         {{ taskInfo.name }}
       </el-descriptions-item>
-      <el-descriptions-item label="Status">
-        <el-tag size="small">
-          {{ taskInfo.status }}
-        </el-tag>
+      <el-descriptions-item label="Project" :span="1">
+        {{ taskInfo.project }}
+      </el-descriptions-item>
+      <el-descriptions-item label="Members" :span="4">
+        <div flex justify-around>
+          <div
+            v-for="v in taskInfo.members"
+            :key="v.id"
+            text-center
+          >
+            <el-avatar
+              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+            />
+            <p>
+              {{ v.username }}
+            </p>
+            <el-tag
+              :type="taskStore.taskStep[v.duty].style"
+              effect="dark"
+              round
+            >
+              {{ taskStore.taskStep[v.duty].name }}
+            </el-tag>
+          </div>
+        </div>
       </el-descriptions-item>
       <el-descriptions-item label="Description" :span="4">
         {{ taskInfo.desc }}
       </el-descriptions-item>
-      <el-descriptions-item label="Start Time" :span="2">
+      <el-descriptions-item label="Step" :span="1">
+        <el-tag
+          size="small"
+          :type="taskStore.taskStep[taskInfo.step].style"
+        >
+          {{ taskStore.taskStep[taskInfo.step].name }}
+        </el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="Status" :span="1">
+        <el-tag
+          size="small"
+          :type="taskStore.taskStatus[taskInfo.status].style"
+        >
+          {{ taskStore.taskStatus[taskInfo.status].name }}
+        </el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="Start Time" :span="1">
         {{ taskInfo.startTime }}
       </el-descriptions-item>
-      <el-descriptions-item label="Deadline" :span="2">
+      <el-descriptions-item label="Deadline" :span="1">
         {{ taskInfo.deadLine }}
       </el-descriptions-item>
     </el-descriptions>
