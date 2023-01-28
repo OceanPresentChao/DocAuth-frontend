@@ -37,7 +37,7 @@
             </ul>
         </div>
         <!--people arrange -->
-        <el-dialog v-model="dialogFormVisible" title="人员安排">
+        <el-dialog v-model="dialogFormVisible" title="任务创建">
             <el-form :model="this.currentTask">
                 <el-form-item label="任务名称" :label-width="formLabelWidth">
                     <el-input v-model="this.currentTask.name" autocomplete="off" />
@@ -387,7 +387,8 @@
                         type:'success'
                     })
                     this.dialogFormVisible = false;
-                    this.currentTask.image_url= this.doneurl;
+                    // this.currentTask.image_url= this.doneurl;
+                    this.console('这里是即将提交的表单信息',this.currentTask)
                     this.examSavable();
                 }
             },
