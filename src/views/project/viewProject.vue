@@ -51,25 +51,25 @@
                 </el-form-item>
                 <el-form-item label="编" :label-width="formLabelWidth">
                     <el-select value-key="userid" v-model="this.currentTask.editPerson" :popper-append-to-body='false' placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="审" :label-width="formLabelWidth">
                     <el-select v-model="this.currentTask.investigatePerson" placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="批" :label-width="formLabelWidth">
                     <el-select v-model="this.currentTask.ratifyPerson" placeholder="请选择人员" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="会签" :label-width="formLabelWidth" >
                     <el-select v-model="this.currentTask.con_signPerson1" placeholder="请选择人员1" style="margin-right: 50px ;" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5 ;text-align: center"></el-option>
                     </el-select>
                     <el-select v-model="this.currentTask.con_signPerson2" placeholder="请选择人员2" effect="dark">
-                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5"></el-option>
+                        <el-option v-for="item in users" :label="item.username" :key="item.userid" :value="item.userid" style="width: 100% ;color: #55e0e5;text-align: center"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="任务内容概述" :label-width="formLabelWidth">
@@ -210,238 +210,7 @@
                   return "con_signPerson2"
             },
             load(){
-                this.editableTabs =  [
-                    {
-                        title: 'Phase 1',
-                        name: '1',
-                        content: {
-                            name: '1',
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            thisId : 1,
-                            fartherId : 0,
-                            startTime: '',
-                            deadLine: '',
-                            editPerson: '',
-                            investigatePerson: '',
-                            ratifyPerson: '',
-                            con_signPerson1: '',
-                            con_signPerson2:'',
-                            taskDescription:'',
-                            //class: ["rootNode"],
-                            children: [
-                                {
-                                    name: '2',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    thisId : 2 ,
-                                    fartherId : 1 ,
-                                    startTime: '',
-                                    deadLine: '',
-                                    editPerson: '',
-                                    investigatePerson: '',
-                                    ratifyPerson: '',
-                                    con_signPerson1: '',
-                                    con_signPerson2:'',
-                                    taskDescription:'',
-                                    children:[],
-                                },
-                                {
-                                    name: '3',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    thisId : 3,
-                                    fartherId : 1,
-                                    children: [
-                                        {
-                                            name: '4',
-                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                            thisId : 4,
-                                            fartherId : 3,
-                                            startTime: '',
-                                            deadLine: '',
-                                            editPerson: '',
-                                            investigatePerson: '',
-                                            ratifyPerson: '',
-                                            con_signPerson1: '',
-                                            con_signPerson2:'',
-                                            taskDescription:'',
-                                            children:[],
-                                        },
-                                        {
-                                            name: '5',
-                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                            thisId : 5,
-                                            fartherId : 3,
-                                            startTime: '',
-                                            deadLine: '',
-                                            editPerson: '',
-                                            investigatePerson: '',
-                                            ratifyPerson: '',
-                                            con_signPerson1: '',
-                                            con_signPerson2:'',
-                                            taskDescription:'',
-                                            children:[],
-                                        },
-                                        {
-                                            name: '6',
-                                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                            thisId : 6,
-                                            fartherId : 3,
-                                            startTime: '',
-                                            deadLine: '',
-                                            editPerson: '',
-                                            investigatePerson: '',
-                                            ratifyPerson: '',
-                                            con_signPerson1: '',
-                                            con_signPerson2:'',
-                                            taskDescription:'',
-                                            children:[],
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                    },
-                    {
-                        title: 'Phase 2',
-                        name: '2',
-                        content: {
-                            name: '7',
-                            image_url: "https://static.refined-x.com/static/avatar.jpg",
-                            thisId : 7,
-                            fartherId : 0,
-                            startTime: '',
-                            deadLine: '',
-                            editPerson: '',
-                            investigatePerson: '',
-                            ratifyPerson: '',
-                            con_signPerson1: '',
-                            con_signPerson2:'',
-                            taskDescription:'',
-                            //class: ["rootNode"],
-                            children: [
-                                {
-                                    name: '8',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    thisId : 8 ,
-                                    fartherId : 7 ,
-                                    startTime: '',
-                                    deadLine: '',
-                                    editPerson: '',
-                                    investigatePerson: '',
-                                    ratifyPerson: '',
-                                    con_signPerson1: '',
-                                    con_signPerson2:'',
-                                    taskDescription:'',
-                                    children:[],
-                                },
-                                {
-                                    name: '9',
-                                    image_url: "https://static.refined-x.com/static/avatar.jpg",
-                                    thisId : 9,
-                                    fartherId : 7,
-                                    children: []
-                                }
-                            ]
-                        },
-                    }
-                ]
-                // this.processingDataFromBackEnd = [
-                //         {
-                //             "phaseName": "phase 3",
-                //             "phaseTasks": [
-                //                 {
-                //                     "task__name": "分北况事备",
-                //                     "task__thisId": 1,
-                //                     "task__id": 1,
-                //                     "task__thisFarther": 0
-                //                 },
-                //                 {
-                //                     "task__name": "必满论白",
-                //                     "task__thisId": 2,
-                //                     "task__id": 2,
-                //                     "task__thisFarther": 1
-                //                 },
-                //                 {
-                //                     "task__name": "因般体",
-                //                     "task__thisId": 3,
-                //                     "task__id": 3,
-                //                     "task__thisFarther": 1
-                //                 },
-                //                 {
-                //                     "task__name": "结把三",
-                //                     "task__thisId": 4,
-                //                     "task__id": 4,
-                //                     "task__thisFarther": 2
-                //                 },
-                //             ],
-                //             "task__number": 4
-                //         },
-                //         {
-                //             "phaseName": "phase 4",
-                //             "phaseTasks": [
-                //                 {
-                //                     "task__name": "活进上部流",
-                //                     "task__thisId": 5,
-                //                     "task__id": 5,
-                //                     "task__thisFarther": 0
-                //                 }
-                //             ],
-                //             "task__number": 1
-                //         },
-                //         {
-                //             "phaseName": "phase 5",
-                //             "phaseTasks": [
-                //                 {
-                //                     "task__name": "到人段见",
-                //                     "task__thisId": 6,
-                //                     "task__id": 6,
-                //                     "task__thisFarther": 0
-                //                 },
-                //                 {
-                //                     "task__name": "连自白活格",
-                //                     "task__thisId": 7,
-                //                     "task__id": 7,
-                //                     "task__thisFarther": 6
-                //                 },
-                //                 {
-                //                     "task__name": "长学状次身对",
-                //                     "task__thisId": 8,
-                //                     "task__id": 8,
-                //                     "task__thisFarther": 7
-                //                 },
-                //                 {
-                //                     "task__name": "清极时方",
-                //                     "task__thisId": 9,
-                //                     "task__id": 9,
-                //                     "task__thisFarther": 8
-                //                 },
-                //                 {
-                //                     "task__name": "wser",
-                //                     "task__thisId": 10,
-                //                     "task__id": 10,
-                //                     "task__thisFarther": 6
-                //                 },
-                //                 {
-                //                     "task__name": "jucy",
-                //                     "task__thisId": 11,
-                //                     "task__id": 11,
-                //                     "task__thisFarther": 8
-                //                 },
-                //                 {
-                //                     "task__name": "zqx",
-                //                     "task__thisId": 13,
-                //                     "task__id": 13,
-                //                     "task__thisFarther": 11
-                //                 },
-                //                 {
-                //                     "task__name": "caobo",
-                //                     "task__thisId": 12,
-                //                     "task__id": 12,
-                //                     "task__thisFarther": 7
-                //                 },
-                //             ],
-                //             "task__number": 8
-                //         },
-                //     ]
+                this.editableTabs =  []
                 this.processingDataFromBackEnd=[]
                 this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
                     params:{
@@ -712,3 +481,244 @@
     }
 </style>
 
+// {
+//     title: 'Phase 1',
+//     name: '1',
+//     content: {
+//         name: '1',
+//         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//         thisId : 1,
+//         fartherId : 0,
+//         startTime: '',
+//         deadLine: '',
+//         editPerson: '',
+//         investigatePerson: '',
+//         ratifyPerson: '',
+//         con_signPerson1: '',
+//         con_signPerson2:'',
+//         taskDescription:'',
+//         //class: ["rootNode"],
+//         children: [
+//             {
+//                 name: '2',
+//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                 thisId : 2 ,
+//                 fartherId : 1 ,
+//                 startTime: '',
+//                 deadLine: '',
+//                 editPerson: '',
+//                 investigatePerson: '',
+//                 ratifyPerson: '',
+//                 con_signPerson1: '',
+//                 con_signPerson2:'',
+//                 taskDescription:'',
+//                 children:[],
+//             },
+//             {
+//                 name: '3',
+//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                 thisId : 3,
+//                 fartherId : 1,
+//                 children: [
+//                     {
+//                         name: '4',
+//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                         thisId : 4,
+//                         fartherId : 3,
+//                         startTime: '',
+//                         deadLine: '',
+//                         editPerson: '',
+//                         investigatePerson: '',
+//                         ratifyPerson: '',
+//                         con_signPerson1: '',
+//                         con_signPerson2:'',
+//                         taskDescription:'',
+//                         children:[],
+//                     },
+//                     {
+//                         name: '5',
+//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                         thisId : 5,
+//                         fartherId : 3,
+//                         startTime: '',
+//                         deadLine: '',
+//                         editPerson: '',
+//                         investigatePerson: '',
+//                         ratifyPerson: '',
+//                         con_signPerson1: '',
+//                         con_signPerson2:'',
+//                         taskDescription:'',
+//                         children:[],
+//                     },
+//                     {
+//                         name: '6',
+//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                         thisId : 6,
+//                         fartherId : 3,
+//                         startTime: '',
+//                         deadLine: '',
+//                         editPerson: '',
+//                         investigatePerson: '',
+//                         ratifyPerson: '',
+//                         con_signPerson1: '',
+//                         con_signPerson2:'',
+//                         taskDescription:'',
+//                         children:[],
+//                     }
+//                 ]
+//             }
+//         ]
+//     },
+// },
+// {
+//     title: 'Phase 2',
+//     name: '2',
+//     content: {
+//         name: '7',
+//         image_url: "https://static.refined-x.com/static/avatar.jpg",
+//         thisId : 7,
+//         fartherId : 0,
+//         startTime: '',
+//         deadLine: '',
+//         editPerson: '',
+//         investigatePerson: '',
+//         ratifyPerson: '',
+//         con_signPerson1: '',
+//         con_signPerson2:'',
+//         taskDescription:'',
+//         //class: ["rootNode"],
+//         children: [
+//             {
+//                 name: '8',
+//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                 thisId : 8 ,
+//                 fartherId : 7 ,
+//                 startTime: '',
+//                 deadLine: '',
+//                 editPerson: '',
+//                 investigatePerson: '',
+//                 ratifyPerson: '',
+//                 con_signPerson1: '',
+//                 con_signPerson2:'',
+//                 taskDescription:'',
+//                 children:[],
+//             },
+//             {
+//                 name: '9',
+//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
+//                 thisId : 9,
+//                 fartherId : 7,
+//                 children: []
+//             }
+//         ]
+//     },
+// }
+
+
+
+
+
+
+
+
+
+
+
+// this.processingDataFromBackEnd = [
+//         {
+//             "phaseName": "phase 3",
+//             "phaseTasks": [
+//                 {
+//                     "task__name": "分北况事备",
+//                     "task__thisId": 1,
+//                     "task__id": 1,
+//                     "task__thisFarther": 0
+//                 },
+//                 {
+//                     "task__name": "必满论白",
+//                     "task__thisId": 2,
+//                     "task__id": 2,
+//                     "task__thisFarther": 1
+//                 },
+//                 {
+//                     "task__name": "因般体",
+//                     "task__thisId": 3,
+//                     "task__id": 3,
+//                     "task__thisFarther": 1
+//                 },
+//                 {
+//                     "task__name": "结把三",
+//                     "task__thisId": 4,
+//                     "task__id": 4,
+//                     "task__thisFarther": 2
+//                 },
+//             ],
+//             "task__number": 4
+//         },
+//         {
+//             "phaseName": "phase 4",
+//             "phaseTasks": [
+//                 {
+//                     "task__name": "活进上部流",
+//                     "task__thisId": 5,
+//                     "task__id": 5,
+//                     "task__thisFarther": 0
+//                 }
+//             ],
+//             "task__number": 1
+//         },
+//         {
+//             "phaseName": "phase 5",
+//             "phaseTasks": [
+//                 {
+//                     "task__name": "到人段见",
+//                     "task__thisId": 6,
+//                     "task__id": 6,
+//                     "task__thisFarther": 0
+//                 },
+//                 {
+//                     "task__name": "连自白活格",
+//                     "task__thisId": 7,
+//                     "task__id": 7,
+//                     "task__thisFarther": 6
+//                 },
+//                 {
+//                     "task__name": "长学状次身对",
+//                     "task__thisId": 8,
+//                     "task__id": 8,
+//                     "task__thisFarther": 7
+//                 },
+//                 {
+//                     "task__name": "清极时方",
+//                     "task__thisId": 9,
+//                     "task__id": 9,
+//                     "task__thisFarther": 8
+//                 },
+//                 {
+//                     "task__name": "wser",
+//                     "task__thisId": 10,
+//                     "task__id": 10,
+//                     "task__thisFarther": 6
+//                 },
+//                 {
+//                     "task__name": "jucy",
+//                     "task__thisId": 11,
+//                     "task__id": 11,
+//                     "task__thisFarther": 8
+//                 },
+//                 {
+//                     "task__name": "zqx",
+//                     "task__thisId": 13,
+//                     "task__id": 13,
+//                     "task__thisFarther": 11
+//                 },
+//                 {
+//                     "task__name": "caobo",
+//                     "task__thisId": 12,
+//                     "task__id": 12,
+//                     "task__thisFarther": 7
+//                 },
+//             ],
+//             "task__number": 8
+//         },
+//     ]

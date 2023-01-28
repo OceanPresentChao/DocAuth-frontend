@@ -645,7 +645,7 @@ export default {
 
 <style lang="scss">
   .el-select {
-    width: 1150px;
+    width: 150px;
   }
   .input-with-select .el-input-group__prepend {
     background: rgba(10, 30, 55, 0.7);
