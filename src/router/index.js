@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import NProgress from 'nprogress'
 import DashBoard from '@/views/dashboard/DashBoard.vue'
-import Account from '@/views/login/Account.vue'
 
 // 菜单路由在这里配置
 export const menuRoutes = [
@@ -116,7 +115,8 @@ const asyncRoutes = [
             component: () => import('@/views/project/StepEdit.vue'),
             meta: {
               title: '编撰任务',
-              step: 'edit',
+              name: 'edit',
+              step: 1,
             },
           },
           {
@@ -124,7 +124,8 @@ const asyncRoutes = [
             component: () => import('@/views/project/StepEdit.vue'),
             meta: {
               title: '审阅任务',
-              step: 'review',
+              name: 'review',
+              step: 2,
             },
           },
           {
@@ -132,15 +133,17 @@ const asyncRoutes = [
             component: () => import('@/views/project/StepEdit.vue'),
             meta: {
               title: '审批任务',
-              step: 'judge',
+              name: 'judge',
+              step: 3,
             },
           },
           {
             path: '/task/:id/compile',
             component: () => import('@/views/project/StepEdit.vue'),
             meta: {
-              title: '汇编任务',
-              step: 'compile',
+              title: '汇签任务',
+              name: 'compile',
+              step: 4,
             },
           },
         ],
@@ -155,7 +158,7 @@ const constantRoutes = [
   {
     name: 'login',
     path: '/login',
-    component: Account,
+    component: () => import('@/views/login/Account.vue'),
   },
   {
     name: '404',
