@@ -464,6 +464,8 @@
             enterTheNode(){
                 this.tag =0;
                 //下面转到朝海波负责的任务详情页或编辑页
+                this.$router.push({path:'/task/:id',query:{id : this.currentTask.id}})
+                // this.$router.push('/task/:id')
                 this.shutDown();
             },
             applyEmployees(){
