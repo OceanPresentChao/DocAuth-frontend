@@ -171,7 +171,11 @@ export default {
       pageSearch.roleName = this.rolename
       console.log(JSON.stringify(pageSearch))
       this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/list/', {
-        data: JSON.stringify(pageSearch)
+        params:{
+          pageNum :this.pageNum,
+          pageSize :this.pageSize,
+          roleName :this.rolename
+        }
       }).then((res) => {
         if (res.data.code == 200) {
           this.$message.success(res.data.message)
@@ -220,8 +224,8 @@ export default {
     deleteRole(id) {
 
       this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delOne/', {
-        body: {
-          id
+        params: {
+          id:id,
         },
       }).then((res) => {
         if (res.code == 200) {
@@ -239,8 +243,8 @@ export default {
       // console.log(this.multipleSelection)
       // console.log(ids)
       this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/ids/', {
-        body: {
-          ids,
+        params: {
+          ids:ids,
         },
       }).then((res) => {
         //console.log(res)
@@ -288,8 +292,8 @@ export default {
     loadThisRoleFunction() {
       // 获得当前角色所拥有的权限
       this.$request.get('/api/v1/permission/role/oneRoleList/', {
-        body: {
-          id: this.roleid,
+        params: {
+          roleid: this.roleid,
         },
       }).then((res) => {
         if (res.data.code == 200) {
