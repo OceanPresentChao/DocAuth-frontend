@@ -327,7 +327,7 @@ export default {
       console.log('这里是postData', postData)
       allData.phases = postData
       allData.phaseNumber = postData.length
-      allData.projectId = 4
+      allData.projectId = 6
       console.log('这里是数据', allData)
       this.$request.post('http://127.0.0.1:13500/api/v1/business/saveProject', allData).then((res) => {
         console.log(res)

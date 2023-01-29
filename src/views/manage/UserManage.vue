@@ -5,7 +5,7 @@
       <el-input v-model="userName" style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" />
       <el-input v-model="phone" style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" />
       <el-select class="selectStyle" v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
-        <el-option v-for="(item) in roles" :value="item" />
+        <el-option v-for="(item) in allRoles" :value="item" />
       </el-select>
 <!--      <el-select v-model="role" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">-->
 <!--        <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #55e0e5" />-->
@@ -20,7 +20,7 @@
 
     <!-- 多个按钮栏   -->
     <div style="text-align: left ;margin-top: 10px;margin-bottom: 10px">
-      <el-button type="primary" @click="handleAdd">
+      <el-button type="primary" @click="handleLogin">
         <el-icon style="margin-right: 10px">
           <Star />
         </el-icon>注册新用户<i class="el-icon-circle-plus-outline" style="margin-left: 5px" />
@@ -55,12 +55,12 @@
     <el-table :data="tableData" border stripe :header-cell-class-name="headerBg" @selection-change="handleSelectionChange">
       >
       <el-table-column type="selection" align="center" width="40" />
-      <el-table-column prop="id" align="center" label="用户ID" width="80"  />
-      <el-table-column prop="username" align="center" label="用户名" width="100" />
-      <el-table-column prop="phone" align="center" label="电话号" width="100"  />
-      <el-table-column prop="gender" align="center" label="性别" width="50" />
-      <el-table-column prop="email" align="center" label="邮箱" width="150" />
-      <el-table-column prop="date_joined" align="center" label="注册日期"  />
+      <el-table-column prop="id" align="center" label="用户ID" width="100"  sortable />
+      <el-table-column prop="username" align="center" label="用户名" width="100"  sortable />
+      <el-table-column prop="phone" align="center" label="电话号" width="100"   sortable/>
+      <el-table-column prop="gender" align="center" label="性别" width="70" />
+      <el-table-column prop="email" align="center" label="邮箱" width="150"  sortable/>
+      <el-table-column prop="date_joined" align="center" label="注册日期"  sortable  />
       <el-table-column label="启用" align="center" width="100">
         <template #default="{ row, $index }">
           <el-switch v-model="row.is_active" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(row)" />
@@ -89,7 +89,7 @@
             cancel-button-text="No"
             icon-color="#626AEF"
             title="Are you sure to delete this?"
-            @confirm="deleteUser(row.userid)"
+            @confirm="deleteUser(row.id)"
           >
             <template #reference>
               <el-button slot="reference" type="danger" round>
@@ -102,25 +102,21 @@
         </template>
       </el-table-column>
     </el-table>
+
     <!-- 信息修改   -->
     <el-dialog v-model="infodialogFormVisible" title="用户信息" width="40%">
       <el-form label-width="80px">
+        <el-form-item label="用户ID" :label-width="formLabelWidth">
+          <el-input v-model="form.id" autocomplete="off" :disabled="true" />
+        </el-form-item>
         <el-form-item label="用户名" :label-width="formLabelWidth">
           <el-input v-model="form.username" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="角色">
-          <el-select v-model="form.role" multiple clearable placeholder="请选择角色" style="width: 100% ;color: #42b983" effect="dark">
-            <el-option v-for=" item in roles" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="用户ID" :label-width="formLabelWidth">
-          <el-input v-model="form.userid" autocomplete="off" :disabled="true" />
+        <el-form-item label="真实姓名" :label-width="formLabelWidth" :disabled="true">
+          <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
         <el-form-item label="电话号" :label-width="formLabelWidth">
           <el-input v-model="form.phone" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth" :disabled="true">
-          <el-input v-model="form.password" autocomplete="off" />
         </el-form-item>
         <el-form-item label="性别" :label-width="formLabelWidth">
           <el-select v-model="form.gender" clearable placeholder="请选择性别" style="width: 100% " popper-class="selectFrom">
@@ -135,7 +131,7 @@
         <el-button @click="infodialogFormVisible = false">
           取 消
         </el-button>
-        <el-button type="success" @click="update">
+        <el-button type="success" @click="saveuserInfor">
           确 定
         </el-button>
       </div>
@@ -160,9 +156,9 @@
         <el-form-item label="电话号" :label-width="formLabelWidth">
           <el-input v-model="loginForm.phone" autocomplete="off" />
         </el-form-item>
-<!--        <el-form-item label="邮箱" :label-width="formLabelWidth">-->
-<!--          <el-input v-model="loginForm.email" autocomplete="off" />-->
-<!--        </el-form-item>-->
+        <el-form-item label="邮箱" :label-width="formLabelWidth">
+          <el-input v-model="loginForm.email" autocomplete="off" />
+        </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -178,8 +174,8 @@
     <el-dialog v-model="authDialogFormVisible" title="用户权限管理" width="40%">
       <el-form style="text-align: left">
         <el-form-item label="管理角色">
-          <el-select v-model="role" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">
-            <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #55e0e5" />
+          <el-select v-model="thisUserRoles" value-key="id"  class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">
+            <el-option v-for=" item in allRoles" :key="item.id" :label="item.name" :value="item" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="管理功能">
@@ -194,6 +190,8 @@
         <el-table-column prop="name" align="center" label="Name" width="180" />
         <el-table-column prop="key" align="center" label="Key" width="180" />
         <el-table-column prop="status" align="center" label="Status" />
+        <el-table-column prop="parent" align="center" label="Parent" />
+        <el-table-column prop="rw_type" align="center" label="Rw_type" />
         <el-table-column align="center" label="仅禁用此用户的此权限">
           <template #default="{ row, $index }">
             <el-switch v-model="row.enable" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(row)" />
@@ -229,6 +227,8 @@
 <script>
   import { Apple, Edit,  Loading, Menu, Search, Share } from '@element-plus/icons-vue'
   import { InfoFilled } from '@element-plus/icons-vue'
+
+
   export default {
 
     name: 'UserManage',
@@ -326,8 +326,19 @@
         loginDialogFormVisible: false,
         authDialogFormVisible: false,
         genders: ['男', '女', '未知'],
-        roles: ['项目经理', '老板', '普通员工', '总经理', 'wseber'],
-        role: [],
+        allRoles: [{
+          id: 1,
+          name: '项目经理',
+          desc: 'modifyPersonalInformation',
+          status: 'r',
+        },
+          {
+            id: 2,
+            name:  '董事长',
+            desc: 'modifyPersonalInformation',
+            status: 'r',
+          },
+          ],
         allFunctions: [
           {
             id: 1,
@@ -360,7 +371,7 @@
             status: '已启用',
           },
         ], // 全部可选的功能权限
-
+        thisUserRoles: [],  //该用户已分配的角色
         thisUserFunctions: [
           {
             id: 1,
@@ -385,13 +396,14 @@
 
           }], // 该用户已经拥有的权限
 
+
+
         membership: '',
         realName: '',
         position: '',
         authorityKey: '',
         menuData: [],
         multipleSelection: [],
-
         menuDialogVis: false,
         props: {
           label: 'name',
@@ -404,45 +416,13 @@
       }
     },
     created() {
-
       this.load()
-
     },
-
     methods: {
-      selectMenu(role) {
-        this.roleId = role.id
-        this.menuDialogVis = true
-        console.log(`${role.authorityKey}这里是该角色的权限键值`)
-        this.roleFlag = role.authorityKey
-
-        this.$request.get('/menu', {
-          params: {
-            name: '',
-          },
-        }).then((res) => {
-          this.menuData = res
-          this.expends = this.menuData.map(v => v.id)
-        })
-        this.$request.get(`/employee/rolemenu/${this.roleId}`).then((res) => {
-          this.checks = res.data
-          this.menuDialogVis = true
-
-          this.$request.get('/menu/ids').then((r) => {
-            const ids = r.data
-            ids.forEach((id) => {
-              if (!this.checks.includes(id))
-                this.$refs.tree.setChecked(id, false)
-            })
-          })
-        })
-      },
-
       changeValue(value) {
         console.log('value', value)
         console.log(this.test, 'thie.test')
       },
-
       reset() {
         this.userName = null
         this.phone = null
@@ -451,7 +431,7 @@
       saveLoginInfor() {
         this.$request.post('http://localhost:13500/api/v1/user', this.loginForm).then((res) => {
           console.log(res)
-          if (res.code === 200) {
+          if (res.status === 201) {
             ElMessage({
               showClose:true,
               message:'注册成功',
@@ -469,68 +449,6 @@
           }
         })
       },
-      handleEditPersonalInformation(row) {
-        this.form = row
-        console.log(row)
-        this.infodialogFormVisible = true
-      },
-      handleAdd() {
-        this.loginDialogFormVisible = true
-        this.form = {}
-      },
-      handleEdit() {
-
-      },
-
-      handleManageAuthority(row) {
-        this.userid = row.userid
-        this.role = row.role
-        // 获得当前用户所拥有的角色
-        this.$request.get('/api/v1/permission/role/', {
-          Params: {
-            id: this.userid,
-          },
-        }).then((res) => {
-          this.role = res
-          console.log(res)
-        })
-
-        // 得到所有给该用户开小灶的权限
-        this.$request.get('/api/v1/permission/extra/function/', {
-          Params: {
-            id: this.userid,
-          },
-        }).then((res) => {
-          this.thisUserFunctions = res
-        })
-        this.authDialogFormVisible = true
-      },
-      saveAuthorityInfor() {
-        const data = {}
-        data.userId = this.userid
-        data.extraFunctionList = []
-        let tmp = {}
-        for (const item of this.thisUserFunctions) {
-          tmp.id = item.id
-          tmp.enable = item.enable
-          data.extraFunctionList.push(tmp)
-          tmp = {}
-        }
-        console.log('这是数据', data)
-        this.$request.put('/api/v1/permission/extra/function/', data).then((res) => {
-          if (res.code === 219) {
-            this.$message.success('保存成功')
-            this.dialogFormVisible = false
-            this.load()
-          }
-          else {
-            this.$message.error('保存失败')
-          }
-        })
-        console.log(this.thisUserFunctions)
-        this.authDialogFormVisible = false
-      },
-
       //多条件模糊查询
       likeSerach(){
         this.$request.get('',{
@@ -542,7 +460,7 @@
             pageSize: this.pageSize,
           }
         }).then(res=>{
-          this.tableData = res.data.results
+          this.tableData = res.data.data.results
         })
       },
       load() {
@@ -557,9 +475,43 @@
           },
         }).then((res) => {
           console.log('这里是分页查询',res)
-          this.tableData = res.data.results
-          this.total = res.data.count
+          this.tableData = res.data.data.results
+          this.total = res.data.data.count
         })
+      },
+      deleteUser(id) {
+        this.$request.delete('http://localhost:13500/api/v1/user/one',{
+          params: {
+                    id : id
+          }
+        }).then(res => {
+          if (res.status === 200) {
+            ElMessage({
+              showClose:true,
+              message:'删除成功',
+              type:'success'
+            })
+            this.dialogFormVisible = false
+            this.load()
+          }
+          else {
+            ElMessage({
+              showClose:true,
+              message:'删除失败',
+              type:'error'
+            })
+          }
+          // console.log(res)
+        })
+      },
+      handleLogin() {
+        this.loginDialogFormVisible = true
+        this.form = {}
+      },
+      handleEditPersonalInformation(row) {
+        this.form = row
+        console.log(row)
+        this.infodialogFormVisible = true
       },
       handleSizeChange(pageSize) {
         console.log(pageSize)
@@ -573,6 +525,39 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val
+      },
+
+
+      //以上是已经调通的接口
+
+      initRoles(){
+        let roleParam = {}
+        roleParam["pageNum"] = 1;
+        roleParam["pageSize"] = 99999;
+        roleParam["roleParam"] = null;
+        this.$request.get('http://localhost:13500/api/v1/permisssion/role/list/',roleParam).then(res=>{
+          console.log(res)
+        })
+      },
+      initFunctions(){
+        this.$request.get('http://localhost:13500/api/v1/api/v1/permission/').then(res=>{
+               console.log(res)
+        })
+      },
+      saveuserInfor() {
+        console.log(this.form)
+        this.$request.post("http://localhost:13500/api/v1/user/"+this.form.id , this.form).then(res =>{
+          console.log(res)
+          // if(res.code === 223){
+          //   this.$message.success("保存成功")
+          //   this.dialogFormVisible = false
+          //   this.load()
+          // }
+          // else{
+          //   this.$message.error("保存失败")
+          // }
+
+        })
       },
       delBatch() {
         const ids = this.multipleSelection.map(v => v.id) // 将对象数组变成纯ID的数组
@@ -594,33 +579,79 @@
           }
         })
       },
-      deleteUser(id) {
-        this.$request.delete(`/api/v1/user/${id}`).then((res) => {
-          if (res) {
-            this.$message.success('删除成功')
-            this.dialogFormVisible = false
-            this.load()
-          }
-          else {
-            this.$message.error('删除失败')
-          }
-        })
-      },
-      update() {
-        console.log(this.form)
-        // this.$request.post("/api/v1/user/"+this.form.userid , this.form).then(res =>{
-        //   if(res.code === 223){
-        //     this.$message.success("保存成功")
-        //     this.dialogFormVisible = false
-        //     this.load()
-        //   }
-        //   else{
-        //     this.$message.error("保存失败")
-        //   }
-        //
+      handleManageAuthority(row) {
+        this.id = row.id
+        this.role = row.role
+        // 获得当前用户所拥有的角色
+        // this.$request.get('http://localhost:13500/api/v1/permission/role/', {userId: this.id}).then((res) => {
+        //   this.role = res
+        //   console.log(res)
         // })
+        // // 得到所有给该用户开小灶的权限
+        // this.$request.get('/api/v1/permission/extra/function/', {
+        //   Params: {
+        //     userId: this.id,
+        //   },
+        // }).then((res) => {
+        //   this.thisUserFunctions = res
+        // })
+        this.authDialogFormVisible = true
       },
+      saveAuthorityInfor() {
+        const data = {}
+        data.userId = this.id
+        data.extraFunctionList = []
+        data.rolesList = []
+        let tmp = {}
+        for (const item of this.thisUserFunctions) {
+          tmp.id = item.id
+          tmp.enable = item.enable
+          data.extraFunctionList.push(tmp)
+          tmp = {}
+        }
+        tmp ={}
+        for(const item of this.thisUserRoles){
+          tmp.id = item.id
+          tmp.name = item.name
+          data.rolesList.push(tmp)
+          tmp = {}
+        }
+        console.log('这是数据', data)
+
+        let dataOfFuntions={}
+        dataOfFuntions.userId = data.userId
+        dataOfFuntions.extraFunctionList = data.extraFunctionList
+        //更新小灶信息
+        // this.$request.put('/api/v1/permission/extra/function/', dataOfFuntions).then((res) => {
+        //   console.log(res)
+        //   // if (res.status === 200) {
+        //   //   this.$message.success('保存成功')
+        //   //   this.dialogFormVisible = false
+        //   //   this.load()
+        //   // }
+        //   // else {
+        //   //   this.$message.error('保存失败')
+        //   // }
+        // })
+        //更新用户角色信息
+        let dataOfRoles={}
+        dataOfRoles.userId = data.userId
+        dataOfRoles.roleIds = data.rolesList.map(v => v.id)
+        // this.$request('/api/v1/permission/user/role/',dataOfRoles).then(res=>{
+        //   console.log(res)
+        // })
+        console.log('***',dataOfRoles)
+        console.log(dataOfFuntions)
+        this.authDialogFormVisible = false
+      },
+
+
+      //以上是等待接口的函数
+
+
+
       changeEnable(row) {},
+
 
       exp() {
         window.open('http://localhost:9099/employee/export')
@@ -657,7 +688,7 @@
   }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .el-select {
     width: 150px;
   }
@@ -743,11 +774,11 @@
     //修改单个的选项的样式
     .el-select-dropdown__item {
       padding: 0 0.2rem 0 0.2rem;
-      color: #ffff;
+      color: rgba(10, 30, 55, 0.7);
       font-size: 16px;
     }
     .el-select-dropdown__item.selected {
-      color: #ffff;
+      color: rgba(10, 30, 55, 0.7);
     }
     //item选项的hover样式
     .el-select-dropdown__item.hover,
