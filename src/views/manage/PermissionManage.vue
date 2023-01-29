@@ -487,10 +487,11 @@ export default {
         </template>
       </el-popconfirm>
     </div>
-
+I
     <el-table :data="tableData" border stripe :header-cell-class-name="headerBg" @selection-change="handleSelectionChange">
-      <el-table-column prop="roleid" align="center" label="角色ID" width="80"  />
-      <el-table-column prop="rolename" align="center" label="角色名称" width="100" />
+      <el-table-column type="selection" align="center" width="40" />
+      <el-table-column prop="roleId" align="center" label="角色ID" width="80"  />
+      <el-table-column prop="rolename" align="center" label="角色名称" width="100" />I
       <el-table-column label="启用" align="center" width="100">
         <template #default="{ row, $index }">
           <el-switch v-model="row.status" active-color="#13ce66" inactive-color="#ccc" @change="changeRoleStatus(row)" />
