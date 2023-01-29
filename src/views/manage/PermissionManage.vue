@@ -7,12 +7,13 @@ export default {
       roleid:'',
       rolename:'',//搜索框的角色名
 
-      role:[],//某个角色
+      role:{},//某个角色
 
       //被选择要删除的角色
       selectedRoles:[],
 
-      //所有权限
+      //所有权限,未分组
+      allfunctions1:[] ,
       allfunctions:[
         {
           label: '创建',
@@ -124,30 +125,67 @@ export default {
       infodialogFormVisible:false,
 
       //分页查询
-      pageNum:0,
-      pageSize:0,
-      total:0,
+      pageNum:1,
+      pageSize:12,
+      total:6,
     }
   },
+
+  created() {
+    this.allfunctions = this.loadAllFunctions()
+    this.load()
+  },
   methods : {
-    //加载所有角色
-    load() {
-      // 请求分页查询
-      this.$request.get('/api/v1/permission/role/list/', {
-        params: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize,
-          roleName: this.rolename,
-        },
-      }).then((res) => {
-        if (res.code == 200) {
-          this.$message.success(res.message)
-          this.tableData = res.data
-          this.total = res.data.size()
-        } else {
-          this.$message.error(res.message)
+
+    loadAllFunctions()
+    {
+      this.$request.get('http://127.0.0.1:8000/api/v1/permission/').then((res)=>{
+        if(res.data.code==200)
+        {
+          this.allfunctions1 = res.data.data
+          let keysArr = list.map(item=>item['parent'])
+          let keys = [...new Set(keysArr)]
+          let newList = keys.map(item=>{
+            return {
+              //这里写新的 数据结构 如下是整体复制
+              ['parent']:item,
+              children:list.filter(i=>i['parent']==item)
+            }
+          })
+          return newList;
+        }
+        else
+        {
+          this.$message.error('权限加载失败，请刷新页面')
+          return []
         }
       })
+    },
+    //加载所有角色
+
+    load() {
+      // 请求分页查询
+      let pageSearch = {}
+      pageSearch.pageNum = this.pageNum
+      pageSearch.pageSize = this.pageSize
+      pageSearch.roleName = this.rolename
+      console.log(JSON.stringify(pageSearch))
+      this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/list/', {
+        data: JSON.stringify(pageSearch)
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.$message.success(res.data.message)
+          this.tableData = res.data.data.records
+          this.total = res.data.data.total
+        } else {
+          this.$message.error(res.data.message)
+        }
+      })
+    },
+    searchAll()
+    {
+      this.pageNum = 1
+      this.load()
     },
     reset() {
       this.rolename = ''
@@ -160,17 +198,20 @@ export default {
     //确定添加此新角色
     confirmHandleAdd() {
       let newRoleAllInfo = [];
-      newRoleAllInfo.push(this.newRole);
-      newRoleAllInfo.push(this.newRoleFunctions);
+      //默认状态为true
+      this.newRole.status = true;
+      newRoleAllInfo.newRole = this.newRole;
+      this.newRoleFunctions = this.newRoleFunctions.map(v => v.id) // 将对象数组变成纯ID的数组
+      newRoleAllInfo.newRoleFunctions = this.newRoleFunctions;
 
-      this.$request.put('api/v1/permission/role/add/', newRoleAllInfo).then((res) => {
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/add/', newRoleAllInfo).then((res) => {
 
-        if (res.code == 200) {
-          this.$message.success(res.message)
+        if (res.data.code == 200) {
+          this.$message.success(res.data.message)
           //加载角色
           this.load();
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.data.message)
         }
       })
     },
@@ -178,17 +219,17 @@ export default {
     //删除某个角色
     deleteRole(id) {
 
-      this.$request.delete('api/v1/permission/role/delOne/', {
-        params: {
+      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delOne/', {
+        body: {
           id
         },
       }).then((res) => {
         if (res.code == 200) {
-          this.$message.success(res.message)
+          this.$message.success(res.data.message)
           //加载角色
           this.load()
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.data.message)
         }
       })
     },
@@ -197,17 +238,17 @@ export default {
       const ids = this.selectedRoles.map(v => v.roleid) // 将对象数组变成纯ID的数组
       // console.log(this.multipleSelection)
       // console.log(ids)
-      this.$request.delete('/api/v1/permission/role/ids/', {
-        params: {
+      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/ids/', {
+        body: {
           ids,
         },
       }).then((res) => {
         //console.log(res)
-        if (res.code == 200) {
-          this.$message.success(res.message)
+        if (res.data.code == 200) {
+          this.$message.success(res.data.message)
           this.load()
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.data.message)
         }
       })
     },
@@ -221,28 +262,42 @@ export default {
       this.role.desc = row.desc;
     },
     updateRoleInfo(id) {
-      this.$request.put('/api/v1/permission/role/upInfo/', id).then((res) => {
-        if (res.code == 200) {
-          this.$message.success(res.message)
+      this.role.roleid = id
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', this.role).then((res) => {
+        if (res.data.code == 200) {
+          this.$message.success(res.data.message)
           this.load();
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.data.message)
+        }
+      })
+    },
+    changeRoleStatus(row){
+      let upstatus = {}
+      upstatus.roleid = row.roleid
+      upstatus.status = row.status
+      this.$request.put('/api/v1/permission/role/upstatus/', upstatus).then((res) => {
+        if (res.data.code == 200) {
+          this.$message.success(res.data.message)
+          this.load();
+        } else {
+          this.$message.error(res.data.message)
         }
       })
     },
     loadThisRoleFunction() {
       // 获得当前角色所拥有的权限
       this.$request.get('/api/v1/permission/role/oneRoleList/', {
-        Params: {
+        body: {
           id: this.roleid,
         },
       }).then((res) => {
-        if (res.code == 200) {
-          this.thisRoleFunctions = res
-          this.thisRoleFunctions1 = res
-          this.$message.success(res.message)
+        if (res.data.code == 200) {
+          this.thisRoleFunctions = res.data.data
+          this.thisRoleFunctions1 = res.data.data
+          this.$message.success(res.data.message)
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.data.message)
         }
       })
     },
@@ -261,18 +316,18 @@ export default {
       }
 
       this.$request.put('/api/v1/permission/role/updfunction/', {
-        Params: {
+        body: {
           roleId: this.roleid,
           functionList: List,
         },
       }).then((res) => {
         //this.role = res
-        if (res.data == 200)//如果成功,再显示此用户的所有权限
+        if (res.data.code == 200)//如果成功,再显示此用户的所有权限
         {
-          this.$message.success(res.message)
+          this.$message.success(res.data.message)
           this.loadThisRoleFunction();
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.data.message)
         }
       })
 
@@ -281,17 +336,17 @@ export default {
     // 删除当前角色所拥有的某个权限
     delfunction(row) {
       //当前处于this.roleid
-      this.$request.delete('/api/v1/permission/role/delfunction/', {
-        Params: {
+      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delfunction/', {
+        body: {
           roleId: this.roleid,
           functionId: row.id,
         },
       }).then((res) => {
-        if (res.code == 200) {
-          this.$message.success(res.message)
+        if (res.data.code == 200) {
+          this.$message.success(res.data.message)
           this.loadThisRoleFunction()
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.data.message)
         }
       })
     },
@@ -316,10 +371,9 @@ export default {
       this.load()
     },
     handleCurrentChange(pageNum) {
-      //console.log(pageNum)
       this.pageNum = pageNum
       this.load()
-
+    //
     },
   }
 
@@ -330,7 +384,7 @@ export default {
   <div>
     <div style="text-align: left">
       <el-input v-model="rolename" style="width: 200px;margin-right: 10px ;" suffix-icon="Role" placeholder="请输入" />
-      <el-button type="primary" style="margin-left: 20px" @click="load()">
+      <el-button type="primary" style="margin-left: 20px" @click="searchAll()">
         <el-icon><Search /></el-icon>搜索
       </el-button>
       <el-button type="warning" @click="reset()">
@@ -359,14 +413,6 @@ export default {
           </el-button>
         </template>
       </el-popconfirm>
-      <el-button type="primary" style="margin-left: 15px" @click="exp">
-        导出 <i class="el-icon-top" />
-      </el-button>
-      <el-upload action="http://localhost:8081/user/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
-        <el-button type="primary" style="margin-left: 15px">
-          导入 <i class="el-icon-bottom" />
-        </el-button>
-      </el-upload>
     </div>
 
     <el-table :data="tableData" border stripe :header-cell-class-name="headerBg" @selection-change="handleSelectionChange">
@@ -374,7 +420,7 @@ export default {
       <el-table-column prop="rolename" align="center" label="角色名称" width="100" />
       <el-table-column label="启用" align="center" width="100">
         <template #default="{ row, $index }">
-          <el-switch v-model="row.status" active-color="#13ce66" inactive-color="#ccc" @change="changeStatus(row)" />
+          <el-switch v-model="row.status" active-color="#13ce66" inactive-color="#ccc" @change="changeRoleStatus(row)" />
         </template>
       </el-table-column>
       <el-table-column prop="desc" align="center" label="概述" width="400" />
@@ -543,6 +589,12 @@ export default {
     </div>
   </div>
 </template>
+
+<style>
+  .headerBg{
+    background: #55e0e5!important;
+  }
+</style>
 
 <style lang="scss" scoped>
 
