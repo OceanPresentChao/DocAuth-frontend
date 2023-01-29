@@ -141,7 +141,7 @@ export default {
 
     loadAllFunctions()
     {
-      this.$request.get('http://127.0.0.1:8000/api/v1/permission/').then((res)=>{
+      this.$request.get('http://127.0.0.1:8000/api/v1/permission').then((res)=>{
         if(res.code==200)
         {
           //this.allfunctions1 = res.data
@@ -158,8 +158,11 @@ export default {
         }
         else
         {
-          this.$message.error('权限加载失败，请刷新页面')
-
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
           return []
         }
       })
