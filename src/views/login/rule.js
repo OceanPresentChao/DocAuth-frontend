@@ -17,7 +17,7 @@ export function validateUsername(rule, value, callback) {
 
 export function validatePassword(rule, value, callback) {
   if (!value) {
-    callback(new Error('Please input the password'))
+    callback(new Error('请输入密码'))
   }
   else {
     if (!passwordReg.test(value))

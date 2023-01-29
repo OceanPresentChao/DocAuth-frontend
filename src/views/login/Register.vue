@@ -36,7 +36,7 @@ function submitForm(formEl) {
   formEl.validate(async (valid) => {
     if (valid) {
       try {
-        const data = await requestRegister(ruleForm.value)
+        const data = await requestRegister({}, ruleForm.value)
         ElMessage({
           type: 'success',
           message: '注册成功',

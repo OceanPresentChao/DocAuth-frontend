@@ -31,7 +31,7 @@ async function logOut() {
 
 function gotoUserDetail() {
   router.push({
-    path: '/user',
+    path: '/userDetail',
   })
 }
 </script>

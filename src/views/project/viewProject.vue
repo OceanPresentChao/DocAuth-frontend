@@ -12,6 +12,7 @@
         <el-button style="margin-left: 15px ;margin-top: 8px " size="" type = "primary" @click="handleChangeProjectInfo()">
             修改项目基本信息
         </el-button>
+
         <el-tabs
                 v-model="editableTabsValue"
                 type="card"
@@ -116,6 +117,7 @@
                 </el-button>
             </div>
         </el-dialog>
+
     </div>
 </template>
 
@@ -124,6 +126,7 @@
     import { ElMessage } from 'element-plus'
     export default {
         name: 'viewProject',
+        thisId:0,
         components: {
             TreeChart
         },
@@ -138,6 +141,7 @@
                 editableTabsValue: 'Phase 1',
                 editableTabs:[],
                 dialogFormVisible:false,
+
                 //修改项目信息对话框
                 ProjectInfoChange:false,
                 formLabelWidth:'140px',
@@ -222,9 +226,9 @@
                 employeesApplication:[],
                 processingDataFromBackEnd:[],
                 test:[],
-
                 project:{},
                 project1:{}
+
 
             }
         },
@@ -234,6 +238,26 @@
             this.userInformationInit()
         },
         methods: {
+
+            load(){
+                this.editableTabs =  []
+                this.processingDataFromBackEnd=[]
+                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
+                    params:{
+                        projectId : 7
+                    }
+                }).then(res=>{
+                    this.processingDataFromBackEnd = res.data.data
+                    // console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
+                    // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
+                    for(let item of this.processingDataFromBackEnd) {
+                        // console.log('检查阶段里面的内容', item.phaseTasks)
+                        this.addTabInefficiency(item)
+                    }
+                    // console.log('这里是初始化的项目数据',this.editableTabs)
+                })
+                // this.addTabInefficiency(this.processingDataFromBackEnd[0])
+            },
             transferToOperatorName(operatorType){
               if(operatorType === 1)
                   return "editPerson"
@@ -285,30 +309,13 @@
                           role : null
                 }}).then(res=>{
                     console.log('这里是users',res)
+
                     console.log('这里是users',res.data.results)
                     this.users = res.data.results
 
                 })
             },
-            load(){
-                this.editableTabs =  []
-                this.processingDataFromBackEnd=[]
-                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
-                    params:{
-                        projectId : 4
-                    }
-                }).then(res=>{
-                    this.processingDataFromBackEnd = res.data
-                    // console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
-                    // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
-                    for(let item of this.processingDataFromBackEnd) {
-                        // console.log('检查阶段里面的内容', item.phaseTasks)
-                        this.addTabInefficiency(item)
-                    }
-                    // console.log('这里是初始化的项目数据',this.editableTabs)
-                })
-                 // this.addTabInefficiency(this.processingDataFromBackEnd[0])
-            },
+
             //这个地方想到了更优的算法，后续有时间会写高效的hash建树方法
             addTabInefficiency(phase){
                 console.log(phase,'这里是待处理的一维阶段数据')
@@ -538,6 +545,7 @@
                     type:'success'
                 })
             },
+
             getProjectInfo()
             {
                 this.$request.get('/api/v1/business/project/Info/',{
@@ -610,6 +618,7 @@
                 }
             }
 
+
         }
     }
 </script>
@@ -675,244 +684,8 @@
     }
 </style>
 
-// {
-//     title: 'Phase 1',
-//     name: '1',
-//     content: {
-//         name: '1',
-//         image_url: "https://static.refined-x.com/static/avatar.jpg",
-//         thisId : 1,
-//         fartherId : 0,
-//         startTime: '',
-//         deadLine: '',
-//         editPerson: '',
-//         investigatePerson: '',
-//         ratifyPerson: '',
-//         con_signPerson1: '',
-//         con_signPerson2:'',
-//         taskDescription:'',
-//         //class: ["rootNode"],
-//         children: [
-//             {
-//                 name: '2',
-//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
-//                 thisId : 2 ,
-//                 fartherId : 1 ,
-//                 startTime: '',
-//                 deadLine: '',
-//                 editPerson: '',
-//                 investigatePerson: '',
-//                 ratifyPerson: '',
-//                 con_signPerson1: '',
-//                 con_signPerson2:'',
-//                 taskDescription:'',
-//                 children:[],
-//             },
-//             {
-//                 name: '3',
-//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
-//                 thisId : 3,
-//                 fartherId : 1,
-//                 children: [
-//                     {
-//                         name: '4',
-//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
-//                         thisId : 4,
-//                         fartherId : 3,
-//                         startTime: '',
-//                         deadLine: '',
-//                         editPerson: '',
-//                         investigatePerson: '',
-//                         ratifyPerson: '',
-//                         con_signPerson1: '',
-//                         con_signPerson2:'',
-//                         taskDescription:'',
-//                         children:[],
-//                     },
-//                     {
-//                         name: '5',
-//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
-//                         thisId : 5,
-//                         fartherId : 3,
-//                         startTime: '',
-//                         deadLine: '',
-//                         editPerson: '',
-//                         investigatePerson: '',
-//                         ratifyPerson: '',
-//                         con_signPerson1: '',
-//                         con_signPerson2:'',
-//                         taskDescription:'',
-//                         children:[],
-//                     },
-//                     {
-//                         name: '6',
-//                         image_url: "https://static.refined-x.com/static/avatar.jpg",
-//                         thisId : 6,
-//                         fartherId : 3,
-//                         startTime: '',
-//                         deadLine: '',
-//                         editPerson: '',
-//                         investigatePerson: '',
-//                         ratifyPerson: '',
-//                         con_signPerson1: '',
-//                         con_signPerson2:'',
-//                         taskDescription:'',
-//                         children:[],
-//                     }
-//                 ]
-//             }
-//         ]
-//     },
-// },
-// {
-//     title: 'Phase 2',
-//     name: '2',
-//     content: {
-//         name: '7',
-//         image_url: "https://static.refined-x.com/static/avatar.jpg",
-//         thisId : 7,
-//         fartherId : 0,
-//         startTime: '',
-//         deadLine: '',
-//         editPerson: '',
-//         investigatePerson: '',
-//         ratifyPerson: '',
-//         con_signPerson1: '',
-//         con_signPerson2:'',
-//         taskDescription:'',
-//         //class: ["rootNode"],
-//         children: [
-//             {
-//                 name: '8',
-//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
-//                 thisId : 8 ,
-//                 fartherId : 7 ,
-//                 startTime: '',
-//                 deadLine: '',
-//                 editPerson: '',
-//                 investigatePerson: '',
-//                 ratifyPerson: '',
-//                 con_signPerson1: '',
-//                 con_signPerson2:'',
-//                 taskDescription:'',
-//                 children:[],
-//             },
-//             {
-//                 name: '9',
-//                 image_url: "https://static.refined-x.com/static/avatar.jpg",
-//                 thisId : 9,
-//                 fartherId : 7,
-//                 children: []
-//             }
-//         ]
-//     },
-// }
 
 
 
 
 
-
-
-
-
-
-
-// this.processingDataFromBackEnd = [
-//         {
-//             "phaseName": "phase 3",
-//             "phaseTasks": [
-//                 {
-//                     "task__name": "分北况事备",
-//                     "task__thisId": 1,
-//                     "task__id": 1,
-//                     "task__thisFarther": 0
-//                 },
-//                 {
-//                     "task__name": "必满论白",
-//                     "task__thisId": 2,
-//                     "task__id": 2,
-//                     "task__thisFarther": 1
-//                 },
-//                 {
-//                     "task__name": "因般体",
-//                     "task__thisId": 3,
-//                     "task__id": 3,
-//                     "task__thisFarther": 1
-//                 },
-//                 {
-//                     "task__name": "结把三",
-//                     "task__thisId": 4,
-//                     "task__id": 4,
-//                     "task__thisFarther": 2
-//                 },
-//             ],
-//             "task__number": 4
-//         },
-//         {
-//             "phaseName": "phase 4",
-//             "phaseTasks": [
-//                 {
-//                     "task__name": "活进上部流",
-//                     "task__thisId": 5,
-//                     "task__id": 5,
-//                     "task__thisFarther": 0
-//                 }
-//             ],
-//             "task__number": 1
-//         },
-//         {
-//             "phaseName": "phase 5",
-//             "phaseTasks": [
-//                 {
-//                     "task__name": "到人段见",
-//                     "task__thisId": 6,
-//                     "task__id": 6,
-//                     "task__thisFarther": 0
-//                 },
-//                 {
-//                     "task__name": "连自白活格",
-//                     "task__thisId": 7,
-//                     "task__id": 7,
-//                     "task__thisFarther": 6
-//                 },
-//                 {
-//                     "task__name": "长学状次身对",
-//                     "task__thisId": 8,
-//                     "task__id": 8,
-//                     "task__thisFarther": 7
-//                 },
-//                 {
-//                     "task__name": "清极时方",
-//                     "task__thisId": 9,
-//                     "task__id": 9,
-//                     "task__thisFarther": 8
-//                 },
-//                 {
-//                     "task__name": "wser",
-//                     "task__thisId": 10,
-//                     "task__id": 10,
-//                     "task__thisFarther": 6
-//                 },
-//                 {
-//                     "task__name": "jucy",
-//                     "task__thisId": 11,
-//                     "task__id": 11,
-//                     "task__thisFarther": 8
-//                 },
-//                 {
-//                     "task__name": "zqx",
-//                     "task__thisId": 13,
-//                     "task__id": 13,
-//                     "task__thisFarther": 11
-//                 },
-//                 {
-//                     "task__name": "caobo",
-//                     "task__thisId": 12,
-//                     "task__id": 12,
-//                     "task__thisFarther": 7
-//                 },
-//             ],
-//             "task__number": 8
-//         },
-//     ]

@@ -13,7 +13,7 @@
     "allowJs": true,
     "paths": {
       "@/*": [
-        "/src/*"
+        "src/*"
       ]
     },
     "lib": [
