@@ -65,6 +65,7 @@ export const menuRoutes = [
     children:
         [
           {
+
             name: 'createProject',
             path: '/project/create',
             component: () => import('@/views/project/nowNewProject.vue'),
@@ -75,6 +76,7 @@ export const menuRoutes = [
             },
           },
           {
+
             name: 'viewProject',
             path: '/project/view',
             component: () => import('@/views/project/viewProject.vue'),

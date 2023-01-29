@@ -25,6 +25,7 @@ declare module '@vue/runtime-core' {
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
     ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
     ElForm: typeof import('element-plus/es')['ElForm']
+    ElFormColumn: typeof import('element-plus/es')['ElFormColumn']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
@@ -33,6 +34,7 @@ declare module '@vue/runtime-core' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElOptionGroup: typeof import('element-plus/es')['ElOptionGroup']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
@@ -45,6 +47,7 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
+
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Error404: typeof import('./src/views/error/Error404.vue')['default']
     Forget: typeof import('./src/views/login/Forget.vue')['default']

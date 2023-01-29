@@ -1,4 +1,5 @@
 
+
 <template>
   <div>
     <div style="text-align: left">
@@ -26,12 +27,12 @@
         </el-icon>注册新用户<i class="el-icon-circle-plus-outline" style="margin-left: 5px" />
       </el-button>
       <el-popconfirm
-        style="margin-left: 5px"
-        confirm-button-text="yes"
-        cancel-button-text="No"
-        icon-color="#626AEF"
-        title="Are you sure to delete this?"
-        @confirm="delBatch"
+              style="margin-left: 5px"
+              confirm-button-text="yes"
+              cancel-button-text="No"
+              icon-color="#626AEF"
+              title="Are you sure to delete this?"
+              @confirm="delBatch"
       >
         <template #reference>
           <el-button slot="reference" type="danger">
@@ -84,12 +85,14 @@
             </el-icon>权限管理
           </el-button>
           <el-popconfirm
+
             style="margin-left: 5px"
             confirm-button-text="yes"
             cancel-button-text="No"
             icon-color="#626AEF"
             title="Are you sure to delete this?"
             @confirm="deleteUser(row.id)"
+
           >
             <template #reference>
               <el-button slot="reference" type="danger" round>
@@ -212,6 +215,7 @@
     <!--    下面为页面转换按钮 -->
     <div style="padding: 10px 0">
       <el-pagination
+
         :current-page="page"
         :page-sizes="[2, 5, 10, 20]"
         :page-size="page_size"
