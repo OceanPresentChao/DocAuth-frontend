@@ -96,6 +96,7 @@
     import { ElMessage } from 'element-plus'
     export default {
         name: 'viewProject',
+        thisId:0,
         components: {
             TreeChart
         },
@@ -251,8 +252,8 @@
                           role : null
                 }}).then(res=>{
                     console.log('这里是users',res)
-                    console.log('这里是users',res.data.results)
-                    this.users = res.data.results
+                    console.log('这里是users',res.data)
+                    this.users = res.data.data.results
 
                 })
             },
@@ -261,10 +262,10 @@
                 this.processingDataFromBackEnd=[]
                 this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
                     params:{
-                        projectId : 4
+                        projectId : 6
                     }
                 }).then(res=>{
-                    this.processingDataFromBackEnd = res.data
+                    this.processingDataFromBackEnd = res.data.data
                     // console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
                     // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
                     for(let item of this.processingDataFromBackEnd) {
