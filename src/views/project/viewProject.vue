@@ -201,6 +201,25 @@
             this.userInformationInit()
         },
         methods: {
+            load(){
+                this.editableTabs =  []
+                this.processingDataFromBackEnd=[]
+                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
+                    params:{
+                        projectId : 7
+                    }
+                }).then(res=>{
+                    this.processingDataFromBackEnd = res.data.data
+                    // console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
+                    // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
+                    for(let item of this.processingDataFromBackEnd) {
+                        // console.log('检查阶段里面的内容', item.phaseTasks)
+                        this.addTabInefficiency(item)
+                    }
+                    // console.log('这里是初始化的项目数据',this.editableTabs)
+                })
+                // this.addTabInefficiency(this.processingDataFromBackEnd[0])
+            },
             transferToOperatorName(operatorType){
               if(operatorType === 1)
                   return "editPerson"
@@ -240,7 +259,6 @@
                 }
 
             },
-
             userInformationInit(){
                 this.users = []
                 this.$request.get("http://localhost:13500/api/v1/user/list/",{
@@ -256,25 +274,6 @@
                     this.users = res.data.data.results
 
                 })
-            },
-            load(){
-                this.editableTabs =  []
-                this.processingDataFromBackEnd=[]
-                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
-                    params:{
-                        projectId : 6
-                    }
-                }).then(res=>{
-                    this.processingDataFromBackEnd = res.data.data
-                    // console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
-                    // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
-                    for(let item of this.processingDataFromBackEnd) {
-                        // console.log('检查阶段里面的内容', item.phaseTasks)
-                        this.addTabInefficiency(item)
-                    }
-                    // console.log('这里是初始化的项目数据',this.editableTabs)
-                })
-                 // this.addTabInefficiency(this.processingDataFromBackEnd[0])
             },
             //这个地方想到了更优的算法，后续有时间会写高效的hash建树方法
             addTabInefficiency(phase){

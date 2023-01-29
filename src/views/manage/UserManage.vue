@@ -617,7 +617,6 @@
           tmp = {}
         }
         console.log('这是数据', data)
-
         let dataOfFuntions={}
         dataOfFuntions.userId = data.userId
         dataOfFuntions.extraFunctionList = data.extraFunctionList
@@ -654,7 +653,7 @@
 
 
       exp() {
-        window.open('http://localhost:9099/employee/export')
+        // window.open()
       },
       handleExcelImportSuccess() {
         this.$message.success('导入成功')

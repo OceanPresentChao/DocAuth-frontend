@@ -11,7 +11,7 @@ export default {
     const undoneurl = 'data:image/jpeg;base64,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'
     const doneurl = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fgss0.baidu.com%2F7Po3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2Fb999a9014c086e06c230311107087bf40bd1cbd4.jpg&refer=http%3A%2F%2Fgss0.baidu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1673779229&t=037e162f8fce2b6db5f25fe434983dfd'
     return {
-      savable: true,
+      savable: false,
       doneurl,
       undoneurl,
       tabIndex: 1,
@@ -57,60 +57,7 @@ export default {
         desc: '',
       },
       currentTask: {},
-      users: [
-        {
-          userid: 9,
-          username: 'wser',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          role: ['wseber'],
-          enable: true,
-        },
-        {
-          userid: 5,
-          username: 'jucy',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          role: ['wseber'],
-          enable: true,
-        },
-        {
-          userid: 6,
-          username: 'oceanPresent',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-        {
-          userid: 7,
-          username: 'xvHao',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-        {
-          userid: 8,
-          username: 'qingXiao',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-      ],
+      users: [],
       idnum: 1,
       tag: 0,
       now: '',
@@ -126,7 +73,48 @@ export default {
 
     }
   },
+
+  created() {
+    this.userInformationInit()
+  },
+
   methods: {
+    saveCurrentProject() {
+      const allData = {}
+      allData.name = '项目数据'
+
+      const postData = []
+      for (const [index, item] of this.editableTabs.entries()) {
+        const tmp = index
+        postData[index] = []
+        this.getChild([item.content], postData[tmp])
+        // console.log(postData)
+      }
+      console.log('这里是postData', postData)
+      allData.phases = postData
+      allData.phaseNumber = postData.length
+      allData.projectId = 7
+      console.log('这里是数据', allData)
+      this.$request.post('http://127.0.0.1:13500/api/v1/business/saveProject', allData).then((res) => {
+        console.log(res)
+      })
+    },
+    userInformationInit(){
+      this.users = []
+      this.$request.get("http://localhost:13500/api/v1/user/list/",{
+        params:{
+          page: 1,
+          page_size:999999999,
+          userName : null,
+          phone : null,
+          role : null
+        }}).then(res=>{
+        console.log('这里是users',res)
+        console.log('这里是users',res.data)
+        this.users = res.data.data.results
+
+      })
+    },
     clickNode(node) {
       this.currentTask = node
       this.now = node.thisId
@@ -284,11 +272,11 @@ export default {
         })
         this.dialogFormVisible = false
         this.currentTask.image_url = this.doneurl
-        this.console('这里是即将提交的表单信息', this.currentTask)
-        // this.examSavable()
+        console.log('这里是即将提交的表单信息', this.currentTask)
+        this.examSavable()
       }
     },
-    // 检查项目全做完了
+    // 检查项目全分配完了
     examSavable() {
       // console.log(this.editableTabs);
       for (const item of this.editableTabs) {
@@ -312,26 +300,6 @@ export default {
         }
       }
       return true
-    },
-    saveCurrentProject() {
-      const allData = {}
-      allData.name = '项目数据'
-
-      const postData = []
-      for (const [index, item] of this.editableTabs.entries()) {
-        const tmp = index
-        postData[index] = []
-        this.getChild([item.content], postData[tmp])
-        // console.log(postData)
-      }
-      console.log('这里是postData', postData)
-      allData.phases = postData
-      allData.phaseNumber = postData.length
-      allData.projectId = 6
-      console.log('这里是数据', allData)
-      this.$request.post('http://127.0.0.1:13500/api/v1/business/saveProject', allData).then((res) => {
-        console.log(res)
-      })
     },
     // this exam is uesd for save project and pack the information
     getChild(array, Data) {
@@ -483,26 +451,26 @@ export default {
           />
         </el-form-item>
         <el-form-item label="编" :label-width="formLabelWidth">
-          <el-select v-model="currentTask.editPerson" value-key="userid" :popper-append-to-body="false" placeholder="请选择人员" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+          <el-select v-model="currentTask.editPerson" value-key="id" :popper-append-to-body="false" placeholder="请选择人员" effect="dark">
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="审" :label-width="formLabelWidth">
           <el-select v-model="currentTask.investigatePerson" placeholder="请选择人员" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="批" :label-width="formLabelWidth">
           <el-select v-model="currentTask.ratifyPerson" placeholder="请选择人员" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="会签" :label-width="formLabelWidth">
           <el-select v-model="currentTask.con_signPerson1" placeholder="请选择人员1" style="margin-right: 50px ;" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
           <el-select v-model="currentTask.con_signPerson2" placeholder="请选择人员2" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="任务内容概述" :label-width="formLabelWidth">
@@ -560,73 +528,3 @@ export default {
     }
 </style>
 
-// children: [
-//     {
-//         name: '2',
-//         image_url: undoneurl,
-//         thisId : 2 ,
-//         fartherId : 1 ,
-//         startTime: '',
-//         deadLine: '',
-//         editPerson: '',
-//         investigatePerson: '',
-//         ratifyPerson: '',
-//         con_signPerson1: '',
-//         con_signPerson2:'',
-//         taskDescription:'',
-//         children:[],
-//     },
-//     {
-//         name: '3',
-//         image_url: undoneurl,
-//         thisId : 3,
-//         fartherId : 1,
-//         children: [
-//             {
-//                 name: '4',
-//                 image_url: undoneurl,
-//                 thisId : 4,
-//                 fartherId : 3,
-//                 startTime: '',
-//                 deadLine: '',
-//                 editPerson: '',
-//                 investigatePerson: '',
-//                 ratifyPerson: '',
-//                 con_signPerson1: '',
-//                 con_signPerson2:'',
-//                 taskDescription:'',
-//                 children:[],
-//             },
-//             {
-//                 name: '5',
-//                 image_url: undoneurl,
-//                 thisId : 5,
-//                 fartherId : 3,
-//                 startTime: '',
-//                 deadLine: '',
-//                 editPerson: '',
-//                 investigatePerson: '',
-//                 ratifyPerson: '',
-//                 con_signPerson1: '',
-//                 con_signPerson2:'',
-//                 taskDescription:'',
-//                 children:[],
-//             },
-//             {
-//                 name: '6',
-//                 image_url: undoneurl,
-//                 thisId : 6,
-//                 fartherId : 3,
-//                 startTime: '',
-//                 deadLine: '',
-//                 editPerson: '',
-//                 investigatePerson: '',
-//                 ratifyPerson: '',
-//                 con_signPerson1: '',
-//                 con_signPerson2:'',
-//                 taskDescription:'',
-//                 children:[],
-//             }
-//         ]
-//     }
-// ]
