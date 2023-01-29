@@ -1,4 +1,6 @@
 <script>
+import { ElMessage } from 'element-plus';
+
 export default {
   name: 'PermissionManage',
 
@@ -73,48 +75,48 @@ export default {
       ],
 
       tableData: [
-        {
-          roleid: 10,
-          rolename: '项目经理',
-          status: true,
-          desc: ' sasdsfgdsfhd',
-          addTime: '2022-1-25'
-        },
-        {
-          roleid: 10,
-          rolename: '项目经理',
-          status: true,
-          desc: ' ',
-          addTime: '2022-1-25 21:00'
-        },
-        {
-          roleid: 10,
-          rolename: '项目经理',
-          status: true,
-          desc: ' ',
-          addTime: '2022-1-25 21:00'
-        },
-        {
-          roleid: 10,
-          rolename: '项目经理',
-          status: true,
-          desc: ' ',
-          addTime: '2022-1-25'
-        },
-        {
-          roleid: 10,
-          rolename: '项目经理',
-          status: true,
-          desc: ' ',
-          addTime: '2022-1-25'
-        },
-        {
-          roleid: 10,
-          rolename: '项目经理',
-          status: true,
-          desc: ' ',
-          addTime: '2022-1-25'
-        },
+        // {
+        //   roleid: 10,
+        //   rolename: '项目经理',
+        //   status: true,
+        //   desc: ' sasdsfgdsfhd',
+        //   addTime: '2022-1-25'
+        // },
+        // {
+        //   roleid: 10,
+        //   rolename: '项目经理',
+        //   status: true,
+        //   desc: ' ',
+        //   addTime: '2022-1-25 21:00'
+        // },
+        // {
+        //   roleid: 10,
+        //   rolename: '项目经理',
+        //   status: true,
+        //   desc: ' ',
+        //   addTime: '2022-1-25 21:00'
+        // },
+        // {
+        //   roleid: 10,
+        //   rolename: '项目经理',
+        //   status: true,
+        //   desc: ' ',
+        //   addTime: '2022-1-25'
+        // },
+        // {
+        //   roleid: 10,
+        //   rolename: '项目经理',
+        //   status: true,
+        //   desc: ' ',
+        //   addTime: '2022-1-25'
+        // },
+        // {
+        //   roleid: 10,
+        //   rolename: '项目经理',
+        //   status: true,
+        //   desc: ' ',
+        //   addTime: '2022-1-25'
+        // },
       ],
       thisRoleFunctions:[],
       thisRoleFunctions1:[],
@@ -140,10 +142,10 @@ export default {
     loadAllFunctions()
     {
       this.$request.get('http://127.0.0.1:8000/api/v1/permission/').then((res)=>{
-        if(res.data.code==200)
+        if(res.code==200)
         {
-          this.allfunctions1 = res.data.data
-          let keysArr = list.map(item=>item['parent'])
+          //this.allfunctions1 = res.data
+          let keysArr = res.data.map(item=>item['parent'])
           let keys = [...new Set(keysArr)]
           let newList = keys.map(item=>{
             return {
@@ -157,6 +159,7 @@ export default {
         else
         {
           this.$message.error('权限加载失败，请刷新页面')
+
           return []
         }
       })
@@ -165,11 +168,6 @@ export default {
 
     load() {
       // 请求分页查询
-      let pageSearch = {}
-      pageSearch.pageNum = this.pageNum
-      pageSearch.pageSize = this.pageSize
-      pageSearch.roleName = this.rolename
-      console.log(JSON.stringify(pageSearch))
       this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/list/', {
         params:{
           pageNum :this.pageNum,
@@ -177,12 +175,23 @@ export default {
           roleName :this.rolename
         }
       }).then((res) => {
-        if (res.data.code == 200) {
-          this.$message.success(res.data.message)
-          this.tableData = res.data.data.records
-          this.total = res.data.data.total
+        console.log(res)
+        if (res.code == 200) {
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'success'
+          })
+          this.tableData = res.data.records
+         // console.log(this.tableData)
+          this.total = res.data.total
+         // console.log(this.total)
         } else {
-          this.$message.error(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
         }
       })
     },
@@ -208,14 +217,26 @@ export default {
       this.newRoleFunctions = this.newRoleFunctions.map(v => v.id) // 将对象数组变成纯ID的数组
       newRoleAllInfo.newRoleFunctions = this.newRoleFunctions;
 
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/add/', newRoleAllInfo).then((res) => {
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/add/', {
+        body:{
+          newRoleAllInfo:Json.stringify(newRoleAllInfo)
+        }
+        }).then((res) => {
 
-        if (res.data.code == 200) {
-          this.$message.success(res.data.message)
+        if (res.code == 200) {
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'success'
+          })
           //加载角色
           this.load();
         } else {
-          this.$message.error(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
         }
       })
     },
@@ -225,15 +246,23 @@ export default {
 
       this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delOne/', {
         params: {
-          id:id,
+          roleid:id,
         },
       }).then((res) => {
         if (res.code == 200) {
-          this.$message.success(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'success'
+          })
           //加载角色
           this.load()
         } else {
-          this.$message.error(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
         }
       })
     },
@@ -248,11 +277,19 @@ export default {
         },
       }).then((res) => {
         //console.log(res)
-        if (res.data.code == 200) {
-          this.$message.success(res.data.message)
+        if (res.code == 200) {
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'success'
+          })
           this.load()
         } else {
-          this.$message.error(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
         }
       })
     },
@@ -268,11 +305,19 @@ export default {
     updateRoleInfo(id) {
       this.role.roleid = id
       this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', this.role).then((res) => {
-        if (res.data.code == 200) {
-          this.$message.success(res.data.message)
+        if (res.code == 200) {
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'success'
+          })
           this.load();
         } else {
-          this.$message.error(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
         }
       })
     },
@@ -281,11 +326,19 @@ export default {
       upstatus.roleid = row.roleid
       upstatus.status = row.status
       this.$request.put('/api/v1/permission/role/upstatus/', upstatus).then((res) => {
-        if (res.data.code == 200) {
-          this.$message.success(res.data.message)
+        if (res.code == 200) {
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'success'
+          })
           this.load();
         } else {
-          this.$message.error(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
         }
       })
     },
@@ -296,12 +349,20 @@ export default {
           roleid: this.roleid,
         },
       }).then((res) => {
-        if (res.data.code == 200) {
-          this.thisRoleFunctions = res.data.data
-          this.thisRoleFunctions1 = res.data.data
-          this.$message.success(res.data.message)
+        if (res.code == 200) {
+          this.thisRoleFunctions = res.data
+          this.thisRoleFunctions1 = res.data
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:''
+          })
         } else {
-          this.$message.error(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
         }
       })
     },
@@ -326,12 +387,20 @@ export default {
         },
       }).then((res) => {
         //this.role = res
-        if (res.data.code == 200)//如果成功,再显示此用户的所有权限
+        if (res.code == 200)//如果成功,再显示此用户的所有权限
         {
-          this.$message.success(res.data.message)
+           ElMessage({
+            showClose:true,
+            message:res.message,
+            type:''
+          })
           this.loadThisRoleFunction();
         } else {
-          this.$message.error(res.data.message)
+          ElMessage({
+            showClose:true,
+            message:res.message,
+            type:'error'
+          })
         }
       })
 
@@ -341,9 +410,9 @@ export default {
     delfunction(row) {
       //当前处于this.roleid
       this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delfunction/', {
-        body: {
-          roleId: this.roleid,
-          functionId: row.id,
+        params: {
+          roleid: this.roleid,
+          functionid: row.id,
         },
       }).then((res) => {
         if (res.data.code == 200) {
