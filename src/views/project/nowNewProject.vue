@@ -57,60 +57,7 @@ export default {
         desc: '',
       },
       currentTask: {},
-      users: [
-        {
-          userid: 9,
-          username: 'wser',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          role: ['wseber'],
-          enable: true,
-        },
-        {
-          userid: 5,
-          username: 'jucy',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          role: ['wseber'],
-          enable: true,
-        },
-        {
-          userid: 6,
-          username: 'oceanPresent',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-        {
-          userid: 7,
-          username: 'xvHao',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-        {
-          userid: 8,
-          username: 'qingXiao',
-          phone: '6465464654',
-          email: 'sdsadsa@qq.com',
-          regdate: '2022-11-24 21:14:31.000000',
-          password: 'sasdsasadas',
-          gender: '男',
-          enable: true,
-        },
-      ],
+      users: [],
       idnum: 1,
       tag: 0,
       now: '',
@@ -126,7 +73,85 @@ export default {
 
     }
   },
+
+  created() {
+    this.userInformationInit()
+  },
+
   methods: {
+    saveCurrentProject() {
+      // const allData = {}
+      // allData.name = '项目数据'
+      //
+      // const postData = []
+      // for (const [index, item] of this.editableTabs.entries()) {
+      //   const tmp = index
+      //   postData[index] = []
+      //   this.getChild([item.content], postData[tmp])
+      //   // console.log(postData)
+      // }
+      // // console.log('这里是postData', postData)
+      // allData.phases = postData
+      // allData.phaseNumber = postData.length
+      // allData.projectId = 7
+      // // console.log('这里是数据', allData)
+      // this.$request.post('http://127.0.0.1:13500/api/v1/business/saveProject', allData).then((res) => {
+      //   // console.log(res)
+      // if(res.status === 200){
+      //   ElMessage({
+      //     showClose:true,
+      //     message:'保存成功',
+      //     type:'success'
+      //   })
+      // }else {
+      //   ElMessage({
+      //     showClose:true,
+      //     message:'保存失败',
+      //     type:'error'
+      //   })
+      // }
+      //   this.savable = false
+      //
+      // })
+      // this.onSubmit()
+      // this.removeTab('/project/create')
+      // this.$router.push('/projectList')
+    },
+    onSubmit() {
+      // 调用后台接口
+      // 成功返回数据后，复制下面代码：
+      let tabName = this.$store.state.contentTabsActiveName
+      this.$store.state.contentTabs = this.$store.state.contentTabs.filter(item => item.name !== tabName)
+      if (this.$store.state.contentTabs.length <= 0) {
+        this.$store.state.sidebarMenuActiveName = this.$store.state.contentTabsActiveName = 'home'
+        return false
+      }
+      // 当前选中tab被删除
+      let tab = this.$store.state.contentTabs[this.$store.state.contentTabs.length - 1]
+      this.$router.push({
+        name: '首页',
+        params:null,
+        query: null
+      })
+      this.componentKey += 1;
+    },
+
+    userInformationInit(){
+      this.users = []
+      this.$request.get("http://localhost:13500/api/v1/user/list/",{
+        params:{
+          page: 1,
+          page_size:999999999,
+          userName : null,
+          phone : null,
+          role : null
+        }}).then(res=>{
+        console.log('这里是users',res)
+        console.log('这里是users',res.data)
+        this.users = res.data.data.results
+
+      })
+    },
     clickNode(node) {
       this.currentTask = node
       this.now = node.thisId
@@ -284,11 +309,11 @@ export default {
         })
         this.dialogFormVisible = false
         this.currentTask.image_url = this.doneurl
-        this.console('这里是即将提交的表单信息', this.currentTask)
-        // this.examSavable()
+        console.log('这里是即将提交的表单信息', this.currentTask)
+        this.examSavable()
       }
     },
-    // 检查项目全做完了
+    // 检查项目全分配完了
     examSavable() {
       // console.log(this.editableTabs);
       for (const item of this.editableTabs) {
@@ -312,26 +337,6 @@ export default {
         }
       }
       return true
-    },
-    saveCurrentProject() {
-      const allData = {}
-      allData.name = '项目数据'
-
-      const postData = []
-      for (const [index, item] of this.editableTabs.entries()) {
-        const tmp = index
-        postData[index] = []
-        this.getChild([item.content], postData[tmp])
-        // console.log(postData)
-      }
-      console.log('这里是postData', postData)
-      allData.phases = postData
-      allData.phaseNumber = postData.length
-      allData.projectId = 6
-      console.log('这里是数据', allData)
-      this.$request.post('http://127.0.0.1:13500/api/v1/business/saveProject', allData).then((res) => {
-        console.log(res)
-      })
     },
     // this exam is uesd for save project and pack the information
     getChild(array, Data) {
@@ -483,26 +488,26 @@ export default {
           />
         </el-form-item>
         <el-form-item label="编" :label-width="formLabelWidth">
-          <el-select v-model="currentTask.editPerson" value-key="userid" :popper-append-to-body="false" placeholder="请选择人员" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+          <el-select v-model="currentTask.editPerson" value-key="id" :popper-append-to-body="false" placeholder="请选择人员" effect="dark">
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="审" :label-width="formLabelWidth">
           <el-select v-model="currentTask.investigatePerson" placeholder="请选择人员" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="批" :label-width="formLabelWidth">
           <el-select v-model="currentTask.ratifyPerson" placeholder="请选择人员" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="会签" :label-width="formLabelWidth">
           <el-select v-model="currentTask.con_signPerson1" placeholder="请选择人员1" style="margin-right: 50px ;" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
           <el-select v-model="currentTask.con_signPerson2" placeholder="请选择人员2" effect="dark">
-            <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.userid" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in users" :key="item.id" :label="item.username" :value="item.id" style="width: 100% ;color: #55e0e5" />
           </el-select>
         </el-form-item>
         <el-form-item label="任务内容概述" :label-width="formLabelWidth">
@@ -560,73 +565,3 @@ export default {
     }
 </style>
 
-// children: [
-//     {
-//         name: '2',
-//         image_url: undoneurl,
-//         thisId : 2 ,
-//         fartherId : 1 ,
-//         startTime: '',
-//         deadLine: '',
-//         editPerson: '',
-//         investigatePerson: '',
-//         ratifyPerson: '',
-//         con_signPerson1: '',
-//         con_signPerson2:'',
-//         taskDescription:'',
-//         children:[],
-//     },
-//     {
-//         name: '3',
-//         image_url: undoneurl,
-//         thisId : 3,
-//         fartherId : 1,
-//         children: [
-//             {
-//                 name: '4',
-//                 image_url: undoneurl,
-//                 thisId : 4,
-//                 fartherId : 3,
-//                 startTime: '',
-//                 deadLine: '',
-//                 editPerson: '',
-//                 investigatePerson: '',
-//                 ratifyPerson: '',
-//                 con_signPerson1: '',
-//                 con_signPerson2:'',
-//                 taskDescription:'',
-//                 children:[],
-//             },
-//             {
-//                 name: '5',
-//                 image_url: undoneurl,
-//                 thisId : 5,
-//                 fartherId : 3,
-//                 startTime: '',
-//                 deadLine: '',
-//                 editPerson: '',
-//                 investigatePerson: '',
-//                 ratifyPerson: '',
-//                 con_signPerson1: '',
-//                 con_signPerson2:'',
-//                 taskDescription:'',
-//                 children:[],
-//             },
-//             {
-//                 name: '6',
-//                 image_url: undoneurl,
-//                 thisId : 6,
-//                 fartherId : 3,
-//                 startTime: '',
-//                 deadLine: '',
-//                 editPerson: '',
-//                 investigatePerson: '',
-//                 ratifyPerson: '',
-//                 con_signPerson1: '',
-//                 con_signPerson2:'',
-//                 taskDescription:'',
-//                 children:[],
-//             }
-//         ]
-//     }
-// ]
