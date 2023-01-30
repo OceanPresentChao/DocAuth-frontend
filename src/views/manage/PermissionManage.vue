@@ -134,7 +134,7 @@ export default {
   },
 
   created() {
-    this.allfunctions = this.loadAllFunctions()
+    //this.allfunctions = this.loadAllFunctions()
     this.load()
   },
   methods : {
@@ -142,7 +142,7 @@ export default {
     loadAllFunctions()
     {
       this.$request.get('http://127.0.0.1:8000/api/v1/permission/').then((res)=>{
-        if(res.code==200)
+        if(res.data.code==200)
         {
           //this.allfunctions1 = res.data
           let keysArr = res.data.map(item=>item['parent'])
@@ -158,8 +158,11 @@ export default {
         }
         else
         {
-          this.$message.error('权限加载失败，请刷新页面')
-
+          ElMessage({
+            showClose:true,
+            message:res.data.message,
+            type:'error'
+          })
           return []
         }
       })
@@ -176,20 +179,20 @@ export default {
         }
       }).then((res) => {
         console.log(res)
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
-          this.tableData = res.data.records
-         // console.log(this.tableData)
-          this.total = res.data.total
-         // console.log(this.total)
+          this.tableData = res.data.data.records
+          console.log(this.tableData)
+          this.total = res.data.data.total
+          console.log(this.total)
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -210,23 +213,21 @@ export default {
     },
     //确定添加此新角色
     confirmHandleAdd() {
-      let newRoleAllInfo = [];
+      console.log(1111111111111111)
+      let newRoleAllInfo = {};
       //默认状态为true
       this.newRole.status = true;
       newRoleAllInfo.newRole = this.newRole;
       this.newRoleFunctions = this.newRoleFunctions.map(v => v.id) // 将对象数组变成纯ID的数组
       newRoleAllInfo.newRoleFunctions = this.newRoleFunctions;
+      console.log(newRoleAllInfo)
+      this.$request.post('http://127.0.0.1:8000/api/v1/permission/role/add/', {newRoleAllInfo}).then((res) => {
 
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/add/', {
-        body:{
-          newRoleAllInfo:Json.stringify(newRoleAllInfo)
-        }
-        }).then((res) => {
-
-        if (res.code == 200) {
+        if (res.data.code == 200) {
+          console.log(2222222222)
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           //加载角色
@@ -234,7 +235,7 @@ export default {
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -243,16 +244,16 @@ export default {
 
     //删除某个角色
     deleteRole(id) {
-
+      let roleid = id
+      console.log(roleid)
       this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delOne/', {
         params: {
           roleid:id,
-        },
-      }).then((res) => {
-        if (res.code == 200) {
+        }}).then((res) => {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           //加载角色
@@ -260,7 +261,7 @@ export default {
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -268,26 +269,26 @@ export default {
     },
     //批量删除角色
     delBatch() {
-      const ids = this.selectedRoles.map(v => v.roleid) // 将对象数组变成纯ID的数组
-      // console.log(this.multipleSelection)
-      // console.log(ids)
+      const ids = this.selectedRoles.map(v => v.roleId) // 将对象数组变成纯ID的数组
+      console.log(this.multipleSelection)
+      console.log(ids)
       this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/ids/', {
         params: {
           ids:ids,
-        },
+        }
       }).then((res) => {
         //console.log(res)
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           this.load()
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -297,46 +298,52 @@ export default {
       this.selectedRoles = val;
     },
     handleEditRoleInformation(row) {
-      this.role = [];
+      this.role = {};
+      this.role.roleid = row.roleId
       this.infodialogFormVisible = true;
       this.role.rolename = row.rolename;
       this.role.desc = row.desc;
     },
-    updateRoleInfo(id) {
-      this.role.roleid = id
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', this.role).then((res) => {
-        if (res.code == 200) {
+    updateRoleInfo() {
+      console.log(111111111)
+      console.log(this.role)
+      let role = this.role
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/',{role}).then((res) => {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           this.load();
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
       })
     },
     changeRoleStatus(row){
+      console.log(row)
       let upstatus = {}
-      upstatus.roleid = row.roleid
+      upstatus.roleid = row.roleId
       upstatus.status = row.status
-      this.$request.put('/api/v1/permission/role/upstatus/', upstatus).then((res) => {
-        if (res.code == 200) {
+      console.log(11111111111)
+      console.log(upstatus)
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upstatus/', upstatus).then((res) => {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           this.load();
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -344,30 +351,31 @@ export default {
     },
     loadThisRoleFunction() {
       // 获得当前角色所拥有的权限
-      this.$request.get('/api/v1/permission/role/oneRoleList/', {
+      console.log(this.roleid)
+      this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/oneRoleList/', {
         params: {
           roleid: this.roleid,
         },
       }).then((res) => {
-        if (res.code == 200) {
-          this.thisRoleFunctions = res.data
-          this.thisRoleFunctions1 = res.data
+        if (res.data.code == 200) {
+          this.thisRoleFunctions = res.data.data
+          this.thisRoleFunctions1 = res.data.data
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:''
           })
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
       })
     },
     handleManageFunction(row) {
-      this.roleid = row.roleid;
+      this.roleid = row.roleId;
       this.FunctionDialogFormVisible = true;
       this.loadThisRoleFunction();
     },
@@ -376,29 +384,29 @@ export default {
       //当前处于this.roleid
 
       let List = [];
+      let roleid = this.roleid
       for (let i = 0; i < this.thisRoleFunctions.size(); i++) {
         List.push(this.thisRoleFunctions[i].id);
       }
 
-      this.$request.put('/api/v1/permission/role/updfunction/', {
-        body: {
-          roleId: this.roleid,
-          functionList: List,
-        },
-      }).then((res) => {
+      this.$request.put('/api/v1/permission/role/updfunction/',
+              {
+               "roleid":this.roleid,
+               "functionIdList":List
+              }).then((res) => {
         //this.role = res
-        if (res.code == 200)//如果成功,再显示此用户的所有权限
+        if (res.data.code == 200)//如果成功,再显示此用户的所有权限
         {
            ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:''
           })
           this.loadThisRoleFunction();
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -522,7 +530,7 @@ I
                   cancel-button-text="No"
                   icon-color="#626AEF"
                   title="Are you sure to delete this?"
-                  @confirm="deleteRole(row.roleid)"
+                  @confirm="deleteRole(row.roleId)"
           >
             <template #reference>
               <el-button slot="reference" type="danger" round >
@@ -550,7 +558,7 @@ I
         <el-button @click="infodialogFormVisible = false">
           取 消
         </el-button>
-        <el-button type="success" @click="updateRoleInfo(row.roleid)">
+        <el-button type="success" @click="updateRoleInfo()">
           确 定
         </el-button>
       </div>
@@ -565,6 +573,9 @@ I
           <el-input v-model="newRole.desc"/>
         </el-form-item>
         <el-form-item label="管理权限" >
+<!--          <el-select-tree>-->
+
+<!--          </el-select-tree>-->
           <el-select v-model="newRoleFunctions"  value-key="id" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择权限" style = "width:100%" effect="dark">
             <el-option-group
                     v-for="group in allfunctions"

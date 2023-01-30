@@ -3,13 +3,15 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
-export {}
+export { }
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Account: typeof import('./src/views/login/Account.vue')['default']
+    ApiManage: typeof import('./src/views/manage/ApiManage.vue')['default']
     BreadCrumb: typeof import('./src/components/layout/header/BreadCrumb.vue')['default']
     Collapse: typeof import('./src/components/layout/header/Collapse.vue')['default']
+    CreateProjectInfo: typeof import('./src/components/layout/project/createProjectInfo.vue')['default']
     DashBoard: typeof import('./src/views/dashboard/DashBoard.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -49,6 +51,7 @@ declare module '@vue/runtime-core' {
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     Error404: typeof import('./src/views/error/Error404.vue')['default']
     Forget: typeof import('./src/views/login/Forget.vue')['default']
+    FunctionManage: typeof import('./src/views/manage/FunctionManage.vue')['default']
     Header: typeof import('./src/components/layout/header/Header.vue')['default']
     Layout: typeof import('./src/components/layout/index.vue')['default']
     Login: typeof import('./src/views/login/Login.vue')['default']
@@ -65,8 +68,10 @@ declare module '@vue/runtime-core' {
     Tabs: typeof import('./src/components/layout/tabs/Tabs.vue')['default']
     TaskDetail: typeof import('./src/views/project/TaskDetail.vue')['default']
     TaskTimeline: typeof import('./src/views/project/TaskTimeline.vue')['default']
+    Test: typeof import('./src/views/manage/test.vue')['default']
     Tree: typeof import('./src/components/layout/treeNode/Tree.vue')['default']
     TreeChart: typeof import('./src/components/layout/treeNode/treeChart.vue')['default']
+    TreeSelect: typeof import('./src/components/layout/treeNode/tree-select.vue')['default']
     UserDetail: typeof import('./src/views/user/UserDetail.vue')['default']
     UserInfo: typeof import('./src/components/layout/header/UserInfo.vue')['default']
     UserManage: typeof import('./src/views/manage/UserManage.vue')['default']
