@@ -141,7 +141,7 @@ export default {
 
     loadAllFunctions()
     {
-      this.$request.get('http://127.0.0.1:8000/api/v1/permission/').then((res)=>{
+      this.$request.get('http://127.0.0.1:8000/api/v1/permission').then((res)=>{
         if(res.data.code==200)
         {
           //this.allfunctions1 = res.data
@@ -171,7 +171,7 @@ export default {
 
     load() {
       // 请求分页查询
-      this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/list/', {
+      this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/list', {
         params:{
           pageNum :this.pageNum,
           pageSize :this.pageSize,
@@ -221,7 +221,7 @@ export default {
       this.newRoleFunctions = this.newRoleFunctions.map(v => v.id) // 将对象数组变成纯ID的数组
       newRoleAllInfo.newRoleFunctions = this.newRoleFunctions;
       console.log(newRoleAllInfo)
-      this.$request.post('http://127.0.0.1:8000/api/v1/permission/role/add/', {newRoleAllInfo}).then((res) => {
+      this.$request.post('http://127.0.0.1:8000/api/v1/permission/role/add', {newRoleAllInfo}).then((res) => {
 
         if (res.data.code == 200) {
           console.log(2222222222)
@@ -246,7 +246,7 @@ export default {
     deleteRole(id) {
       let roleid = id
       console.log(roleid)
-      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delOne/', {
+      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delOne', {
         params: {
           roleid:id,
         }}).then((res) => {
@@ -272,7 +272,7 @@ export default {
       const ids = this.selectedRoles.map(v => v.roleId) // 将对象数组变成纯ID的数组
       console.log(this.multipleSelection)
       console.log(ids)
-      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/ids/', {
+      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/ids', {
         params: {
           ids:ids,
         }
@@ -308,7 +308,7 @@ export default {
       console.log(111111111)
       console.log(this.role)
       let role = this.role
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/',{role}).then((res) => {
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo',{role}).then((res) => {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
@@ -332,7 +332,7 @@ export default {
       upstatus.status = row.status
       console.log(11111111111)
       console.log(upstatus)
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upstatus/', upstatus).then((res) => {
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upstatus', upstatus).then((res) => {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
@@ -352,7 +352,7 @@ export default {
     loadThisRoleFunction() {
       // 获得当前角色所拥有的权限
       console.log(this.roleid)
-      this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/oneRoleList/', {
+      this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/oneRoleList', {
         params: {
           roleid: this.roleid,
         },
@@ -389,7 +389,7 @@ export default {
         List.push(this.thisRoleFunctions[i].id);
       }
 
-      this.$request.put('/api/v1/permission/role/updfunction/',
+      this.$request.put('/api/v1/permission/role/updfunction',
               {
                "roleid":this.roleid,
                "functionIdList":List
@@ -417,7 +417,7 @@ export default {
     // 删除当前角色所拥有的某个权限
     delfunction(row) {
       //当前处于this.roleid
-      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delfunction/', {
+      this.$request.delete('http://127.0.0.1:8000/api/v1/permission/role/delfunction', {
         params: {
           roleid: this.roleid,
           functionid: row.id,
