@@ -222,8 +222,10 @@ export default {
 
       this.$request.post('http://127.0.0.1:8000/api/v1/permission/role/add/',
               {
-                 "newRole":this.newRole,
-                  "newRoleFunction":this.newRoleFunctions
+                "newRoleAllInfo"{
+                  "newRole": this.newRole,
+                  "newRoleFunction": this.newRoleFunctions
+                }
               }).then((res) => {
 
         if (res.data.code == 200) {
@@ -309,7 +311,7 @@ export default {
     },
     updateRoleInfo() {
       let role = this.role
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', {"role":role}).then((res) => {
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', role).then((res) => {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
@@ -330,7 +332,7 @@ export default {
       let upstatus = {}
       upstatus.roleid = row.roleid
       upstatus.status = row.status
-      this.$request.put('/api/v1/permission/role/upstatus/', {"upstatus":upstatus}).then((res) => {
+      this.$request.put('/api/v1/permission/role/upstatus/', upstatus).then((res) => {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
