@@ -277,9 +277,9 @@
                         phone : null,
                         role : null
                     }}).then(res=>{
-                    // console.log('这里是users',res)
+                    console.log('[users]',res)
                     // console.log('这里是users',res.data.results)
-                    this.users = res.data.results
+                    this.users = res.data.data.results
 
                 })
             },
@@ -419,7 +419,6 @@
                     return "con_signPerson2"
             },
             //****>
-
             //***项目元信息函数快 <
             getProjectInfo()
             {
