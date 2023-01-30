@@ -33,6 +33,7 @@ function submitForm(formEl) {
         })
         authStore.setToken(res.data.data)
         router.replace({ path: '/' })
+        authStore.fetchUserInfo()
       }
       catch (error) {
       }

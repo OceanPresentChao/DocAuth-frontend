@@ -8,3 +8,12 @@ export function requestProjectList(params = {}, data = {}) {
     data,
   })
 }
+
+export function requestCreateProject(params = {}, data = {}) {
+  return request({
+    url: '/django/business/project',
+    method: 'post',
+    params,
+    data,
+  })
+}

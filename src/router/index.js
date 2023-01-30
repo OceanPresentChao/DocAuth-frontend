@@ -16,7 +16,7 @@ export const menuRoutes = [
     },
   },
   {
-    name: 'projectlist',
+    name: 'projectList',
     path: '/projectList',
     component: () => import('@/views/project/ProjectList.vue'),
     meta: {
@@ -59,8 +59,8 @@ export const menuRoutes = [
         meta: {
           title: '权限管理',
           icon: 'carbon:security-services',
-         },
-       },
+        },
+      },
       {
         name: 'apiManage',
         path: '/manage/api',
@@ -81,41 +81,6 @@ export const menuRoutes = [
       },
     ],
   },
-  {
-    name: 'project',
-    path: '/project',
-    redirect: '/project/create',
-    meta: {
-      title: '项目管理',
-      icon: 'carbon:home',
-      roles: ['sys:manage'],
-    },
-    children:
-        [
-          {
-
-            name: 'createProject',
-            path: '/project/create',
-            component: () => import('@/views/project/nowNewProject.vue'),
-            meta: {
-              title: '创建项目',
-              icon: 'carbon:star',
-              roles: ['sys:manage'],
-            },
-          },
-          {
-
-            name: 'viewProject',
-            path: '/project/view',
-            component: () => import('@/views/project/viewProject.vue'),
-            meta: {
-              title: '观看项目',
-              icon: 'carbon:view',
-              roles: ['sys:manage'],
-            },
-          },
-        ],
-  },
 ]
 
 const asyncRoutes = [
@@ -123,6 +88,26 @@ const asyncRoutes = [
     name: 'userDetail',
     path: '/userDetail',
     component: () => import('@/views/user/UserDetail.vue'),
+  },
+  {
+    name: 'viewProject',
+    path: '/project/view',
+    component: () => import('@/views/project/viewProject.vue'),
+    meta: {
+      title: '观看项目',
+      icon: 'carbon:view',
+      roles: ['sys:manage'],
+    },
+  },
+  {
+    name: 'createProject',
+    path: '/project/create',
+    component: () => import('@/views/project/nowNewProject.vue'),
+    meta: {
+      title: '创建项目',
+      icon: 'carbon:star',
+      roles: ['sys:manage'],
+    },
   },
   {
     path: '/task/:id',
