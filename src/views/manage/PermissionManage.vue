@@ -142,7 +142,7 @@ export default {
     loadAllFunctions()
     {
       this.$request.get('http://127.0.0.1:8000/api/v1/permission').then((res)=>{
-        if(res.code==200)
+        if(res.data.code==200)
         {
           //this.allfunctions1 = res.data
           let keysArr = res.data.map(item=>item['parent'])
@@ -160,7 +160,7 @@ export default {
         {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
           return []
@@ -182,7 +182,7 @@ export default {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           this.tableData = res.data.records
@@ -192,7 +192,7 @@ export default {
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -220,7 +220,7 @@ export default {
       this.newRoleFunctions = this.newRoleFunctions.map(v => v.id) // 将对象数组变成纯ID的数组
       newRoleAllInfo.newRoleFunctions = this.newRoleFunctions;
 
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/add/', newRoleAllInfo).then((res) => {
+      this.$request.post('http://127.0.0.1:8000/api/v1/permission/role/add/', newRoleAllInfo).then((res) => {
 
         if (res.data.code == 200) {
           ElMessage({
@@ -248,10 +248,10 @@ export default {
           roleid:id,
         },
       }).then((res) => {
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           //加载角色
@@ -259,7 +259,7 @@ export default {
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -276,17 +276,17 @@ export default {
         },
       }).then((res) => {
         //console.log(res)
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           this.load()
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -297,24 +297,25 @@ export default {
     },
     handleEditRoleInformation(row) {
       this.role = [];
+      //+++设置当前id
+      this.role.roleid = row.roleid
       this.infodialogFormVisible = true;
       this.role.rolename = row.rolename;
       this.role.desc = row.desc;
     },
-    updateRoleInfo(id) {
-      this.role.roleid = id
+    updateRoleInfo() {
       this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', this.role).then((res) => {
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           this.load();
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -325,17 +326,17 @@ export default {
       upstatus.roleid = row.roleid
       upstatus.status = row.status
       this.$request.put('/api/v1/permission/role/upstatus/', upstatus).then((res) => {
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           this.load();
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -348,18 +349,18 @@ export default {
           roleid: this.roleid,
         },
       }).then((res) => {
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           this.thisRoleFunctions = res.data
           this.thisRoleFunctions1 = res.data
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:''
           })
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -386,18 +387,18 @@ export default {
         },
       }).then((res) => {
         //this.role = res
-        if (res.code == 200)//如果成功,再显示此用户的所有权限
+        if (res.data.code == 200)//如果成功,再显示此用户的所有权限
         {
            ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:''
           })
           this.loadThisRoleFunction();
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -549,7 +550,7 @@ I
         <el-button @click="infodialogFormVisible = false">
           取 消
         </el-button>
-        <el-button type="success" @click="updateRoleInfo(row.roleid)">
+        <el-button type="success" @click="updateRoleInfo()">
           确 定
         </el-button>
       </div>
