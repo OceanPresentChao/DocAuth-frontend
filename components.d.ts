@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    About: typeof import('./src/views/about/About.vue')['default']
     Account: typeof import('./src/views/login/Account.vue')['default']
     ApiManage: typeof import('./src/views/manage/ApiManage.vue')['default']
     BreadCrumb: typeof import('./src/components/layout/header/BreadCrumb.vue')['default']

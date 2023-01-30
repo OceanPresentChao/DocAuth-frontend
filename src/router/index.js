@@ -81,6 +81,15 @@ export const menuRoutes = [
       },
     ],
   },
+  {
+    name: 'about',
+    path: '/about',
+    component: () => import('@/views/about/About.vue'),
+    meta: {
+      title: '关于我们',
+      icon: 'carbon:machine-learning',
+    },
+  },
 ]
 
 const asyncRoutes = [
