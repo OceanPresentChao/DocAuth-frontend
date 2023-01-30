@@ -140,57 +140,57 @@
                 dialog1: false,
                 dialog2: false,
 
-                allFunctions1: [{
-                    id: 1,
-                    name: '一级 1',
-                    parent:null
-                },
-                    {
-                        id: 4,
-                        name: '二级 1-1',
-                        parent:2
-                    },
-                      {
-                            id: 9,
-                            name: '三级 1-1-1',
-                          parent:3
-                      },
-                    {
-                            id: 10,
-                            name: '三级 1-1-2',
-                        parent:5
-                        },
-                     {
-                         id: 2,
-                         name: '一级 2',
-                         parent:null
-                     },
-                    {
-                        id: 5,
-                        name: '二级 2-1',
-                        parent:2
-                    },
-                    {
-                        id: 6,
-                        name: '二级 2-2',
-                        parent:2
-                    },
-                   {
-                    id: 3,
-                    name: '一级 3',
-                       parent:null
-                   },
-                   {
-                        id: 7,
-                        name: '二级 3-1',
-                       parent:3
-                    }, {
-                        id: 8,
-                        name: '二级 3-2',
-                        parent:3
-                    }],
+                // allFunctions1: [{
+                //     id: 1,
+                //     name: '一级 1',
+                //     parent:null
+                // },
+                //     {
+                //         id: 4,
+                //         name: '二级 1-1',
+                //         parent:2
+                //     },
+                //       {
+                //             id: 9,
+                //             name: '三级 1-1-1',
+                //           parent:3
+                //       },
+                //     {
+                //             id: 10,
+                //             name: '三级 1-1-2',
+                //         parent:5
+                //         },
+                //      {
+                //          id: 2,
+                //          name: '一级 2',
+                //          parent:null
+                //      },
+                //     {
+                //         id: 5,
+                //         name: '二级 2-1',
+                //         parent:2
+                //     },
+                //     {
+                //         id: 6,
+                //         name: '二级 2-2',
+                //         parent:2
+                //     },
+                //    {
+                //     id: 3,
+                //     name: '一级 3',
+                //        parent:null
+                //    },
+                //    {
+                //         id: 7,
+                //         name: '二级 3-1',
+                //        parent:3
+                //     }, {
+                //         id: 8,
+                //         name: '二级 3-2',
+                //         parent:3
+                //     }],
 
-                //allFunctions1:[],
+                allFunctions1:[],
                 allfunctions: [],
 
                 outList:[],
@@ -232,19 +232,19 @@
             //加载权限
                 loadAllFunction()
                  {
-                //     this.$request.get('http://127.0.0.1:8000/api/v1/permission').then((res) => {
-                //         if (res.data.code == 200) {
-                            //this.allFunctions1 = res.data.data
+                    this.$request.get('http://127.0.0.1:8000/api/v1/permission').then((res) => {
+                        if (res.data.code == 200) {
+                            this.allFunctions1 = res.data.data
                              this.allfunctions = this.buildTree(this.allFunctions1, null)
-                    // console.log(this.allfunctions)
-                    //     } else {
-                    //         ElMessage({
-                    //             showClose: true,
-                    //             message: res.data.message,
-                    //             type: 'error'
-                    //         })
-                    //     }
-                    // })
+                    console.log(this.allfunctions)
+                        } else {
+                            ElMessage({
+                                showClose: true,
+                                message: res.data.message,
+                                type: 'error'
+                            })
+                        }
+                    })
                 }
             ,
                 //建树
