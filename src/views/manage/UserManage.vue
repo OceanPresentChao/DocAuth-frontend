@@ -5,13 +5,13 @@
     <div style="text-align: left">
       <el-input v-model="userName" style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" />
       <el-input v-model="phone" style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" />
-      <el-select class="selectStyle" v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
-        <el-option v-for="(item) in allRoles" :value="item" />
+      <el-select class="selectStyle" value-key="id"  v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
+        <el-option v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5" />
       </el-select>
 <!--      <el-select v-model="role" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">-->
 <!--        <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #55e0e5" />-->
 <!--      </el-select>-->
-      <el-button type="primary" style="margin-left: 20px" @click="load">
+      <el-button type="primary" style="margin-left: 20px" @click="likeSerach">
         <el-icon><Search /></el-icon>搜索
       </el-button>
       <el-button type="warning" @click="reset">
@@ -178,7 +178,9 @@
       <el-form style="text-align: left">
         <el-form-item label="管理角色">
           <el-select v-model="thisUserRoles" value-key="id"  class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">
-            <el-option v-for=" item in allRoles" :key="item.id" :label="item.name" :value="item" style="width: 100% ;color: #55e0e5" />
+<!--            <el-option v-for=" item in allRoles" :key="item.id" :label="item.name" :value="item" style="width: 100% ;color: #55e0e5" />-->
+            <el-option v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5" />
+
           </el-select>
         </el-form-item>
         <el-form-item label="管理功能">
@@ -249,9 +251,9 @@
     data() {
       return {
         test: 'nihaoadsasdfssdfsfsdada',
-        userName: null,
+        userName: '',
         roleSelction: null,
-        phone: null,
+        phone: '',
         headerBg: 'headerBg',
         tableData: [
           {
@@ -314,7 +316,7 @@
             regdate: '2022-11-24 21:14:31.000000',
             password: 'sasdsasadas',
             gender: '男',
-            role: ['wseber'],
+            role: [],
             enable: true,
           },
         ],
@@ -400,8 +402,6 @@
 
           }], // 该用户已经拥有的权限
 
-
-
         membership: '',
         realName: '',
         position: '',
@@ -421,6 +421,7 @@
     },
     created() {
       this.load()
+      this.initRoles()
     },
     methods: {
       changeValue(value) {
@@ -428,12 +429,13 @@
         console.log(this.test, 'thie.test')
       },
       reset() {
-        this.userName = null
-        this.phone = null
+        this.userName = ''
+        this.phone = ''
         this.roleSelction = null
+        this.load()
       },
       saveLoginInfor() {
-        this.$request.post('http://localhost:13500/api/v1/user', this.loginForm).then((res) => {
+        this.$request.post('/django/user', this.loginForm).then((res) => {
           console.log(res)
           if (res.status === 201) {
             ElMessage({
@@ -455,21 +457,29 @@
       },
       //多条件模糊查询
       likeSerach(){
-        this.$request.get('',{
+        this.$request.get('/django/user/like',{
           params:{
             userName: this.userName,
             phone: this.phone,
-            role: this.roleSelction,
-            pageNum: this.pageNum,
-            pageSize: this.pageSize,
+            role: this.transferLikeSerachOfRole(this.roleSelction),
+            pageNum: this.page,
+            pageSize: this.page_size,
           }
         }).then(res=>{
-          this.tableData = res.data.data.results
+          this.tableData = res.data.data.records
+          console.log('[DETECT][like]',res.data)
         })
+      },
+      transferLikeSerachOfRole(detect){
+        if(detect === null){
+          return ''
+        }else{
+          return detect.rolename
+        }
       },
       load() {
         // 请求分页查询
-        this.$request.get('http://localhost:13500/api/v1/user/list', {
+        this.$request.get('/django/user/list', {
           params: {
             page: this.page,
             page_size:this.page_size,
@@ -484,7 +494,7 @@
         })
       },
       deleteUser(id) {
-        this.$request.delete('http://localhost:13500/api/v1/user/one',{
+        this.$request.delete('/django/user/one',{
           params: {
                     id : id
           }
@@ -530,28 +540,58 @@
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
-
-
-      //以上是已经调通的接口
-
       initRoles(){
+        this.allRoles = []
         let roleParam = {}
-        roleParam["pageNum"] = 1;
-        roleParam["pageSize"] = 99999;
-        roleParam["roleParam"] = null;
-        this.$request.get('http://localhost:13500/api/v1/permisssion/role/list',roleParam).then(res=>{
+        roleParam.pageNum = 1;
+        roleParam.pageSize = 99999;
+        roleParam.roleName = '';
+        console.log(roleParam)
+        this.$request.get('/django/permission/role/list',{
+          params:{
+            pageSize: roleParam.pageSize,
+            pageNum : roleParam.pageNum,
+            roleName : roleParam.roleName
+          }
+        }).then(res=>{
           console.log(res)
+          this.allRoles = res.data.data.records
+          console.log('[DETECT][Roles]',res.data.data.records)
         })
       },
-      initFunctions(){
-        this.$request.get('http://localhost:13500/api/v1/api/v1/permission').then(res=>{
-               console.log(res)
+      delBatch() {
+        const ids = this.multipleSelection.map(v => v.id) // 将对象数组变成纯ID的数组
+        console.log(this.multipleSelection)
+        console.log(ids)
+        this.$request.delete('/django/user/ids', {
+          params: {
+            ids,
+          },
+        }).then((res) => {
+          console.log(res)
+          if (res.data.code === 200) {
+            ElMessage({
+              showClose :true,
+              message : '辞退成功',
+              type:'success'
+            })
+            this.load()
+          }
+          else {
+            ElMessage({
+              showClose :true,
+              message : '辞退成功',
+              type:'error'
+            })
+          }
+          this.load()
         })
       },
       saveuserInfor() {
-        console.log(this.form)
-        this.$request.post("http://localhost:13500/api/v1/user"+this.form.id , this.form).then(res =>{
-          console.log(res)
+        console.log('[DETECT][saveUser]',this.form)
+        let tmp = this.form
+        this.$request.put("/django/user/upduser",this.form).then(res =>{
+          console.log('[DETECT][res]',res)
           // if(res.code === 223){
           //   this.$message.success("保存成功")
           //   this.dialogFormVisible = false
@@ -563,49 +603,50 @@
 
         })
       },
-      delBatch() {
-        const ids = this.multipleSelection.map(v => v.id) // 将对象数组变成纯ID的数组
-        console.log(this.multipleSelection)
-        console.log(ids)
-        this.$request.delete('http://localhost:13500/api/v1/user/ids', {
-          params: {
-            ids,
-          },
-        }).then((res) => {
-          console.log(res)
-          if (res) {
-            this.$message.success('批量辞退成功')
-            this.dialogFormVisible = false
-            this.load()
-          }
-          else {
-            this.$message.error('批量辞退失败')
-          }
-        })
-      },
       handleManageAuthority(row) {
         this.id = row.id
         this.role = row.role
-        // 获得当前用户所拥有的角色
-        // this.$request.get('http://localhost:13500/api/v1/permission/role/', {userId: this.id}).then((res) => {
-        //   this.role = res
-        //   console.log(res)
-        // })
-        // // 得到所有给该用户开小灶的权限
-        // this.$request.get('/api/v1/permission/extra/function/', {
-        //   Params: {
-        //     userId: this.id,
-        //   },
-        // }).then((res) => {
-        //   this.thisUserFunctions = res
-        // })
+        console.log('[id]',this.id)
+        //获得当前用户所拥有的角色
+        this.$request.get('/django/permission/user/role', {
+          params:{
+            userid: this.id
+          }
+        }).then(res => {
+          this.thisUserRoles = res.data.data.roles
+          console.log('[INFOR][userRoles]',res)
+
+        })
+        // 得到所有给该用户开小灶的权限
+        this.$request.get('/django/permission/user/function', {
+          params: {
+            userId: this.id,
+          },
+        }).then((res) => {
+          this.thisUserFunctions = res.data.data.functions
+          console.log('[INFOR][userFuntion]',res)
+        })
         this.authDialogFormVisible = true
       },
+
+      //以上是已经调通的接口
+
+      initFunctions(){
+        this.$request.get('/django/permission').then(res=>{
+               console.log(res)
+        })
+      },
+
+
       saveAuthorityInfor() {
         const data = {}
         data.userId = this.id
         data.extraFunctionList = []
         data.rolesList = []
+        console.log('[userFunctions]',this.thisUserFunctions)
+        // console.log('[extraFunctions]',this.extraFunctionList)
+
+        console.log('[userRoles]',this.thisUserRoles)
         let tmp = {}
         for (const item of this.thisUserFunctions) {
           tmp.id = item.id

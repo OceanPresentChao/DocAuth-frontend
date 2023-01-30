@@ -57,7 +57,7 @@
             }];
             return {
                 data: JSON.parse(JSON.stringify(data)),
-                data: JSON.parse(JSON.stringify(data))
+                data: JSON.parse(JSON.stringify(data)),
 
                 dialog1:false,
                 dialog2:false,
