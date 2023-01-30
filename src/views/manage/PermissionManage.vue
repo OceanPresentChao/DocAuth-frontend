@@ -158,8 +158,11 @@ export default {
         }
         else
         {
-          this.$message.error('权限加载失败，请刷新页面')
-
+          ElMessage({
+            showClose:true,
+            message:res.data.message,
+            type:'error'
+          })
           return []
         }
       })
@@ -177,7 +180,6 @@ export default {
       }).then((res) => {
         console.log(res)
         if (res.data.code == 200) {
-          console.log(1111111111111111)
           ElMessage({
             showClose:true,
             message:res.data.message,
@@ -382,16 +384,16 @@ export default {
       //当前处于this.roleid
 
       let List = [];
+      let roleid = this.roleid
       for (let i = 0; i < this.thisRoleFunctions.size(); i++) {
         List.push(this.thisRoleFunctions[i].id);
       }
 
-      this.$request.put('/api/v1/permission/role/updfunction/', {
-        body: {
-          roleId: this.roleid,
-          functionList: List,
-        },
-      }).then((res) => {
+      this.$request.put('/api/v1/permission/role/updfunction/',
+              {
+               "roleid":this.roleid,
+               "functionIdList":List
+              }).then((res) => {
         //this.role = res
         if (res.data.code == 200)//如果成功,再显示此用户的所有权限
         {
@@ -571,6 +573,9 @@ I
           <el-input v-model="newRole.desc"/>
         </el-form-item>
         <el-form-item label="管理权限" >
+<!--          <el-select-tree>-->
+
+<!--          </el-select-tree>-->
           <el-select v-model="newRoleFunctions"  value-key="id" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择权限" style = "width:100%" effect="dark">
             <el-option-group
                     v-for="group in allfunctions"
