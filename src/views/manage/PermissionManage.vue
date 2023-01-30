@@ -221,7 +221,10 @@ export default {
       newRoleAllInfo.newRoleFunctions = this.newRoleFunctions;
 
       this.$request.post('http://127.0.0.1:8000/api/v1/permission/role/add/',
-              {newRoleAllInfo}).then((res) => {
+              {
+                 "newRole":this.newRole,
+                  "newRoleFunction":this.newRoleFunctions
+              }).then((res) => {
 
         if (res.data.code == 200) {
           ElMessage({
@@ -306,7 +309,7 @@ export default {
     },
     updateRoleInfo() {
       let role = this.role
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', {role}).then((res) => {
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', {"role":role}).then((res) => {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
@@ -327,7 +330,7 @@ export default {
       let upstatus = {}
       upstatus.roleid = row.roleid
       upstatus.status = row.status
-      this.$request.put('/api/v1/permission/role/upstatus/', {upstatus}).then((res) => {
+      this.$request.put('/api/v1/permission/role/upstatus/', {"upstatus":upstatus}).then((res) => {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
@@ -383,8 +386,11 @@ export default {
         List.push(this.thisRoleFunctions[i].id);
       }
 
-      this.$request.put('/api/v1/permission/role/updfunction/', {
-          roleid, List,}).then((res) => {
+      this.$request.put('/api/v1/permission/role/updfunction/',
+              {
+               "roleid":this.roleid,
+               "functionIdList":List
+              }).then((res) => {
         //this.role = res
         if (res.data.code == 200)//如果成功,再显示此用户的所有权限
         {
