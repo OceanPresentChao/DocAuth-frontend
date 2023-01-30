@@ -1,19 +1,15 @@
 <script setup lang="ts">
-import { ComputedRef, Ref } from 'vue'
 import type { IProject } from './type'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
+import { requestProjectList } from '@/api'
+import { useTaskStore } from '@/store/task'
 const authStore = useAuthStore()
+const taskStore = useTaskStore()
 const { userInfo } = storeToRefs(authStore)
 const queryText = ref('')
 const sortType = ref('desc')
-const projectList = ref<IProject[]>([{
-  name: '项目1',
-  id: 1,
-  desc: '项目1描述',
-  addTime: '2021-01-01',
-  status: '进行中',
-}])
+const projectList = ref<IProject[]>([])
 const filterProjectList = computed<IProject[]>(() => {
   return projectList.value.sort((a, b) => {
     if (sortType.value === 'desc')
@@ -23,10 +19,20 @@ const filterProjectList = computed<IProject[]>(() => {
   })
 })
 
-function getProjectList(params: {
-  id: number
-}) {
+getProjectList()
 
+async function getProjectList() {
+  const res = await requestProjectList({ userId: userInfo.value.id })
+  const list = res.data.data.map((v: any) => {
+    return {
+      name: v.project__name,
+      id: v.project__id,
+      desc: v.project__desc,
+      addTime: v.project__addTime,
+      status: v.project__status,
+    }
+  })
+  projectList.value = list
 }
 </script>
 
@@ -72,12 +78,12 @@ function getProjectList(params: {
               effect="dark"
               round
             >
-              {{ p.status }}
+              {{ taskStore.taskStatus[p.status as 'r'].name }}
             </el-tag>
           </div>
           <div ml-auto mr-10 flex-none>
             <el-button type="primary" size="large">
-              <router-link to="/" text-lg>
+              <router-link :to="`/project/view?projectId=${p.id}`" text-lg>
                 查看
               </router-link>
             </el-button>
