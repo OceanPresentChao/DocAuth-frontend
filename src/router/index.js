@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import NProgress from 'nprogress'
 import DashBoard from '@/views/dashboard/DashBoard.vue'
+import { useAuthStore } from '@/store/auth'
 
 // 菜单路由在这里配置
 export const menuRoutes = [
@@ -99,7 +100,7 @@ const asyncRoutes = [
   {
     path: '/task/:id',
     component: () => import('@/views/project/TaskDetail.vue'),
-    redirect: '/task/:id/timeline',
+    redirect: to => `/task/${to.params.id}/timeline`,
     meta: {
       title: '任务信息',
     },
@@ -161,17 +162,46 @@ const constantRoutes = [
     name: 'login',
     path: '/login',
     component: () => import('@/views/login/Account.vue'),
+    meta: {
+      isNotLogin: true,
+    },
   },
   {
     name: '404',
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/Error404.vue'),
+    meta: {
+      isNotLogin: true,
+    },
   },
 ]
 
 export const router = createRouter({
   routes: [...menuRoutes, ...constantRoutes, ...asyncRoutes],
   history: createWebHashHistory(),
+})
+
+router.beforeEach(async (to) => {
+  const { isNotLogin } = to.meta
+  if (isNotLogin) {
+    return true
+  }
+  else {
+    const authStore = useAuthStore()
+    if (authStore.getToken()) { return true }
+    else {
+      await ElMessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+        confirmButtonText: '重新登录',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).catch(() => {
+
+      })
+      return {
+        path: '/login',
+      }
+    }
+  }
 })
 
 router.beforeEach(() => {

@@ -19,14 +19,18 @@ const list = ref<{
   pageSize: 0,
 })
 const listQuery = ref({
-  user: null as number | null,
+  user: undefined as number | undefined,
   type: 0,
   status: 'a',
   limit: 10,
   page: 1,
 })
 
-getTaskRecord()
+watch(
+  () => taskInfo!.value.id,
+  () => {
+    getTaskRecord()
+  })
 
 async function getTaskRecord() {
   list.value.listLoading = true
@@ -36,6 +40,7 @@ async function getTaskRecord() {
     status: listQuery.value.status === 'a' ? undefined : listQuery.value.status,
     page: listQuery.value.page,
     page_size: listQuery.value.limit,
+    task: taskInfo!.value.id,
   })
   list.value.data = res.data.data.results
   list.value.listLoading = false

@@ -21,13 +21,13 @@ function httpErrorStatusHandle(error) {
     switch (error.response.status) {
       case 302: message = '接口重定向了！'; break
       case 400: message = '参数不正确！'; break
-      case 403: {
+      case 401: {
         message = '您未登录，或者登录已经超时，请先登录！'
         ElMessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning',
-        }).finally(() => {
+        }).catch(() => {}).finally(() => {
           router.replace({ path: '/login' })
         })
         break
