@@ -47,7 +47,34 @@ export const menuRoutes = [
         path: '/manage/permission',
         component: () => import('@/views/manage/PermissionManage.vue'),
         meta: {
+          title: '角色管理',
+          icon: 'carbon:security-services',
+        },
+      },
+      {
+        name: 'functionManage',
+        path: '/manage/function',
+        component: () => import('@/views/manage/FunctionManage.vue'),
+        meta: {
           title: '权限管理',
+          icon: 'carbon:security-services',
+         },
+       },
+      {
+        name: 'apiManage',
+        path: '/manage/api',
+        component: () => import('@/views/manage/ApiManage.vue'),
+        meta: {
+          title: '接口管理',
+          icon: 'carbon:security-services',
+        },
+      },
+      {
+        name: 'test',
+        path: '/manage/test',
+        component: () => import('@/views/manage/test.vue'),
+        meta: {
+          title: '测试',
           icon: 'carbon:security-services',
         },
       },
