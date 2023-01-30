@@ -17,3 +17,12 @@ export function requestCreateProject(params = {}, data = {}) {
     data,
   })
 }
+
+export function requestProjectArticle(params = {}, data = {}) {
+  return request({
+    url: `/django/business/project/article/${params.project}`,
+    method: 'get',
+    params,
+    data,
+  })
+}

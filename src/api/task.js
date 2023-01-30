@@ -53,3 +53,13 @@ export function requestTaskRecord(params = {}, data = {}) {
     data,
   })
 }
+
+export function requestTaskArticle(params = {}, data = {}) {
+  return request({
+    url: `/django/business/task/article/${params.task}`,
+    method: 'get',
+    params,
+    data,
+    responseType: 'blob',
+  })
+}
