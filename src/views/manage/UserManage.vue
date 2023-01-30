@@ -469,7 +469,7 @@
       },
       load() {
         // 请求分页查询
-        this.$request.get('http://localhost:13500/api/v1/user/list/', {
+        this.$request.get('http://localhost:13500/api/v1/user/list', {
           params: {
             page: this.page,
             page_size:this.page_size,
@@ -539,18 +539,18 @@
         roleParam["pageNum"] = 1;
         roleParam["pageSize"] = 99999;
         roleParam["roleParam"] = null;
-        this.$request.get('http://localhost:13500/api/v1/permisssion/role/list/',roleParam).then(res=>{
+        this.$request.get('http://localhost:13500/api/v1/permisssion/role/list',roleParam).then(res=>{
           console.log(res)
         })
       },
       initFunctions(){
-        this.$request.get('http://localhost:13500/api/v1/api/v1/permission/').then(res=>{
+        this.$request.get('http://localhost:13500/api/v1/api/v1/permission').then(res=>{
                console.log(res)
         })
       },
       saveuserInfor() {
         console.log(this.form)
-        this.$request.post("http://localhost:13500/api/v1/user/"+this.form.id , this.form).then(res =>{
+        this.$request.post("http://localhost:13500/api/v1/user"+this.form.id , this.form).then(res =>{
           console.log(res)
           // if(res.code === 223){
           //   this.$message.success("保存成功")
@@ -567,7 +567,7 @@
         const ids = this.multipleSelection.map(v => v.id) // 将对象数组变成纯ID的数组
         console.log(this.multipleSelection)
         console.log(ids)
-        this.$request.delete('http://localhost:13500/api/v1/user/ids/', {
+        this.$request.delete('http://localhost:13500/api/v1/user/ids', {
           params: {
             ids,
           },
