@@ -220,7 +220,8 @@ export default {
       this.newRoleFunctions = this.newRoleFunctions.map(v => v.id) // 将对象数组变成纯ID的数组
       newRoleAllInfo.newRoleFunctions = this.newRoleFunctions;
 
-      this.$request.post('http://127.0.0.1:8000/api/v1/permission/role/add/', newRoleAllInfo).then((res) => {
+      this.$request.post('http://127.0.0.1:8000/api/v1/permission/role/add/',
+              {newRoleAllInfo}).then((res) => {
 
         if (res.data.code == 200) {
           ElMessage({
@@ -304,7 +305,8 @@ export default {
       this.role.desc = row.desc;
     },
     updateRoleInfo() {
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', this.role).then((res) => {
+      let role = this.role
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo/', {role}).then((res) => {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
@@ -325,7 +327,7 @@ export default {
       let upstatus = {}
       upstatus.roleid = row.roleid
       upstatus.status = row.status
-      this.$request.put('/api/v1/permission/role/upstatus/', upstatus).then((res) => {
+      this.$request.put('/api/v1/permission/role/upstatus/', {upstatus}).then((res) => {
         if (res.data.code == 200) {
           ElMessage({
             showClose:true,
@@ -376,16 +378,13 @@ export default {
       //当前处于this.roleid
 
       let List = [];
+      let roleid = this.roleid
       for (let i = 0; i < this.thisRoleFunctions.size(); i++) {
         List.push(this.thisRoleFunctions[i].id);
       }
 
       this.$request.put('/api/v1/permission/role/updfunction/', {
-        body: {
-          roleId: this.roleid,
-          functionList: List,
-        },
-      }).then((res) => {
+          roleid, List,}).then((res) => {
         //this.role = res
         if (res.data.code == 200)//如果成功,再显示此用户的所有权限
         {
