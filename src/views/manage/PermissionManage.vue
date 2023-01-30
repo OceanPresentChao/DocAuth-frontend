@@ -134,7 +134,7 @@ export default {
   },
 
   created() {
-    this.allfunctions = this.loadAllFunctions()
+    //this.allfunctions = this.loadAllFunctions()
     this.load()
   },
   methods : {
@@ -179,7 +179,7 @@ export default {
         }
       }).then((res) => {
         console.log(res)
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
             message:res.message,
@@ -220,16 +220,12 @@ export default {
       this.newRoleFunctions = this.newRoleFunctions.map(v => v.id) // 将对象数组变成纯ID的数组
       newRoleAllInfo.newRoleFunctions = this.newRoleFunctions;
 
-      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/add/', {
-        body:{
-          newRoleAllInfo:Json.stringify(newRoleAllInfo)
-        }
-        }).then((res) => {
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/add/', newRoleAllInfo).then((res) => {
 
-        if (res.code == 200) {
+        if (res.data.code == 200) {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'success'
           })
           //加载角色
@@ -237,7 +233,7 @@ export default {
         } else {
           ElMessage({
             showClose:true,
-            message:res.message,
+            message:res.data.message,
             type:'error'
           })
         }
@@ -568,6 +564,9 @@ I
           <el-input v-model="newRole.desc"/>
         </el-form-item>
         <el-form-item label="管理权限" >
+<!--          <el-select-tree>-->
+
+<!--          </el-select-tree>-->
           <el-select v-model="newRoleFunctions"  value-key="id" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择权限" style = "width:100%" effect="dark">
             <el-option-group
                     v-for="group in allfunctions"
