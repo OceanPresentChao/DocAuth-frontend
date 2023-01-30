@@ -74,50 +74,7 @@ export default {
         },
       ],
 
-      tableData: [
-        // {
-        //   roleid: 10,
-        //   rolename: '项目经理',
-        //   status: true,
-        //   desc: ' sasdsfgdsfhd',
-        //   addTime: '2022-1-25'
-        // },
-        // {
-        //   roleid: 10,
-        //   rolename: '项目经理',
-        //   status: true,
-        //   desc: ' ',
-        //   addTime: '2022-1-25 21:00'
-        // },
-        // {
-        //   roleid: 10,
-        //   rolename: '项目经理',
-        //   status: true,
-        //   desc: ' ',
-        //   addTime: '2022-1-25 21:00'
-        // },
-        // {
-        //   roleid: 10,
-        //   rolename: '项目经理',
-        //   status: true,
-        //   desc: ' ',
-        //   addTime: '2022-1-25'
-        // },
-        // {
-        //   roleid: 10,
-        //   rolename: '项目经理',
-        //   status: true,
-        //   desc: ' ',
-        //   addTime: '2022-1-25'
-        // },
-        // {
-        //   roleid: 10,
-        //   rolename: '项目经理',
-        //   status: true,
-        //   desc: ' ',
-        //   addTime: '2022-1-25'
-        // },
-      ],
+      tableData: [],
       thisRoleFunctions:[],
       thisRoleFunctions1:[],
       newRoleFunctions:[],
@@ -144,17 +101,7 @@ export default {
       this.$request.get('http://127.0.0.1:8000/api/v1/permission/').then((res)=>{
         if(res.data.code==200)
         {
-          //this.allfunctions1 = res.data
-          let keysArr = res.data.map(item=>item['parent'])
-          let keys = [...new Set(keysArr)]
-          let newList = keys.map(item=>{
-            return {
-              //这里写新的 数据结构 如下是整体复制
-              ['parent']:item,
-              children:list.filter(i=>i['parent']==item)
-            }
-          })
-          return newList;
+          this.allfunctions1 = res.data.data
         }
         else
         {
@@ -166,6 +113,13 @@ export default {
           return []
         }
       })
+    },
+
+
+    //将一维数组变成树
+    buildTree()
+    {
+
     },
     //加载所有角色
 
