@@ -587,7 +587,7 @@
                 if(this.examPhaseIfCompleted() && this.examFatherTasksIfCompleted() ){
                     //下面转到朝海波负责的任务详情页或编辑页
                     console.log('[router]',this.currentTask.id)
-                    this.$router.push({path:'/task/:id',params:{id : this.currentTask.id}})
+                    this.$router.push({path:`/task/${this.currentTask.id}`})
                     ElMessage({
                         showClose:true,
                         message: '进入成功',
