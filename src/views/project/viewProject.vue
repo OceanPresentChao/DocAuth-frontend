@@ -242,7 +242,7 @@
                 this.processingDataFromBackEnd=[]
                 this.$request.get('/django/business/getTasksFromTheProject',{
                     params:{
-                        projectId : 7
+                        projectId : this.$route.query.projectId*1
                     }
                 }).then(res=>{
                     this.processingDataFromBackEnd = res.data.data

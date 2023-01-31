@@ -49,6 +49,7 @@ async function handleSubmit() {
     user: userInfo.value.id,
   })
   if (res.data.code === 200) {
+    console.log(res)
     dialogVisible.value = false
     ElMessage.success('创建成功')
     getProjectList()
