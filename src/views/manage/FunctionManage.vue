@@ -28,13 +28,13 @@
                 </el-form-item>
 
 
-                <el-form-item prop="rw_type" label="读写类型" :label-width="formLabelWidth">
-                <el-radio-group v-model="newFunction.rw_type">
-                    <el-radio label="r">可读</el-radio>
-                    <el-radio label="s">可写</el-radio>
-                    <el-radio label="a">可读写</el-radio>
-                </el-radio-group>
-                </el-form-item>
+<!--                <el-form-item prop="rw_type" label="读写类型" :label-width="formLabelWidth">-->
+<!--                <el-radio-group v-model="newFunction.rw_type">-->
+<!--                    <el-radio label="r">可读</el-radio>-->
+<!--                    <el-radio label="s">可写</el-radio>-->
+<!--                    <el-radio label="a">可读写</el-radio>-->
+<!--                </el-radio-group>-->
+<!--                </el-form-item>-->
 
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -64,13 +64,13 @@
                     <el-input v-model="Ffunction.key"/>
                 </el-form-item>
 
-                <el-form-item prop ="rw_type" label="读写类型" :label-width="formLabelWidth">
-                    <el-radio-group v-model="Ffunction.rw_type">
-                        <el-radio label="r">可读</el-radio>
-                        <el-radio label="s">可写</el-radio>
-                        <el-radio label="a">可读写</el-radio>
-                    </el-radio-group>
-                </el-form-item>
+<!--                <el-form-item prop ="rw_type" label="读写类型" :label-width="formLabelWidth">-->
+<!--                    <el-radio-group v-model="Ffunction.rw_type">-->
+<!--                        <el-radio label="r">可读</el-radio>-->
+<!--                        <el-radio label="s">可写</el-radio>-->
+<!--                        <el-radio label="a">可读写</el-radio>-->
+<!--                    </el-radio-group>-->
+<!--                </el-form-item>-->
 
                 <el-form-item label="添加时间" :label-width="formLabelWidth">
                     <el-tag>{{Ffunction.addTime}}</el-tag>
@@ -365,7 +365,7 @@
                 changeFunctionInfo()
                 {
                     let Function = this.Ffunction
-                    this.$request.put('http://127.0.0.1:8000/api/v1/permission/status',{Function}).then((res) => {
+                    this.$request.put('http://127.0.0.1:8000/api/v1/permission/status',Function).then((res) => {
                         if (res.data.code == 200) {
                             ElMessage({
                                 showClose: true,
@@ -391,7 +391,7 @@
                     let Function = this.newFunction
                     console.log(Function)
 
-                    this.$request.post('http://127.0.0.1:8000/api/v1/permission',{Function}).then((res) => {
+                    this.$request.post('http://127.0.0.1:8000/api/v1/permission',Function).then((res) => {
                         if (res.data.code == 200) {
                             ElMessage({
                                 showClose: true,

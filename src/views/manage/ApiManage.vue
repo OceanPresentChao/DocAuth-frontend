@@ -113,6 +113,9 @@
                              },
                         ],
 
+                addstatus:'r',
+                addApiFunction:[],
+
                 //tableData: [],
                 thisapiFunctions:[],
                 thisapiFunctions1:[],
@@ -134,7 +137,7 @@
 
         created() {
             this.loadAllFunctions()
-            //this.load()
+            this.load()
         },
         methods : {
 
@@ -251,7 +254,7 @@
                 //默认状态为true
                 this.newapi.status = 'r';
                 let newapi = this.newapi;
-                this.$request.post('http://127.0.0.1:8000/api/v1/permission/api/', {newapi}).then((res) => {
+                this.$request.post('http://127.0.0.1:8000/api/v1/permission/api', newapi).then((res) => {
 
                     if (res.data.code == 200) {
                         //console.log(2222222222)
@@ -276,7 +279,7 @@
             deleteapi(id) {
                 let Id = id
                 console.log(id)
-                this.$request.delete('http://127.0.0.1:8000/api/v1/permission/status', {
+                this.$request.delete('http://127.0.0.1:8000/api/v1/permission/api/status', {
                     params: {
                         id:Id,
                     }}).then((res) => {
@@ -339,11 +342,37 @@
                 this.api.addTime =row.addTime
             },
 
-            //更新api基本信息+权限   ？？？？？疑惑
+            //更新api基本信息
             updateapiInfo() {
                 let api = this.api
-                this.api.required_functions = this.thisapiFunctions
-                this.$request.put('http://127.0.0.1:8000/api/v1/permission/api/status',{api}).then((res) => {
+                //this.api.required_functions = this.thisapiFunctions
+                this.$request.put('http://127.0.0.1:8000/api/v1/permission/api/status',api).then((res) => {
+                    if (res.data.code == 200) {
+                        ElMessage({
+                            showClose:true,
+                            message:res.data.message,
+                            type:'success'
+                        })
+                        this.load();
+                    } else {
+                        ElMessage({
+                            showClose:true,
+                            message:res.data.message,
+                            type:'error'
+                        })
+                    }
+                })
+            },
+
+            //添加api权限
+            addapiInfo() {
+                let addapiFunctions = this.addApiFunction
+                for(let i = 0;i<this,count(this.addApiFunction);i++)
+                {
+                    addapiFunctions.push({functionid:this.addApiFunction[i],rw_type:this.addstatus})
+                }
+                console.log(this.addpiFunctions)
+                this.$request.post('http://127.0.0.1:8000/api/v1/permission/api/function',addpiFunctions).then((res) => {
                     if (res.data.code == 200) {
                         ElMessage({
                             showClose:true,
@@ -390,6 +419,7 @@
 
             //弹出编辑权限对话框
             handleManageFunction(row) {
+                this.addstatus =  'r',
                 this.id = row.id;
                 this.FunctionDialogFormVisible = true;
                 this.loadThisapiFunction();
@@ -581,12 +611,15 @@
 
         <el-dialog v-model="FunctionDialogFormVisible" title="API权限管理" width="40%">
             <el-form style="text-align: left">
-
+                <el-radio-group v-model="addstatus">
+                    <el-radio label='r'>可读</el-radio>
+                    <el-radio label='w'>可写</el-radio>
+                    <el-radio label='a'>可读写</el-radio>
+                </el-radio-group>
                 <el-form-item label="管理权限" >
-
                     <el-tree-select
                             :props = "treeProps"
-                            v-model="thisapiFunctions"
+                            v-model="addApiFunction"
                             value-key="id"
                             :data="allfunctions"
                             multiple
@@ -630,7 +663,7 @@
                 </el-table-column>
             </el-table>
             <div slot="footer" class="dialog-footer">
-                <el-button type="success" @click="updateapiInfo()">
+                <el-button type="success" @click="addapiInfo()()">
                     确 定
                 </el-button>
                 <el-button @click="cancelEditFunctionInfo()">

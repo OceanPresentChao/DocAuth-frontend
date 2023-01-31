@@ -16,6 +16,9 @@ export default {
       //被选择要删除的角色
       selectedRoles:[],
 
+      //增加角色权限
+      addRoleFunctions:[],
+
       //所有权限,未分组
       allfunctions:[] ,
       allfunctions1: [{
@@ -186,6 +189,7 @@ export default {
       this.newRoleFunctions = [];
       this.AddRoleDialogFormVisible = true;
     },
+
     //确定添加此新角色
     confirmHandleAdd() {
 
@@ -359,12 +363,12 @@ export default {
       //当前处于this.roleid
 
       let List = [];
-      //let roleid = this.roleid
-      for (let i = 0; i < this.thisRoleFunctions.size(); i++) {
-        List.push(this.thisRoleFunctions[i].id);
+      // //let roleid = this.roleid
+      for (let i = 0; i < this.count(this.addRoleFunctions); i++) {
+        List.push(this.addRoleFunctions[i].id);
       }
 
-      this.$request.put('/api/v1/permission/role/updfunction',
+      this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/updfunction',
               {
                "roleid":this.roleid,
                "functionIdList":List
@@ -546,19 +550,19 @@ I
         <el-form-item label="概述" :label-width="formLabelWidth">
           <el-input v-model="newRole.desc"/>
         </el-form-item>
-        <el-form-item label="管理权限" >
-          <el-tree-select
-                  :props = "treeProps"
-                  v-model="newRoleFunctions"
-                  value-key="id"
-                  :data="allfunctions"
-                  multiple
-                  :render-after-expand="false"
-                  show-checkbox
-                  check-strictly
-                  check-on-click-node
-          />
-        </el-form-item>
+<!--        <el-form-item label="管理权限" >-->
+<!--          <el-tree-select-->
+<!--                  :props = "treeProps"-->
+<!--                  v-model="newRoleFunctions"-->
+<!--                  value-key="id"-->
+<!--                  :data="allfunctions"-->
+<!--                  multiple-->
+<!--                  :render-after-expand="false"-->
+<!--                  show-checkbox-->
+<!--                  check-strictly-->
+<!--                  check-on-click-node-->
+<!--          />-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="AddRoleDialogFormVisible = false">
@@ -576,7 +580,7 @@ I
         <el-form-item label="管理权限" >
           <el-tree-select
                   :props = "treeProps"
-                  v-model="thisRoleFunctions"
+                  v-model="addRoleFunctions"
                   value-key="id"
                   :data="allfunctions"
                   multiple
