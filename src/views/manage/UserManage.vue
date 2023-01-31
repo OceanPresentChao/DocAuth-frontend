@@ -5,8 +5,8 @@
     <div style="text-align: left">
       <el-input v-model="userName" style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" />
       <el-input v-model="phone" style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" />
-      <el-select class="selectStyle" value-key="id"  v-model="roleSelection" clearable placeholder="请选择想要查询的角色" style="width:200px">
-        <el-option v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5" />
+      <el-select class="selectStyle" value-key="id"  v-model="roleSelection" clearable placeholder="请选择想要查询的角色" :popper-append-to-body='false' effect=dark style="width:200px ">
+        <el-option class="selectStyle1" v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5;text-align: center" />
       </el-select>
       <el-button type="primary" style="margin-left: 20px" @click="likeSerach">
         <el-icon><Search /></el-icon>搜索
@@ -104,6 +104,7 @@
     </el-table>
     <!-- 信息修改   -->
     <el-dialog v-model="infodialogFormVisible" title="用户信息" width="40%">
+<!--      <Avatar style="width: 20px ; height: 10px;margin-top: 2px" />-->
       <el-form label-width="80px">
         <el-form-item label="用户ID" :label-width="formLabelWidth">
           <el-input v-model="form.id" autocomplete="off" :disabled="true" />
@@ -174,18 +175,18 @@
       <el-form style="text-align: left">
         <el-form-item label="管理角色">
           <el-select v-model="thisUserRoles" value-key="roleId"  class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">
-            <el-option v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5 ;text-align: center" />
           </el-select>
         </el-form-item>
         <el-form-item label="管理功能">
           <el-select v-model="thisUserFunctions" value-key="id" multiple clearable :popper-append-to-body="false" placeholder="请选择想额外赋予该用户的功能权限" style="width:100% " effect="dark" @change="changeValue">
-            <el-option v-for="item in allFunctions" :key="item.id" :label="item.name" :value="item" style="width: 100% ;color: #55e0e5" />
+            <el-option v-for="item in allFunctions" :key="item.id" :label="item.name" :value="item" style="width: 100% ;color: #55e0e5 ;text-align: center" />
           </el-select>
         </el-form-item>
       </el-form>
 
       <el-table :data="thisUserFunctions" style="width: 100%;margin-bottom: 50px" border stripe :header-cell-class-name="headerBg">
-        <el-table-column prop="id" align="center" label="AuthorityId" />
+        <el-table-column prop="id" align="center" label="AuthorityId" width="100"/>
         <el-table-column prop="name" align="center" label="Name" width="180" />
         <el-table-column prop="key" align="center" label="Key" width="180" />
         <el-table-column prop="status" align="center" label="Status" />
@@ -236,76 +237,11 @@
     },
     data() {
       return {
-        test: 'nihaoadsasdfssdfsfsdada',
         userName: '',
         roleSelection: null,
         phone: '',
         headerBg: 'headerBg',
-        tableData: [
-          {
-            userid: 10,
-            username: 'dasdsa',
-            phone: '6465464654',
-            email: 'sdsadsa@qq.com',
-            regdate: '2022-11-24 21:14:31.000000',
-            password: 'sasdsasadas',
-            gender: '男',
-            role: ['wseber'],
-            enable: true,
-          },
-          {
-            userid: 10,
-            username: 'dasdsa',
-            phone: '6465464654',
-            email: 'sdsadsa@qq.com',
-            regdate: '2022-11-24 21:14:31.000000',
-            password: 'sasdsasadas',
-            gender: '男',
-            role: ['wseber'],
-            enable: true,
-          },
-          {
-            userid: 10,
-            username: 'dasdsa',
-            phone: '6465464654',
-            email: 'sdsadsa@qq.com',
-            regdate: '2022-11-24 21:14:31.000000',
-            password: 'sasdsasadas',
-            gender: '男',
-            enable: true,
-          },
-          {
-            userid: 10,
-            username: 'dasdsa',
-            phone: '6465464654',
-            email: 'sdsadsa@qq.com',
-            regdate: '2022-11-24 21:14:31.000000',
-            password: 'sasdsasadas',
-            gender: '男',
-            enable: true,
-          },
-          {
-            userid: 10,
-            username: 'dasdsa',
-            phone: '6465464654',
-            email: 'sdsadsa@qq.com',
-            regdate: '2022-11-24 21:14:31.000000',
-            password: 'sasdsasadas',
-            gender: '男',
-            enable: true,
-          },
-          {
-            userid: 10,
-            username: 'dasdsa',
-            phone: '6465464654',
-            email: 'sdsadsa@qq.com',
-            regdate: '2022-11-24 21:14:31.000000',
-            password: 'sasdsasadas',
-            gender: '男',
-            role: [],
-            enable: true,
-          },
-        ],
+        tableData: [],
         total: 0,
         page: 1,
         page_size: 5,
@@ -318,75 +254,10 @@
         loginDialogFormVisible: false,
         authDialogFormVisible: false,
         genders: ['男', '女', '未知'],
-        allRoles: [{
-          id: 1,
-          name: '项目经理',
-          desc: 'modifyPersonalInformation',
-          status: 'r',
-        },
-          {
-            id: 2,
-            name:  '董事长',
-            desc: 'modifyPersonalInformation',
-            status: 'r',
-          },
-          ],
-        allFunctions: [
-          {
-            id: 1,
-            name: '修改个人信息',
-            key: 'modifyPersonalInformation',
-            status: '已启用',
-          },
-          {
-            id: 2,
-            name: '创建项目',
-            key: 'modifyPersonalInformation',
-          },
-          {
-            id: 3,
-            name: '删除用户',
-            key: 'modifyPersonalInformation',
-            status: '已启用',
-
-          },
-          {
-            id: 4,
-            name: '修改用户信息',
-            key: 'modifyPersonalInformation',
-            status: '已启用',
-          },
-          {
-            id: 5,
-            name: '嘤嘤嘤',
-            key: 'modifyPersonalInformation',
-            status: '已启用',
-          },
-        ], // 全部可选的功能权限
+        allRoles: [],
+        allFunctions: [], // 全部可选的功能权限
         thisUserRoles: [],  //该用户已分配的角色
-        thisUserFunctions: [
-          {
-            id: 1,
-            name: '修改个人信息',
-            key: 'modifyPersonalInformation',
-            status: 1,
-            enable: true,
-          },
-          {
-            id: 2,
-            name: '创建项目',
-            key: 'modifyPersonalInformation',
-            status: 1,
-            enable: true,
-          },
-          {
-            id: 3,
-            name: '删除用户',
-            key: 'modifyPersonalInformation',
-            status: 1,
-            enable: true,
-
-          }], // 该用户已经拥有的权限
+        thisUserFunctions: [], // 该用户已经拥有的权限
 
         membership: '',
         realName: '',
@@ -413,7 +284,6 @@
     methods: {
       changeValue(value) {
         console.log('value', value)
-        // console.log(this.test, 'thie.test')
       },
       reset() {
         this.userName = ''
@@ -630,10 +500,6 @@
                 // console.log('[Infor][allFuntions]',this.allFunctions)
             })
         },
-      //以上是已经调通的接口
-
-
-
       saveAuthorityInfor() {
         const data = {}
         data.userId = this.id
@@ -652,39 +518,59 @@
         for(const item of this.thisUserRoles){
           tmp.id = item.roleId
           tmp.name = item.roleName
+          tmp.enable = item.enable
           data.rolesList.push(tmp)
           tmp = {}
         }
         console.log('[Info][saveAuth]', data)
         let dataOfFuntions={}
         dataOfFuntions.userId = data.userId
-        dataOfFuntions.extraFunctionList = data.extraFunctionList.map(v=>v.id)
+        dataOfFuntions.extraFunctionList = data.extraFunctionList
         //更新小灶信息
-        // this.$request.put('/api/v1/permission/extra/function/', dataOfFuntions).then((res) => {
-        //   console.log(res)
-        //   // if (res.status === 200) {
-        //   //   this.$message.success('保存成功')
-        //   //   this.dialogFormVisible = false
-        //   //   this.load()
-        //   // }
-        //   // else {
-        //   //   this.$message.error('保存失败')
-        //   // }
-        // })
+        this.$request.put('/django/permission/user/function', dataOfFuntions).then(res => {
+          // console.log('[Function]',res)
+          if (res.status === 200) {
+            ElMessage({
+              showClose :true,
+              message : '开小灶成功',
+              type:'success'
+            })
+            this.load()
+          }
+          else {
+            ElMessage({
+              showClose :true,
+              message : '系统错误，开小灶失败',
+              type:'error'
+            })
+          }
+        })
         //更新用户角色信息
         let dataOfRoles={}
         dataOfRoles.userId = data.userId
         dataOfRoles.roleIds = data.rolesList.map(v => v.id)
         this.$request.put('/django/permission/user/role',dataOfRoles).then(res=>{
-          console.log('[DETECT][saveRoles]',res)
+          // console.log('[DETECT][saveRoles]',res)
+          if (res.status === 200) {
+            ElMessage({
+              showClose :true,
+              message : '角色分配成功',
+              type:'success'
+            })
+            this.load()
+          }
+          else {
+            ElMessage({
+              showClose :true,
+              message : '系统错误，角色分配失败',
+              type:'error'
+            })
+          }
         })
-        console.log('[Param][userRoles]',dataOfRoles)
-        console.log('[Param][userFunctions]',dataOfFuntions)
+        // console.log('[Param][userRoles]',dataOfRoles)
+        // console.log('[Param][userFunctions]',dataOfFuntions)
         this.authDialogFormVisible = false
       },
-
-
-      //以上是等待接口的函数
 
 
 
@@ -709,8 +595,8 @@
 
 
 
-<style scoped>
-  .headerBg{
+<style scoped >
+  :deep(.headerBg){
     background: #55e0e5!important;
   }
 </style>
@@ -776,7 +662,7 @@
     color: #fff;
   }
   //修改输入框背景颜色
-  .el-input-group > .el-input__inner {
+  .el-input-group.el-input__inner {
     box-shadow: 0px 4px 4px rgba(49, 49, 49, 0.5);
     background: rgba(10, 30, 55, 0.7);
     width: 260px;
@@ -806,7 +692,7 @@
     color: rgba(255, 255, 255, 0.67);
   }
   //修改下拉框的字体
-  .el-select-dropdown__list {
+  .el-select-dropdown__list{
     padding: 5px;
     text-align: center;
     //修改单个的选项的样式
@@ -835,7 +721,7 @@
     font-size: 16px;
   }
   // 修改鼠标选中输入框时输入框的颜色
-  input.el-input__inner:focus {
+  :deep(input.el-input__inner:focus) {
     border-color: #fff;
   }
 </style>
