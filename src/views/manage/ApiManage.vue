@@ -134,7 +134,7 @@
 
         created() {
             this.loadAllFunctions()
-            //this.load()
+            this.load()
         },
         methods : {
 
@@ -276,7 +276,7 @@
             deleteapi(id) {
                 let Id = id
                 console.log(id)
-                this.$request.delete('http://127.0.0.1:8000/api/v1/permission/status', {
+                this.$request.delete('http://127.0.0.1:8000/api/v1/permission/api/status', {
                     params: {
                         id:Id,
                     }}).then((res) => {
@@ -343,7 +343,7 @@
             updateapiInfo() {
                 let api = this.api
                 this.api.required_functions = this.thisapiFunctions
-                this.$request.put('http://127.0.0.1:8000/api/v1/permission/api/status',{api}).then((res) => {
+                this.$request.put('http://127.0.0.1:8000/api/v1/permission/api/status',api).then((res) => {
                     if (res.data.code == 200) {
                         ElMessage({
                             showClose:true,

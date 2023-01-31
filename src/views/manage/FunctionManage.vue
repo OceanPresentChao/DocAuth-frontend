@@ -365,7 +365,7 @@
                 changeFunctionInfo()
                 {
                     let Function = this.Ffunction
-                    this.$request.put('http://127.0.0.1:8000/api/v1/permission/status',{Function}).then((res) => {
+                    this.$request.put('http://127.0.0.1:8000/api/v1/permission/status',Function).then((res) => {
                         if (res.data.code == 200) {
                             ElMessage({
                                 showClose: true,
@@ -391,7 +391,7 @@
                     let Function = this.newFunction
                     console.log(Function)
 
-                    this.$request.post('http://127.0.0.1:8000/api/v1/permission',{Function}).then((res) => {
+                    this.$request.post('http://127.0.0.1:8000/api/v1/permission',Function).then((res) => {
                         if (res.data.code == 200) {
                             ElMessage({
                                 showClose: true,
