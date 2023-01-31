@@ -5,12 +5,9 @@
     <div style="text-align: left">
       <el-input v-model="userName" style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" />
       <el-input v-model="phone" style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" />
-      <el-select class="selectStyle" value-key="id"  v-model="roleSelction" clearable placeholder="请选择想要查询的角色" style="width:200px">
+      <el-select class="selectStyle" value-key="id"  v-model="roleSelection" clearable placeholder="请选择想要查询的角色" style="width:200px">
         <el-option v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5" />
       </el-select>
-<!--      <el-select v-model="role" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">-->
-<!--        <el-option v-for=" item in roles" :value="item" style="width: 100% ;color: #55e0e5" />-->
-<!--      </el-select>-->
       <el-button type="primary" style="margin-left: 20px" @click="likeSerach">
         <el-icon><Search /></el-icon>搜索
       </el-button>
@@ -105,7 +102,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <!-- 信息修改   -->
     <el-dialog v-model="infodialogFormVisible" title="用户信息" width="40%">
       <el-form label-width="80px">
@@ -174,13 +170,11 @@
       </div>
     </el-dialog>
     <!-- 角色权限管理   -->
-    <el-dialog v-model="authDialogFormVisible" title="用户权限管理" width="40%">
+    <el-dialog v-model="authDialogFormVisible" title="用户权限管理" width="50%">
       <el-form style="text-align: left">
         <el-form-item label="管理角色">
-          <el-select v-model="thisUserRoles" value-key="id"  class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">
-<!--            <el-option v-for=" item in allRoles" :key="item.id" :label="item.name" :value="item" style="width: 100% ;color: #55e0e5" />-->
+          <el-select v-model="thisUserRoles" value-key="roleId"  class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择角色" style="width:100% " effect="dark">
             <el-option v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5" />
-
           </el-select>
         </el-form-item>
         <el-form-item label="管理功能">
@@ -196,13 +190,6 @@
         <el-table-column prop="key" align="center" label="Key" width="180" />
         <el-table-column prop="status" align="center" label="Status" />
         <el-table-column prop="parent" align="center" label="Parent" />
-        <el-table-column prop="rw_type" align="center" label="Rw_type" />
-        <el-table-column align="center" label="仅禁用此用户的此权限">
-          <template #default="{ row, $index }">
-            <el-switch v-model="row.enable" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(row)" />
-            <!--              <el-button  type="danger" round slot="reference" ><el-icon style="margin-right: 10px ;size: A4"><DeleteFilled /></el-icon>收回权限</el-button> -->
-          </template>
-        </el-table-column>
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button type="success" @click="saveAuthorityInfor">
@@ -213,7 +200,6 @@
         </el-button>
       </div>
     </el-dialog>
-
     <!--    下面为页面转换按钮 -->
     <div style="padding: 10px 0">
       <el-pagination
@@ -252,7 +238,7 @@
       return {
         test: 'nihaoadsasdfssdfsfsdada',
         userName: '',
-        roleSelction: null,
+        roleSelection: null,
         phone: '',
         headerBg: 'headerBg',
         tableData: [
@@ -422,16 +408,17 @@
     created() {
       this.load()
       this.initRoles()
+      this.initFunctions()
     },
     methods: {
       changeValue(value) {
         console.log('value', value)
-        console.log(this.test, 'thie.test')
+        // console.log(this.test, 'thie.test')
       },
       reset() {
         this.userName = ''
         this.phone = ''
-        this.roleSelction = null
+        this.roleSelection = null
         this.load()
       },
       saveLoginInfor() {
@@ -461,13 +448,13 @@
           params:{
             userName: this.userName,
             phone: this.phone,
-            role: this.transferLikeSerachOfRole(this.roleSelction),
+            role: this.transferLikeSerachOfRole(this.roleSelection),
             pageNum: this.page,
             pageSize: this.page_size,
           }
         }).then(res=>{
           this.tableData = res.data.data.records
-          console.log('[DETECT][like]',res.data)
+          // console.log('[DETECT][like]',res.data)
         })
       },
       transferLikeSerachOfRole(detect){
@@ -488,7 +475,7 @@
             role: null,
           },
         }).then((res) => {
-          console.log('这里是分页查询',res)
+          // console.log('[Infor][Page]',res)
           this.tableData = res.data.data.results
           this.total = res.data.data.count
         })
@@ -546,7 +533,7 @@
         roleParam.pageNum = 1;
         roleParam.pageSize = 99999;
         roleParam.roleName = '';
-        console.log(roleParam)
+        // console.log(roleParam)
         this.$request.get('/django/permission/role/list',{
           params:{
             pageSize: roleParam.pageSize,
@@ -588,19 +575,26 @@
         })
       },
       saveuserInfor() {
-        console.log('[DETECT][saveUser]',this.form)
+        // console.log('[DETECT][saveUser]',this.form)
         let tmp = this.form
         this.$request.put("/django/user/upduser",this.form).then(res =>{
           console.log('[DETECT][res]',res)
-          // if(res.code === 223){
-          //   this.$message.success("保存成功")
-          //   this.dialogFormVisible = false
-          //   this.load()
-          // }
-          // else{
-          //   this.$message.error("保存失败")
-          // }
-
+          if(res.data.code === 200){
+            ElMessage({
+                showClose : true,
+                message : res.data.message,
+                type :'success'
+            })
+            this.load()
+          }
+          else{
+              ElMessage({
+                  showClose : true,
+                  message : '修改失败',
+                  type :'error'
+              })
+          }
+          this.infodialogFormVisible = false
         })
       },
       handleManageAuthority(row) {
@@ -628,14 +622,16 @@
         })
         this.authDialogFormVisible = true
       },
-
+      initFunctions(){
+            this.$request.get('/django/permission').then(res=>{
+                this.allFunctions = []
+                // console.log('[Infor][res]',res.data.data)
+                this.allFunctions = res.data.data
+                // console.log('[Infor][allFuntions]',this.allFunctions)
+            })
+        },
       //以上是已经调通的接口
 
-      initFunctions(){
-        this.$request.get('/django/permission').then(res=>{
-               console.log(res)
-        })
-      },
 
 
       saveAuthorityInfor() {
@@ -643,10 +639,8 @@
         data.userId = this.id
         data.extraFunctionList = []
         data.rolesList = []
-        console.log('[userFunctions]',this.thisUserFunctions)
-        // console.log('[extraFunctions]',this.extraFunctionList)
-
-        console.log('[userRoles]',this.thisUserRoles)
+        // console.log('[userFunctions]',this.thisUserFunctions)
+        // console.log('[userRoles]',this.thisUserRoles)
         let tmp = {}
         for (const item of this.thisUserFunctions) {
           tmp.id = item.id
@@ -656,15 +650,15 @@
         }
         tmp ={}
         for(const item of this.thisUserRoles){
-          tmp.id = item.id
-          tmp.name = item.name
+          tmp.id = item.roleId
+          tmp.name = item.roleName
           data.rolesList.push(tmp)
           tmp = {}
         }
-        console.log('这是数据', data)
+        console.log('[Info][saveAuth]', data)
         let dataOfFuntions={}
         dataOfFuntions.userId = data.userId
-        dataOfFuntions.extraFunctionList = data.extraFunctionList
+        dataOfFuntions.extraFunctionList = data.extraFunctionList.map(v=>v.id)
         //更新小灶信息
         // this.$request.put('/api/v1/permission/extra/function/', dataOfFuntions).then((res) => {
         //   console.log(res)
@@ -681,11 +675,11 @@
         let dataOfRoles={}
         dataOfRoles.userId = data.userId
         dataOfRoles.roleIds = data.rolesList.map(v => v.id)
-        // this.$request('/api/v1/permission/user/role/',dataOfRoles).then(res=>{
-        //   console.log(res)
-        // })
-        console.log('***',dataOfRoles)
-        console.log(dataOfFuntions)
+        this.$request.put('/django/permission/user/role',dataOfRoles).then(res=>{
+          console.log('[DETECT][saveRoles]',res)
+        })
+        console.log('[Param][userRoles]',dataOfRoles)
+        console.log('[Param][userFunctions]',dataOfFuntions)
         this.authDialogFormVisible = false
       },
 
