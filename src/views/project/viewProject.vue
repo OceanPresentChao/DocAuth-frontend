@@ -12,9 +12,9 @@
         <el-button style="margin-left: 15px ;margin-top: 8px " size="" type = "primary" @click="handleChangeProjectInfo">
             修改项目基本信息
         </el-button>
-        <el-button style="margin-left: 15px ;margin-top: 8px " size="" type = "primary" @click="lockPhase">
-            测试函数
-        </el-button>
+<!--        <el-button style="margin-left: 15px ;margin-top: 8px " size="" type = "primary" @click="lockPhase">-->
+<!--            测试函数-->
+<!--        </el-button>-->
 
 
 

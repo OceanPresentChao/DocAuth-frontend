@@ -66,7 +66,7 @@
                         } else {
                             this.newProject.status = 's'
                         }
-                        this.$request.post('/api/v1/business/newProject', {
+                        this.$request.post('/django/business/new', {
                             body: {
                                 "projectName": this.newProject.name,
                                 "desc": this.newProject.desc,
