@@ -2,7 +2,7 @@
 import type { IProject } from './type'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
-import { requestCreateProject, requestProjectList } from '@/api'
+import { requestCreateProject, requestProjectArticle, requestProjectList } from '@/api'
 import { useTaskStore } from '@/store/task'
 const authStore = useAuthStore()
 const taskStore = useTaskStore()
@@ -49,11 +49,20 @@ async function handleSubmit() {
     user: userInfo.value.id,
   })
   if (res.data.code === 200) {
-    console.log(res)
     dialogVisible.value = false
     ElMessage.success('创建成功')
     getProjectList()
   }
+}
+
+async function handleDownload(project: IProject) {
+  const res = await requestProjectArticle({ project: project.id })
+  const link = URL.createObjectURL(res.data)
+  window.open(link)
+  const a = document.createElement('a')
+  a.href = link
+  a.download = `项目${project.name}文档.pdf`
+  a.click()
 }
 </script>
 
@@ -111,13 +120,16 @@ async function handleSubmit() {
                 分配
               </router-link>
             </el-button>
+            <el-button v-if="p.status === 'f'" type="warning" size="large" @click="handleDownload(p)">
+              <Icon icon="mdi:download" width="25" color="#b50" /><span> 下载 </span>
+            </el-button>
           </div>
         </div>
       </div>
     </div>
     <Teleport to="body">
       <!-- 项目基本信息对话框 -->
-      <el-dialog v-model="dialogVisible" title="项目基本信息" width="40%" style="text-align: center;" >
+      <el-dialog v-model="dialogVisible" title="项目基本信息" width="40%" style="text-align: center;">
         <el-form>
           <el-form-item label="项目名">
             <el-input v-model="projectForm.name" autocomplete="off" />
