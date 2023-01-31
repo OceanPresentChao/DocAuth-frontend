@@ -343,7 +343,6 @@ export default {
           this.getChild(array[i].children, Data)
       }
     },
-
     addTab(targetName) {
       this.idnum = this.idnum + 1
       const newTabName = `${++this.tabIndex}`
