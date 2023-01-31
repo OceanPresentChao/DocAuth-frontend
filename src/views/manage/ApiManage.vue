@@ -251,7 +251,8 @@
                 //默认状态为true
                 this.newapi.status = 'r';
                 let newapi = this.newapi;
-                this.$request.post('http://127.0.0.1:8000/api/v1/permission/api/', {newapi}).then((res) => {
+                console.log(newapi)
+                this.$request.post('http://127.0.0.1:8000/api/v1/permission/api', newapi).then((res) => {
 
                     if (res.data.code == 200) {
                         //console.log(2222222222)
