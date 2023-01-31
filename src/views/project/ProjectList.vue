@@ -117,7 +117,7 @@ async function handleSubmit() {
     </div>
     <Teleport to="body">
       <!-- 项目基本信息对话框 -->
-      <el-dialog v-model="dialogVisible" title="项目基本信息" width="40%">
+      <el-dialog v-model="dialogVisible" title="项目基本信息" width="40%" style="text-align: center;" >
         <el-form>
           <el-form-item label="项目名">
             <el-input v-model="projectForm.name" autocomplete="off" />
