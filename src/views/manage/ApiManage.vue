@@ -366,20 +366,24 @@
 
             //添加api权限
             addapiInfo() {
-                let addapiFunctions = this.addApiFunction
-                for(let i = 0;i<this,count(this.addApiFunction);i++)
+                let apif = {}
+                let addapiFunctions = []
+                apif.id = this.id
+                for(let i = 0;i<this.count(this.addApiFunction);i++)
                 {
-                    addapiFunctions.push({functionid:this.addApiFunction[i],rw_type:this.addstatus})
+                    addapiFunctions.push({"functionid":this.addApiFunction[i],"rw_type":this.addstatus})
                 }
-                console.log(this.addpiFunctions)
-                this.$request.post('http://127.0.0.1:8000/api/v1/permission/api/function',addpiFunctions).then((res) => {
+                apif.functions = addapiFunctions
+                console.log(this.addapiFunctions)
+                this.$request.post('http://127.0.0.1:8000/api/v1/permission/api/function',apif).then((res) => {
                     if (res.data.code == 200) {
                         ElMessage({
                             showClose:true,
                             message:res.data.message,
                             type:'success'
                         })
-                        this.load();
+                        //this.load();
+                        this.loadThisapiFunction()
                     } else {
                         ElMessage({
                             showClose:true,
@@ -436,7 +440,7 @@
                 this.$request.delete('http://127.0.0.1:8000/api/v1/permission/api/function', {
                     params: {
                         id: this.id,
-                        functionId: row.id,
+                        functionid: row.id,
                         rw_type:row.rw_type,
                     },
                 }).then((res) => {

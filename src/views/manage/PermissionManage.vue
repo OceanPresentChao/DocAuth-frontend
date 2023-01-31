@@ -364,14 +364,15 @@ export default {
 
       let List = [];
       // //let roleid = this.roleid
-      for (let i = 0; i < this.count(this.addRoleFunctions); i++) {
-        List.push(this.addRoleFunctions[i].id);
-      }
+      console.log(this.addRoleFunctions)
+      // for (let i = 0; i < this.count(this.addRoleFunctions); i++) {
+      //   List.push(this.addRoleFunctions[i].id);
+      // }
 
       this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/updfunction',
               {
-               "roleid":this.roleid,
-               "functionIdList":List
+               "roleId":this.roleid,
+               "functionIdList":this.addRoleFunctions
               }).then((res) => {
         //this.role = res
         if (res.data.code == 200)//如果成功,再显示此用户的所有权限
