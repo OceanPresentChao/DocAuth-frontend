@@ -12,9 +12,9 @@
         <el-button style="margin-left: 15px ;margin-top: 8px " size="" type = "primary" @click="handleChangeProjectInfo">
             修改项目基本信息
         </el-button>
-        <el-button style="margin-left: 15px ;margin-top: 8px " size="" type = "primary" @click="lockPhase">
-            测试函数
-        </el-button>
+<!--        <el-button style="margin-left: 15px ;margin-top: 8px " size="" type = "primary" @click="lockPhase">-->
+<!--            测试函数-->
+<!--        </el-button>-->
 
 
 
@@ -240,9 +240,9 @@
                 console.log('这里是传递来的参数',this.$route.query)
                 this.editableTabs =  []
                 this.processingDataFromBackEnd=[]
-                this.$request.get('http://localhost:13500/api/v1/business/getTasksFromTheProject',{
+                this.$request.get('/django/business/getTasksFromTheProject',{
                     params:{
-                        projectId : 7
+                        projectId : this.$route.query.projectId*1
                     }
                 }).then(res=>{
                     this.processingDataFromBackEnd = res.data.data
@@ -269,7 +269,7 @@
             },
             userInformationInit(){
                 this.users = []
-                this.$request.get("http://localhost:13500/api/v1/user/list",{
+                this.$request.get("/django/user/list",{
                     params:{
                         page: 1,
                         page_size:999999999,
@@ -419,10 +419,12 @@
                     return "con_signPerson2"
             },
             //****>
+
+
             //***项目元信息函数快 <
             getProjectInfo()
             {
-                this.$request.get('http://localhost:13500/api/v1/business/project/Info',{
+                this.$request.get('/django/business/project/Info',{
                     params:{
                         projectId:this.currentProjectId
                     }
@@ -465,7 +467,7 @@
                     this.project.status = 's'
                 }
                 //this.project.projectId = id
-                this.$request.put('http://127.0.0.1:8000/api/v1/business/project/',{
+                this.$request.put('/django/business/project/',{
                     body:{
                         "projectId":this.project.projectId,
                         "name":this.project.name,
@@ -735,7 +737,7 @@
                 taskData["staffs"].push(this.currentTask.ratifyPerson)
                 taskData["staffs"].push(this.currentTask.con_signPerson1)
                 taskData["staffs"].push(this.currentTask.con_signPerson2)
-                this.$request.post("http://127.0.0.1:13500/api/v1/business/saveTask",taskData).then(res=>{
+                this.$request.post("/django/business/saveTask",taskData).then(res=>{
                     console.log(res)
                 })
             },

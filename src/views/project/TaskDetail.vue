@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ITask } from './type'
-import { requestTaskDetail } from '@/api'
+import { requestTaskArticle, requestTaskDetail } from '@/api'
 import { useRenderIcon } from '@/utils/icon'
 import { useTaskStore } from '@/store/task'
 
@@ -52,6 +52,16 @@ async function getTaskInfo(id: string) {
   const res = await requestTaskDetail({ id })
   const task = res.data.data
   taskInfo.value = task
+}
+
+async function handleDownload() {
+  const res = await requestTaskArticle({ task: route.params.id as string })
+  const link = URL.createObjectURL(res.data)
+  window.open(link)
+  const a = document.createElement('a')
+  a.href = link
+  a.download = `项目${taskInfo.value.project}-任务${taskInfo.value.name}文档.pdf`
+  a.click()
 }
 </script>
 
@@ -123,7 +133,7 @@ async function getTaskInfo(id: string) {
       </el-descriptions-item>
     </el-descriptions>
     <el-row :gutter="24" justify="center" my-8>
-      <el-col :span="20">
+      <el-col :span="18">
         <el-steps
           :active="taskInfo.status === 'f' || taskInfo.status === 'w' ? 5 : taskInfo.step - 1"
           finish-status="success" align-center process-status="finish"
@@ -137,12 +147,17 @@ async function getTaskInfo(id: string) {
           </el-step>
         </el-steps>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="3">
         <router-link :to="`/task/${route.params.id}/timeline`">
           <el-button type="primary" size="large">
-            <Icon icon="mdi:timeline-clock-outline" width="25" color="#916" /><span> TimeLine </span>
+            <Icon icon="mdi:timeline-clock-outline" width="25" color="#13b" /><span> TimeLine </span>
           </el-button>
         </router-link>
+      </el-col>
+      <el-col v-if="taskInfo.status === 'f'" :span="3">
+        <el-button type="warning" size="large" @click="handleDownload">
+          <Icon icon="mdi:download" width="25" color="#b50" /><span> Download </span>
+        </el-button>
       </el-col>
     </el-row>
     <router-view />

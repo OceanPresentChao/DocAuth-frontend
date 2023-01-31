@@ -4,16 +4,16 @@ import type { RouteLocationMatched } from 'vue-router'
 const route = useRoute()
 const levelList = ref<any>(null)
 
-watch(route, () => {
-  getBreadcrumb()
+watch(route, (n) => {
+  getBreadcrumb(n)
 }, { immediate: true })
 
-function getBreadcrumb() {
-  const matched: RouteLocationMatched[] = route.matched.filter(item => item.meta.title)
+function getBreadcrumb(n: any) {
+  const matched: RouteLocationMatched[] = n.matched.filter((item: any) => item.meta.title)
   const first = matched[0]
   const breadmatched: any[] = matched
   if (first && (first.path !== '/' && first.path !== '/dashboard'))
-    breadmatched.unshift({ path: '/', meta: { title: '首页' } })
+    breadmatched.unshift({ path: '/', meta: { title: '首页' }, params: n.params, query: n.query })
 
   levelList.value = breadmatched
 }
@@ -26,7 +26,7 @@ function getBreadcrumb() {
         <span v-if="item.redirect === 'noredirect' || index === levelList.length - 1" class="no-redirect">{{
           item.meta.title
         }}</span>
-        <router-link v-else :to="item.redirect || item.path">
+        <router-link v-else :to="item">
           {{ item.meta.title }}
         </router-link>
       </el-breadcrumb-item>

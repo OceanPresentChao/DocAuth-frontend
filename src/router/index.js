@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import NProgress from 'nprogress'
 import DashBoard from '@/views/dashboard/DashBoard.vue'
+import { useAuthStore } from '@/store/auth'
 
 // 菜单路由在这里配置
 export const menuRoutes = [
@@ -15,7 +16,7 @@ export const menuRoutes = [
     },
   },
   {
-    name: 'projectlist',
+    name: 'projectList',
     path: '/projectList',
     component: () => import('@/views/project/ProjectList.vue'),
     meta: {
@@ -58,8 +59,8 @@ export const menuRoutes = [
         meta: {
           title: '权限管理',
           icon: 'carbon:security-services',
-         },
-       },
+        },
+      },
       {
         name: 'apiManage',
         path: '/manage/api',
@@ -72,39 +73,13 @@ export const menuRoutes = [
     ],
   },
   {
-    name: 'project',
-    path: '/project',
-    redirect: '/project/create',
+    name: 'about',
+    path: '/about',
+    component: () => import('@/views/about/About.vue'),
     meta: {
-      title: '项目管理',
-      icon: 'carbon:home',
-      roles: ['sys:manage'],
+      title: '关于我们',
+      icon: 'carbon:machine-learning',
     },
-    children:
-        [
-          {
-
-            name: 'createProject',
-            path: '/project/create',
-            component: () => import('@/views/project/nowNewProject.vue'),
-            meta: {
-              title: '创建项目',
-              icon: 'carbon:star',
-              roles: ['sys:manage'],
-            },
-          },
-          {
-
-            name: 'viewProject',
-            path: '/project/view',
-            component: () => import('@/views/project/viewProject.vue'),
-            meta: {
-              title: '观看项目',
-              icon: 'carbon:view',
-              roles: ['sys:manage'],
-            },
-          },
-        ],
   },
 ]
 
@@ -115,9 +90,29 @@ const asyncRoutes = [
     component: () => import('@/views/user/UserDetail.vue'),
   },
   {
+    name: 'viewProject',
+    path: '/project/view',
+    component: () => import('@/views/project/viewProject.vue'),
+    meta: {
+      title: '观看项目',
+      icon: 'carbon:view',
+      roles: ['sys:manage'],
+    },
+  },
+  {
+    name: 'createProject',
+    path: '/project/create',
+    component: () => import('@/views/project/nowNewProject.vue'),
+    meta: {
+      title: '创建项目',
+      icon: 'carbon:star',
+      roles: ['sys:manage'],
+    },
+  },
+  {
     path: '/task/:id',
     component: () => import('@/views/project/TaskDetail.vue'),
-    redirect: '/task/:id/timeline',
+    redirect: to => `/task/${to.params.id}/timeline`,
     meta: {
       title: '任务信息',
     },
@@ -179,17 +174,49 @@ const constantRoutes = [
     name: 'login',
     path: '/login',
     component: () => import('@/views/login/Account.vue'),
+    meta: {
+      isNotLogin: true,
+    },
   },
   {
     name: '404',
     path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/Error404.vue'),
+    meta: {
+      isNotLogin: true,
+    },
   },
 ]
 
 export const router = createRouter({
   routes: [...menuRoutes, ...constantRoutes, ...asyncRoutes],
   history: createWebHashHistory(),
+})
+
+router.beforeEach(async (to) => {
+  const { isNotLogin } = to.meta
+  if (isNotLogin) {
+    return true
+  }
+  else {
+    const authStore = useAuthStore()
+    if (authStore.getToken()) {
+      authStore.fetchUserInfo()
+      return true
+    }
+    else {
+      await ElMessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+        confirmButtonText: '重新登录',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).catch(() => {
+
+      })
+      return {
+        path: '/login',
+      }
+    }
+  }
 })
 
 router.beforeEach(() => {

@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 import { useTabsStore } from './tabs'
 import { requestUserDetail } from '@/api/user'
 const emptyInfo = {
-  id: 4,
-  name: 'OceanPresent',
-  username: 'OceanPresent',
+  id: -1,
+  name: '用户信息未拉取',
+  username: '用户信息未拉取',
   email: '',
   phone: '12345678910',
   avatar: 'http://q1.qlogo.cn/g?b=qq&nk=1255342403&s=640',

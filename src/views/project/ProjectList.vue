@@ -1,32 +1,59 @@
 <script setup lang="ts">
-import { ComputedRef, Ref } from 'vue'
 import type { IProject } from './type'
 import { useRenderIcon } from '@/utils/icon'
 import { useAuthStore } from '@/store/auth'
+import { requestCreateProject, requestProjectList } from '@/api'
+import { useTaskStore } from '@/store/task'
 const authStore = useAuthStore()
+const taskStore = useTaskStore()
 const { userInfo } = storeToRefs(authStore)
 const queryText = ref('')
 const sortType = ref('desc')
-const projectList = ref<IProject[]>([{
-  name: '项目1',
-  id: 1,
-  desc: '项目1描述',
-  addTime: '2021-01-01',
-  status: '进行中',
-}])
+const projectList = ref<IProject[]>([])
 const filterProjectList = computed<IProject[]>(() => {
-  return projectList.value.sort((a, b) => {
+  return projectList.value.filter((v) => {
+    return v.name.includes(queryText.value)
+  }).sort((a, b) => {
     if (sortType.value === 'desc')
       return a.id - b.id
     else
       return b.id - a.id
   })
 })
+const dialogVisible = ref(false)
+const projectForm = ref({
+  name: '',
+  desc: '',
+})
 
-function getProjectList(params: {
-  id: number
-}) {
+getProjectList()
 
+async function getProjectList() {
+  const res = await requestProjectList({ userId: userInfo.value.id })
+  const list = res.data.data.map((v: any) => {
+    return {
+      name: v.project__name,
+      id: v.project__id,
+      desc: v.project__desc,
+      addTime: v.project__addTime,
+      status: v.project__status,
+    }
+  })
+  projectList.value = list
+}
+
+async function handleSubmit() {
+  const res = await requestCreateProject({}, {
+    name: projectForm.value.name,
+    desc: projectForm.value.desc,
+    user: userInfo.value.id,
+  })
+  if (res.data.code === 200) {
+    console.log(res)
+    dialogVisible.value = false
+    ElMessage.success('创建成功')
+    getProjectList()
+  }
 }
 </script>
 
@@ -42,11 +69,9 @@ function getProjectList(params: {
         <el-option label="降序" value="desc" />
         <el-option label="升序" value="asc" />
       </el-select>
-      <router-link to="/project/create">
-        <el-button type="success">
-          创建项目
-        </el-button>
-      </router-link>
+      <el-button type="success" @click="dialogVisible = true">
+        创建项目
+      </el-button>
     </div>
     <div>
       <div v-for="(p, idx) in filterProjectList" :key="p.id">
@@ -72,19 +97,47 @@ function getProjectList(params: {
               effect="dark"
               round
             >
-              {{ p.status }}
+              {{ taskStore.taskStatus[p.status as 'r'].name }}
             </el-tag>
           </div>
           <div ml-auto mr-10 flex-none>
-            <el-button type="primary" size="large">
-              <router-link to="/" text-lg>
+            <el-button v-if="p.status !== 'w'" type="primary" size="large">
+              <router-link :to="`/project/view?projectId=${p.id}`" text-lg>
                 查看
+              </router-link>
+            </el-button>
+            <el-button v-else type="primary" size="large">
+              <router-link :to="`/project/create?projectId=${p.id}`" text-lg>
+                分配
               </router-link>
             </el-button>
           </div>
         </div>
       </div>
     </div>
+    <Teleport to="body">
+      <!-- 项目基本信息对话框 -->
+      <el-dialog v-model="dialogVisible" title="项目基本信息" width="40%" style="text-align: center;" >
+        <el-form>
+          <el-form-item label="项目名">
+            <el-input v-model="projectForm.name" autocomplete="off" />
+          </el-form-item>
+          <el-form-item label="项目概述">
+            <el-input v-model="projectForm.desc" autocomplete="off" />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="dialogVisible = false">
+              取 消
+            </el-button>
+            <el-button type="success" @click="handleSubmit()">
+              确 定
+            </el-button>
+          </div>
+        </template>
+      </el-dialog>
+    </Teleport>
   </div>
 </template>
 
