@@ -92,9 +92,9 @@ export default {
       // console.log('这里是postData', postData)
       allData.phases = postData
       allData.phaseNumber = postData.length
-      allData.projectId = 7
+      allData.projectId = this.$route.query.projectId*1
       // console.log('这里是数据', allData)
-      this.$request.post('http://127.0.0.1:13500/api/v1/business/saveProject', allData).then((res) => {
+      this.$request.post('/django/business/saveProject', allData).then((res) => {
         // console.log(res)
       if(res.status === 200){
         ElMessage({
@@ -116,7 +116,7 @@ export default {
     },
     userInformationInit(){
       this.users = []
-      this.$request.get("http://localhost:13500/api/v1/user/list",{
+      this.$request.get("/django/user/list",{
         params:{
           page: 1,
           page_size:999999999,

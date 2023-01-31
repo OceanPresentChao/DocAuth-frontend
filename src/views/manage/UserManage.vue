@@ -5,7 +5,7 @@
     <div style="text-align: left">
       <el-input v-model="userName" style="width: 200px;margin-right: 10px ;" suffix-icon="User" placeholder="请输入名字" />
       <el-input v-model="phone" style="width: 200px;margin-right: 10px" suffix-icon="Iphone" placeholder="请输入电话号" />
-      <el-select class="selectStyle" value-key="id"  v-model="roleSelection" clearable placeholder="请选择想要查询的角色" :popper-append-to-body='false' effect=dark style="width:200px ">
+      <el-select class="selectStyle" value-key="roleId"  v-model="roleSelection" clearable placeholder="请选择想要查询的角色" :popper-append-to-body='false' effect=dark style="width:200px ">
         <el-option class="selectStyle1" v-for=" item in allRoles" :key="item.roleId" :label="item.rolename" :value="item" style="width: 100% ;color: #55e0e5;text-align: center" />
       </el-select>
       <el-button type="primary" style="margin-left: 20px" @click="likeSerach">
@@ -186,11 +186,11 @@
       </el-form>
 
       <el-table :data="thisUserFunctions" style="width: 100%;margin-bottom: 50px" border stripe :header-cell-class-name="headerBg">
-        <el-table-column prop="id" align="center" label="AuthorityId" width="100"/>
-        <el-table-column prop="name" align="center" label="Name" width="180" />
-        <el-table-column prop="key" align="center" label="Key" width="180" />
-        <el-table-column prop="status" align="center" label="Status" />
-        <el-table-column prop="parent" align="center" label="Parent" />
+        <el-table-column prop="id" align="center" label="AuthorityId" width="150" sortable/>
+        <el-table-column prop="name" align="center" label="Name" width="120" sortable/>
+        <el-table-column prop="key" align="center" label="Key" width="150" sortable />
+        <el-table-column prop="status" align="center" label="Status" sortable />
+        <el-table-column prop="parent" align="center" label="Parent" sortable />
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button type="success" @click="saveAuthorityInfor">
