@@ -5,6 +5,8 @@ export default {
   name: 'PermissionManage',
 
   data() {
+
+    //const newRoleFunction = ref()
     return {
       roleid:'',
       rolename:'',//搜索框的角色名
@@ -15,64 +17,60 @@ export default {
       selectedRoles:[],
 
       //所有权限,未分组
-      allfunctions1:[] ,
-      allfunctions:[
+      allfunctions:[] ,
+      allfunctions1: [{
+        id: 1,
+        name: '一级 1',
+        parent:null
+      },
         {
-          label: '创建',
-          options: [
-            {
-              id: 1,
-              name: '创建项目',
-              key:'',
-              status: true,
-              key: ' ',
-              parent:'0',
-              addTime:'  '
-            },
-            {
-              id: 2,
-              name: '创建用户',
-              key:'',
-              status: true,
-              key: ' ',
-              parent:'0',
-              addTime:'  '
-            },
-          ],
+          id: 4,
+          name: '二级 1-1',
+          parent:2
         },
         {
-          label: '批阅',
-          options: [
-            {
-              id: 11,
-              name: '编',
-              key:'',
-              status: true,
-              key: ' ',
-              parent:'1',
-              addTime:'  '
-            },
-            {
-              id: 12,
-              name:'审批',
-              key:' ',
-              status: true,
-              key: ' ',
-              parent:'1',
-              addTime:'  '
-            },
-            {
-              id: 13,
-              name: '汇签',
-              key:'',
-              status: true,
-              key: ' ',
-              parent:'1',
-              addTime:'  '
-            },
-          ],
+          id: 9,
+          name: '三级 1-1-1',
+          parent:3
         },
-      ],
+        {
+          id: 10,
+          name: '三级 1-1-2',
+          parent:5
+        },
+        {
+          id: 2,
+          name: '一级 2',
+          parent:null
+        },
+        {
+          id: 5,
+          name: '二级 2-1',
+          parent:2
+        },
+        {
+          id: 6,
+          name: '二级 2-2',
+          parent:2
+        },
+        {
+          id: 3,
+          name: '一级 3',
+          parent:null
+        },
+        {
+          id: 7,
+          name: '二级 3-1',
+          parent:3
+        }, {
+          id: 8,
+          name: '二级 3-2',
+          parent:3
+        }],
+      treeProps: {
+        label: 'name', // 作为对应节点的名字显示
+      },
+
 
       tableData: [],
       thisRoleFunctions:[],
@@ -91,7 +89,7 @@ export default {
   },
 
   created() {
-    //this.allfunctions = this.loadAllFunctions()
+    this.loadAllFunctions()
     this.load()
   },
   methods : {
@@ -102,6 +100,7 @@ export default {
         if(res.data.code==200)
         {
           this.allfunctions1 = res.data.data
+          this.allfunctions = this.buildTree(this.allfunctions1,null)
         }
         else
         {
@@ -116,13 +115,35 @@ export default {
     },
 
 
-    //将一维数组变成树
-    buildTree()
+    //建树
+    buildTree(data, parent)
     {
-
+      let tree = []
+      let temp
+      for (let i = 0; i < this.count(data); i++) {
+        if (data[i].parent == parent) {
+          let obj = data[i];
+          temp = this.buildTree(data, data[i].id)
+          if (temp.length > 0) {
+            obj.children = temp
+          }
+          tree.push(obj);
+        }
+      }
+      return tree
     },
-    //加载所有角色
 
+    //计数
+    count(o){
+      let n = 0;
+      for(let i in o){
+        n++;
+      }
+      return n;
+    },
+
+
+    //加载所有角色
     load() {
       // 请求分页查询
       this.$request.get('http://127.0.0.1:8000/api/v1/permission/role/list', {
@@ -167,7 +188,8 @@ export default {
     },
     //确定添加此新角色
     confirmHandleAdd() {
-      console.log(1111111111111111)
+
+      console.log(this.newRoleFunctions)
       let newRoleAllInfo = {};
       //默认状态为true
       this.newRole.status = true;
@@ -259,7 +281,6 @@ export default {
       this.role.desc = row.desc;
     },
     updateRoleInfo() {
-      console.log(111111111)
       console.log(this.role)
       let role = this.role
       this.$request.put('http://127.0.0.1:8000/api/v1/permission/role/upInfo',{role}).then((res) => {
@@ -338,7 +359,7 @@ export default {
       //当前处于this.roleid
 
       let List = [];
-      let roleid = this.roleid
+      //let roleid = this.roleid
       for (let i = 0; i < this.thisRoleFunctions.size(); i++) {
         List.push(this.thisRoleFunctions[i].id);
       }
@@ -367,7 +388,6 @@ export default {
       })
 
     },
-
     // 删除当前角色所拥有的某个权限
     delfunction(row) {
       //当前处于this.roleid
@@ -527,21 +547,17 @@ I
           <el-input v-model="newRole.desc"/>
         </el-form-item>
         <el-form-item label="管理权限" >
-<!--          <el-select-tree>-->
-
-<!--          </el-select-tree>-->
-          <el-select v-model="newRoleFunctions"  value-key="id" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择权限" style = "width:100%" effect="dark">
-            <el-option-group
-                    v-for="group in allfunctions"
-                    :key="group.options"
-                    :label="group.label">
-              <el-option
-                      v-for="item in group.options"
-                      :key = "item.id"
-                      :label = "item.name"
-                      :value="item"/>
-            </el-option-group>
-          </el-select>
+          <el-tree-select
+                  :props = "treeProps"
+                  v-model="newRoleFunctions"
+                  value-key="id"
+                  :data="allfunctions"
+                  multiple
+                  :render-after-expand="false"
+                  show-checkbox
+                  check-strictly
+                  check-on-click-node
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -558,18 +574,29 @@ I
       <el-form style="text-align: left">
 
         <el-form-item label="管理权限" >
-          <el-select v-model="thisRoleFunctions"  value-key="id" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择权限" style = "width:100%" effect="dark">
-            <el-option-group
-                    v-for="group in allfunctions"
-                    :key="group.options"
-                    :label="group.label">
-              <el-option
-                      v-for="item in group.options"
-                      :key = "item.id"
-                      :label = "item.name"
-                      :value="item"/>
-            </el-option-group>
-          </el-select>
+          <el-tree-select
+                  :props = "treeProps"
+                  v-model="thisRoleFunctions"
+                  value-key="id"
+                  :data="allfunctions"
+                  multiple
+                  :render-after-expand="false"
+                  show-checkbox
+                  check-strictly
+                  check-on-click-node
+          />
+<!--          <el-select v-model="thisRoleFunctions"  value-key="id" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择权限" style = "width:100%" effect="dark">-->
+<!--            <el-option-group-->
+<!--                    v-for="group in allfunctions"-->
+<!--                    :key="group.options"-->
+<!--                    :label="group.label">-->
+<!--              <el-option-->
+<!--                      v-for="item in group.options"-->
+<!--                      :key = "item.id"-->
+<!--                      :label = "item.name"-->
+<!--                      :value="item"/>-->
+<!--            </el-option-group>-->
+<!--          </el-select>-->
         </el-form-item>
       </el-form>
 

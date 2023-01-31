@@ -265,7 +265,7 @@
                     return tree
                 }
                 ,
-                //树形到集合
+                //树形到集合(不需要了)
                 treeToList (data,id) {
                     console.log(id)
                     console.log(data)
@@ -278,6 +278,8 @@
                         }
                     }
                 },
+
+                //计数
                 count(o){
                    let n = 0;
                    for(let i in o){
@@ -299,7 +301,7 @@
                 }
             ,
 
-                //删除权限（包括子权限）
+                //删除权限（不包括子权限）
                 remove(node, data)
                 {
                     ElMessageBox.confirm(
@@ -313,14 +315,14 @@
                     ).then(() => {
                         //console.log('ok')
                         //console.log(data.id)
-                        this.outList = []
+                        //this.outList = []
                         //this.outList.push(data.id)
-                        this.treeToList(this.allFunctions1,data.id)
-                        let ids = this.outList
-                        console.log(ids)
-                        this.$request.delete('http://127.0.0.1:8000/api/v1/permission/delList',{
+                        //this.treeToList(this.allFunctions1,data.id)
+                        //let ids = this.outList
+                        //console.log(ids)
+                        this.$request.delete('http://127.0.0.1:8000/api/v1/permission/status',{
                             params:{
-                                ids:ids
+                                id:data.id
                             }
                         }).then((res) => {
                             if (res.data.code == 200) {
@@ -348,7 +350,6 @@
                         // })
                 }
                 ,
-
                 editFunctionInfo(data)
                 {
                     this.dialog2 = true

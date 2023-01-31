@@ -69,15 +69,6 @@ export const menuRoutes = [
           icon: 'carbon:security-services',
         },
       },
-      {
-        name: 'test',
-        path: '/manage/test',
-        component: () => import('@/views/manage/test.vue'),
-        meta: {
-          title: '测试',
-          icon: 'carbon:security-services',
-        },
-      },
     ],
   },
   {

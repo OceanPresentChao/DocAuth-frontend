@@ -8,6 +8,7 @@
             return {
                 id:'',
                 path:'',//搜索框的API path
+                apiname:'',
 
                 api:{},//某个API
 
@@ -139,22 +140,22 @@
 
             loadAllFunctions()
             {
-                // this.$request.get('http://127.0.0.1:8000/api/v1/permission').then((res)=>{
-                //     if(res.data.code==200)
-                //     {
-                //         this.allfunctions1 = res.data.data
+                this.$request.get('http://127.0.0.1:8000/api/v1/permission').then((res)=>{
+                    if(res.data.code==200)
+                    {
+                        this.allfunctions1 = res.data.data
                            this.allfunctions = this.allfunctions1
-                //        this.allfunctions = this.buildTree(this.allfunctions1,null)
-                //     }
-                //     else
-                //     {
-                //         ElMessage({
-                //             showClose:true,
-                //             message:res.data.message,
-                //             type:'error'
-                //         })
-                //     }
-                // })
+                           this.allfunctions = this.buildTree(this.allfunctions1,null)
+                    }
+                    else
+                    {
+                        ElMessage({
+                            showClose:true,
+                            message:res.data.message,
+                            type:'error'
+                        })
+                    }
+                })
             },
 
             //建树
@@ -175,7 +176,7 @@
                 return tree
             }
             ,
-            //树形到集合
+            //树形到集合(无用)
             treeToList (data,id) {
                 //console.log(id)
                 //console.log(data)
@@ -204,7 +205,8 @@
                     params:{
                         pageNum :this.pageNum,
                         pageSize :this.pageSize,
-                        path :this.path
+                        path :this.path,
+                        name :this.apiname
                     }
                 }).then((res) => {
                     console.log(res)
@@ -235,6 +237,7 @@
             },
             reset() {
                 this.apiname = ''
+                this.path = ''
             },
             //相应添加新API按钮
             handleAdd() {
@@ -391,7 +394,6 @@
                 this.FunctionDialogFormVisible = true;
                 this.loadThisapiFunction();
                 this.api.id = this.id
-                this.infodialogFormVisible = true;
                 this.api.name = row.name;
                 this.api.path = row.path;
                 this.api.status = row.status
@@ -418,7 +420,7 @@
             },
 
             cancelEditFunctionInfo() {
-                FunctionDialogFormVisible = false;
+                this.FunctionDialogFormVisible = false;
                 this.thisapiFunctions = []
                 this.thisapiFunctions1 = []
             },
@@ -450,7 +452,8 @@
 <template>
     <div>
         <div style="text-align: left">
-            <el-input v-model="apiname" style="width: 200px;margin-right: 10px ;" suffix-icon="api" placeholder="请输入" />
+            <el-input v-model="apiname" style="width: 200px;margin-right: 10px ;" suffix-icon="api" placeholder="请输入apiname" />
+            <el-input v-model="path" style="width: 200px;margin-right: 10px ;" suffix-icon="api" placeholder="请输入path" />
             <el-button type="primary" style="margin-left: 20px" @click="searchAll()">
                 <el-icon><Search /></el-icon>搜索
             </el-button>
@@ -486,11 +489,6 @@
             <el-table-column type="selection" align="center" width="40" />
             <el-table-column prop="id" align="center" label="id" width="80"  />
             <el-table-column prop="name" align="center" label="API名称" width="100" />I
-<!--            <el-table-column label="启用" align="center" width="100">-->
-<!--                <template #default="{ row, $index }">-->
-<!--                    <el-switch v-model="row.status" active-color="#13ce66" inactive-color="#ccc" @change="changeapiStatus(row)" />-->
-<!--                </template>-->
-<!--            </el-table-column>-->
             <el-table-column prop="path" align="center" label="path" width="400" />
             <el-table-column prop="addTime" align="center" label="最初添加时间" width="200" />
             <el-table-column align="center" label="编辑API信息" width="110">
@@ -585,18 +583,18 @@
             <el-form style="text-align: left">
 
                 <el-form-item label="管理权限" >
-                    <el-select v-model="thisapiFunctions"  value-key="id" class="el-scrollbar" multiple clearable :popper-append-to-body="false" placeholder="请选择权限" style = "width:100%" effect="dark">
-                        <el-option-group
-                                v-for="group in allfunctions"
-                                :key="group.options"
-                                :label="group.label">
-                            <el-option
-                                    v-for="item in group.options"
-                                    :key = "item.id"
-                                    :label = "item.name"
-                                    :value="item"/>
-                        </el-option-group>
-                    </el-select>
+
+                    <el-tree-select
+                            :props = "treeProps"
+                            v-model="thisapiFunctions"
+                            value-key="id"
+                            :data="allfunctions"
+                            multiple
+                            :render-after-expand="false"
+                            show-checkbox
+                            check-strictly
+                            check-on-click-node
+                    />
                 </el-form-item>
             </el-form>
 
