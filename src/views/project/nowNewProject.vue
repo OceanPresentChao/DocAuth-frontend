@@ -93,7 +93,7 @@ export default {
       allData.phases = postData
       allData.phaseNumber = postData.length
       allData.projectId = this.$route.query.projectId*1
-      // console.log('这里是数据', allData)
+      console.log('[create][data]', allData)
       this.$request.post('/django/business/saveProject', allData).then((res) => {
         // console.log(res)
       if(res.status === 200){
