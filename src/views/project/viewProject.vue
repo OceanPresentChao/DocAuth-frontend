@@ -16,9 +16,6 @@
 <!--            测试函数-->
 <!--        </el-button>-->
 
-
-
-
         <!--项目总览树        -->
         <el-tabs
                 v-model="editableTabsValue"
@@ -235,7 +232,7 @@
             this.userInformationInit()
         },
         methods: {
-            //*****项目初始话模块<
+            //*****项目初始化模块<
             load(){
                 console.log('这里是传递来的参数',this.$route.query)
                 this.editableTabs =  []
@@ -246,7 +243,7 @@
                     }
                 }).then(res=>{
                     this.processingDataFromBackEnd = res.data.data
-                    // console.log( this.processingDataFromBackEnd ,'这里是后端返回的数据')
+                    console.log( '[BackEnd][Data]',this.processingDataFromBackEnd ,'这里是后端返回的数据')
                     // console.log('这里是待处理的后端返回的数据',typeof this.processingDataFromBackEnd)
                     for(let item of this.processingDataFromBackEnd) {
                         // console.log('检查阶段里面的内容', item.phaseTasks)
@@ -255,7 +252,6 @@
                     console.log('[Info][EditTabs]',this.editableTabs)
                     this.lockPhase()
                 })
-
                 // this.addTabInefficiency(this.processingDataFromBackEnd[0])
             },
             flashCurrentProject(){
@@ -278,7 +274,6 @@
                         role : null
                     }}).then(res=>{
                     console.log('[users]',res)
-                    // console.log('这里是users',res.data.results)
                     this.users = res.data.data.results
 
                 })
@@ -288,6 +283,9 @@
                 for(let item of this.editableTabs ){
                     if(this.judgePhaseCompleted([item.content])=== false){
                         this.editableTabsValue = item.name
+                        console.log('[Detect][Item]',item.name)
+                        this.currentPhaseIndex = item.name.slice(5)*1
+                        console.log('[Detect][Index]',this.currentPhaseIndex)
                         return
                     }
                 }
@@ -329,7 +327,7 @@
                 // console.log(taskNum,'本阶段的任务数')
                 // console.log(tabContent,'本阶段的任务数')
 
-                //对本阶段根结点初始化
+                // 对本阶段根结点初始化
                 tabContent.id = rootNode.id;
                 tabContent.name = rootNode.name
                 // console.log('注意了这里事tabname',tabContent.name)
@@ -371,10 +369,9 @@
                     return  this.doneurl
             },
             findNodeAndAddItsChild(child,fartherId,array){
-                // console.log('**************************************')
-                // console.log(array,'这里是元素')
                 for(let item of array){
-                    // console.log('这里在插入结点',item.thisId,fartherId)
+                    // array为对象数组，如果当前对象id = child结点的id时，创建 Data Structure 1结构对象，
+                    // 初始化后加入item的children中去
                     if(item.thisId === fartherId){
                         let tmpNode ={
                             id: child.id,
@@ -393,13 +390,13 @@
                             children: [],
                             type:"node",
                         }
-
                         for(let person of child.AssignedPersons){
                             tmpNode[this.transferToOperatorName(person.duty)] = person.user__username
                         }
                         tmpNode.image_url = this.transStatusToImage(child.status)
                         item.children.push(tmpNode)
                     }
+                    //否则就在此结点的子节点中递归寻找是否有其父节点。
                     if(item.children){
                         this.findNodeAndAddItsChild(child,fartherId,item.children)
                     }
@@ -498,7 +495,7 @@
 
 
 
-            //*****项目相信信息操作辅助模块<
+            //*****项目相关信息操作辅助模块<
             changePhase(tab,event){
                 // console.log('[LOG][CURRENT][TAB]',tab.props.name)
                 // console.log('[LOG][CURRENT][tabList]',this.editableTabs)
@@ -599,6 +596,7 @@
                         message: '无效操作，请完成上一阶段所有任务或该任务的父任务',
                         type: 'error'
                     })
+                    this.flashCurrentProject()
                 }
 
                 // console.log(this.examFatherTasksIfCompleted())
@@ -618,7 +616,6 @@
             },
             judgePhaseCompleted(judgePhase){
                 console.log('[BUG][phase]',judgePhase)
-
                 for(let  item in judgePhase){
                     // console.log('[BUG][item]',judgePhase[item])
                     // console.log('[BUG][item.image]',judgePhase[item].image_url)
@@ -636,20 +633,24 @@
             },
                //有更高效的父节点检检查扫描算法，先用最显然的方法做检查
             examFatherTasksIfCompleted(){
+                //得再点一下tab栏，还是会有bug
                 let index = this.currentPhaseIndex-1;
                 // //检查这一阶段该任务的父任务是否全部完成
                 let testPhase = this.editableTabs[index]
-                // console.log('[Index]',index)
-                // console.log('[current][Task]',this.currentTask)
+                console.log('[Index]',index)
+                console.log('[current][Task]',this.currentTask)
                 // console.log('[current][PhaseContent]',testPhase.content)
                 // let tmp = this.getTaskById(this.currentTask.fartherId,[testPhase.content])
                 // console.log('[current][fatherId]',tmp.thisId)
                 let node = this.currentTask
+                console.log('[Detect][node]',node)
                 while(1){
                     if(node.fartherId === 0){
                         return node.image_url === this.doneurl;
                     }
+
                     node = this.getTaskById(node.fartherId,[testPhase.content])
+                    console.log('[Detect][whileNode]',node)
                     if(node.image_url !== this.doneurl ){
                         return false
                     }
