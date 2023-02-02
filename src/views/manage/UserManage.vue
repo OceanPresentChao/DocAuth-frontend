@@ -244,7 +244,7 @@
         tableData: [],
         total: 0,
         page: 1,
-        page_size: 5,
+        page_size: 20,
         nickname: '',
         email: '',
         form: {},
