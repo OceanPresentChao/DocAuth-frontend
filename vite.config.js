@@ -54,7 +54,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/django': {
-        target: 'http://localhost:13500/api/v1',
+        target: 'http://localhost:8000/api/v1',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/django/, ''),
       },
